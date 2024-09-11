@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from app_home.forms import UserSignUpForm
-from django.contrib.auth import login
+from django.contrib.auth import login,logout
 
 def home_view(request):
     return render(request,'home/home.html')
@@ -26,3 +26,7 @@ def signup_view(request):
 
 def predict_view(request):
     return render(request,'home/predict.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('home_view')
