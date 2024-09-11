@@ -1,0 +1,64 @@
+# Virtual environment
+venv/
+env/
+*.env
+*.venv
+
+# Python bytecode
+*.pyc
+__pycache__/
+
+# Django-specific
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# Ignore migrations - Comment this if you want to keep migrations tracked
+*/migrations/__pycache__/
+*/migrations/*.pyc
+*/migrations/*.pyo
+*/migrations/*.pyd
+
+# IDE specific (VSCode, PyCharm, etc.)
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Logs
+*.log
+logs/
+*.out
+
+# Unit test / coverage reports
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+htmlcov/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# PIP and package files
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtual environment for Heroku deployment
+.pyenv/
+
+# Ignore local .env files with secrets
+.env
+.env.*
+
+# Ignore compiled, minified, or bundled assets
+staticfiles/
+node_modules/
+
+# Ignore temporary files created by editors
+*~
+*.swp
