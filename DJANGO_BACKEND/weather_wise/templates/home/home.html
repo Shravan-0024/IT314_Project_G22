@@ -3,5 +3,7 @@
 {% block title %}WeatherWise | Home{% endblock  %}
 
 {% block content %}
-    Home Page 
+<h2 class="mt-4 mb-4 text-center">Home Page</h2>
+<hr>
+<a href="{% url "predict_view" %}"><button class="btn btn-primary">Prediction</button></a>
 {% endblock  %}
