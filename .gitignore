@@ -3,6 +3,7 @@ venv/
 env/
 *.env
 *.venv
+DJANGO_BACKEND/venv/
 
 # Python bytecode
 *.pyc
