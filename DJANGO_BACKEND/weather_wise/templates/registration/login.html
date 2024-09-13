@@ -4,4 +4,18 @@
 
 {% block content %}
 <h2 class="mt-4 mb-4 text-center">LOGIN PAGE</h2>
+<form method="POST" class="mx-auto" style="max-width: 500px;">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="username" class="form-label"><strong>Username</strong></label>
+            <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label"><strong>Password:</strong></label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100"><strong>Login</strong></button>
+    </form>
 {% endblock %}
