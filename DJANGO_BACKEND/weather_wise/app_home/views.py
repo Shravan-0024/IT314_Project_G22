@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from app_home.forms import UserSignUpForm
 from django.contrib.auth import login,logout,authenticate
+from django.contrib.auth.decorators import login_required
 
 def home_view(request):
     return render(request,'home/home.html')
@@ -32,7 +33,8 @@ def signup_view(request):
     else:
         form = UserSignUpForm()
         return render(request, 'registration/signup.html', {'form': form})
-
+    
+@login_required(login_url='/login')
 def predict_view(request):
     return render(request,'home/predict.html')
 
