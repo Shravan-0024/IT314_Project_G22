@@ -2,6 +2,8 @@ from django.shortcuts import render,redirect
 from app_home.forms import UserSignUpForm
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.db.models import Q
 
 def home_view(request):
     return render(request,'home/home.html')
@@ -10,18 +12,48 @@ def about_view(request):
     return render(request,'home/about.html')
 
 def login_view(request):
+
+    if request.user.is_authenticated:
+        logout(request)
+        return redirect('login_view')
+
     if request.method == "POST":
-        username = request.POST.get('username')
+        # Get the entered username/email and password
+        username_or_email = request.POST.get('username_or_email')
         password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
+
+        try:
+            user = User.objects.get(Q(username=username_or_email) | Q(email=username_or_email))
+        except User.DoesNotExist:
+            user = None
+
+        # If no user was found, return a 'User Not Found' error
+        if user is None:
+            error = "User Not Found. Please Sign Up First."
+            return render(request, 'registration/login.html', {'error': error})
+
+        # Authenticate using the username (if found) and password
+        user = authenticate(request, username=user.username, password=password)
+
+        # If authentication is successful, log the user in
         if user is not None:
-            login(request,user)
+            login(request, user)
             return redirect('home_view')
         else:
-            return render(request,'registration/login.html')
-    return render(request,'registration/login.html')
+            # If authentication failed, show error message
+            error = "Incorrect Username/Email or Password."
+            return render(request, 'registration/login.html', {'error': error})
+
+    # Render the login form if the request is not POST
+    return render(request, 'registration/login.html')
+
 
 def signup_view(request):
+
+    if request.user.is_authenticated:
+        logout(request)
+        return redirect('signup_view')
+
     if request.method == "POST":
         form = UserSignUpForm(request.POST)
         if form.is_valid():
@@ -30,9 +62,14 @@ def signup_view(request):
             user.save()
             login(request, user)
             return redirect('home_view')
+        else:
+            # Collect all form errors
+            errors = form.errors
+            return render(request, 'registration/signup.html', {'form': form, 'errors': errors})
     else:
         form = UserSignUpForm()
         return render(request, 'registration/signup.html', {'form': form})
+
     
 @login_required(login_url='/login')
 def predict_view(request):

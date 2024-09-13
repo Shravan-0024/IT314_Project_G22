@@ -4,33 +4,64 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Weather Wise{% endblock  %}</title>
+    <title>{% block title %}Weather Wise{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
   </head>
   <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">WeatherWise</a>
-            
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url "about_view" %}">Who We Are</a>
-                </li>
-            </ul>
-            <div class="d-flex">
-              {% if user.is_authenticated %}
-                <a href="{% url "logout_view" %}"><button class="btn btn-danger me-2 mx-2">Logout</button></a>
-              {% else %}
-                <a href="{% url "login_view" %}"><button class="btn btn-success me-2 mx-2">Login</button></a>
-                <a href="{% url "signup_view" %}"><button class="btn btn-warning me-2 mx-2">Signup</button></a>
-              {% endif %}
-             </div>
-            </div>
-        </div>
-        </nav>
-    <div class="container">
-      {% block content %}{% endblock  %}
+      <div class="container-fluid">
+          <a class="navbar-brand" href="/">WeatherWise</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="{% url "about_view" %}">Who We Are</a>
+                  </li>
+              </ul>
+
+              <!-- Centered and widened search form -->
+              <form class="d-flex mx-auto" style="width: 40%;" role="search">
+                  <div class="input-group">
+                      <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                      <button class="btn btn-outline-success btn-sm" type="submit">
+                          <i class="bi bi-search"></i> <!-- Bootstrap search icon -->
+                      </button>
+                  </div>
+              </form>
+
+              <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                  {% if user.is_authenticated %}
+                      <li class="nav-item">
+                          <a class="nav-link active btn btn-danger mx-2" aria-current="page" href="{% url "logout_view" %}"><b>LogOut</b></a>
+                      </li>
+                      <a href="{% url "profile_view" %}">
+                        <span class="badge text">
+                            <i class="bi bi-person-circle" style="font-size: 2rem;"></i>
+                        </span>
+                    </a>
+                  {% else %}
+                      <li class="nav-item">
+                          <a class="nav-link active btn btn-success mx-2" aria-current="page" href="{% url "login_view" %}"><b>Login</b></a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link active btn btn-success mx-2" aria-current="page" href="{% url "signup_view" %}"><b>SignUp</b></a>
+                      </li>
+                  {% endif %}
+              </ul>
+          </div>
+      </div>
+  </nav>
+
+
+
+    <div class="container mt-4">
+        {% block content %}
+            Weather Wise default content
+        {% endblock  %}
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>
