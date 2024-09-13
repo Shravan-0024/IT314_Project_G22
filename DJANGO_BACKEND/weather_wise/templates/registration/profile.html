@@ -3,6 +3,22 @@
 {% block title %}WeatherWise | Profile{% endblock  %}
 
 {% block content %}
-<h2 class="mt-4 mb-4 text-center">PROFILE PAGE</h2>    
-
+    Profile Page 
+    <hr>
+    <p>
+        UserName : {{user.username}}
+    </p>
+    <p>
+        User First Name : {{user.first_name}}
+    </p>
+    <p>
+        User Last Name : {{user.last_name}}
+    </p>
+    <p>
+        User Email : {{user.email}}
+    </p>
+    <p>
+        User Password : {{user.password}}
+    </p>
+    <hr>
 {% endblock  %}

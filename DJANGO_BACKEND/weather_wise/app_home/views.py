@@ -78,3 +78,7 @@ def predict_view(request):
 def logout_view(request):
     logout(request)
     return redirect('home_view')
+
+@login_required
+def profile_view(request):
+    return render(request,'registration/profile.html')
