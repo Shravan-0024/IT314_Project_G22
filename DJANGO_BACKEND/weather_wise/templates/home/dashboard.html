@@ -1,73 +1,75 @@
 <!-- Load Plotly.js from CDN -->
 <script src="https://cdn.plot.ly/plotly-2.18.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
 
 <!-- Dashboard central card -->
 <div class="container mt-5">
     <div class="card bg-body-secondary">
         <div class="card-body">
-            <h5 class="card-title text-center mb-4">Weather Dashboard</h5>
-            <div class="row g-4">
+            <button id="downloadBtn" class="btn btn-warning float-end"><strong>Download Dashboard</strong></button>
+            <div id="dashboardContent" style="background-color: #343a40; color: white;">
+                <h5 class="card-title text-center mb-4"><strong>Weather Dashboard</strong></h5>
+                    <div class="row g-4">
+                    <!-- Temperature Timeline Plot -->
+                    <div class="col-md-4">
+                        <div class="card bg-dark text-white shadow h-100">
+                            <div class="card-body">
+                                <h6 class="card-title text-center">Temperature Timeline (°C)</h6>
+                                <div id="plot1" class="plot-card"></div>
+                            </div>
+                        </div>
+                    </div>
 
-                <!-- Temperature Timeline Plot -->
-                <div class="col-md-4">
-                    <div class="card bg-dark text-white shadow h-100">
-                        <div class="card-body">
-                            <h6 class="card-title text-center">Temperature Timeline (°C)</h6>
-                            <div id="plot1" class="plot-card"></div>
+                    <!-- Humidity Level Plot -->
+                    <div class="col-md-4">
+                        <div class="card bg-dark text-white shadow h-100">
+                            <div class="card-body">
+                                <h6 class="card-title text-center">Humidity Levels (%)</h6>
+                                <div id="plot2" class="plot-card"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Wind Speed Plot -->
+                    <div class="col-md-4">
+                        <div class="card bg-dark text-white shadow h-100">
+                            <div class="card-body">
+                                <h6 class="card-title text-center">Wind Speed (km/h)</h6>
+                                <div id="plot3" class="plot-card"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Precipitation Probability Plot -->
+                    <div class="col-md-4">
+                        <div class="card bg-dark text-white shadow h-100">
+                            <div class="card-body">
+                                <h6 class="card-title text-center">Precipitation Probability (% out of 100)</h6>
+                                <div id="plot4" class="plot-card"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- UV Index Plot -->
+                    <div class="col-md-4">
+                        <div class="card bg-dark text-white shadow h-100">
+                            <div class="card-body">
+                                <h6 class="card-title text-center">UV Index (scale 0-10)</h6>
+                                <div id="plot5" class="plot-card"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pressure Plot -->
+                    <div class="col-md-4">
+                        <div class="card bg-dark text-white shadow h-100">
+                            <div class="card-body">
+                                <h6 class="card-title text-center">Air Pressure (hPa)</h6>
+                                <div id="plot6" class="plot-card"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Humidity Level Plot -->
-                <div class="col-md-4">
-                    <div class="card bg-dark text-white shadow h-100">
-                        <div class="card-body">
-                            <h6 class="card-title text-center">Humidity Levels (%)</h6>
-                            <div id="plot2" class="plot-card"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Wind Speed Plot -->
-                <div class="col-md-4">
-                    <div class="card bg-dark text-white shadow h-100">
-                        <div class="card-body">
-                            <h6 class="card-title text-center">Wind Speed (km/h)</h6>
-                            <div id="plot3" class="plot-card"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Precipitation Probability Plot -->
-                <div class="col-md-4">
-                    <div class="card bg-dark text-white shadow h-100">
-                        <div class="card-body">
-                            <h6 class="card-title text-center">Precipitation Probability (% out of 100)</h6>
-                            <div id="plot4" class="plot-card"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- UV Index Plot -->
-                <div class="col-md-4">
-                    <div class="card bg-dark text-white shadow h-100">
-                        <div class="card-body">
-                            <h6 class="card-title text-center">UV Index (scale 0-10)</h6>
-                            <div id="plot5" class="plot-card"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Pressure Plot -->
-                <div class="col-md-4">
-                    <div class="card bg-dark text-white shadow h-100">
-                        <div class="card-body">
-                            <h6 class="card-title text-center">Air Pressure (hPa)</h6>
-                            <div id="plot6" class="plot-card"></div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
@@ -169,3 +171,46 @@
         border-radius: 10px;
     }
 </style>
+
+<script>
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+        var element = document.getElementById('dashboardContent');
+        var opt = {
+            margin:       0.1,  // Adjust margin as needed
+            filename:     'dashboard.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 10, useCORS: true,backgroundColor: '#343a40' },  // Increase scale if necessary
+            jsPDF:        { unit: 'in', format: [11.80, 10], orientation: 'landscape' }  // Custom size: [width, height] in inches
+        };
+        html2pdf().set(opt).from(element).save();
+    });
+</script>
+
+<style>
+    /* Apply specific styles for PDF export */
+            @media print {
+                #dashboardContent {
+            background-color: #343a40; /* Match background color */
+            color: white;
+            padding: 20px; /* Adjust padding to fit content */
+            margin: 0; /* Remove margins */
+            overflow: hidden; /* Ensure no overflow */
+        }
+
+        .card {
+            margin-bottom: 20px; /* Adjust spacing between cards */
+        }
+        .card-body {
+            padding: 15px;
+        }
+        .card-title {
+            font-size: 18px; /* Adjust font size for better fitting */
+        }
+        /* Ensure all content fits within the page */
+        .container {
+            width: 100%;
+            max-width: none;
+        }
+    }
+</style>
+
