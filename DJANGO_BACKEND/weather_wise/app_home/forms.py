@@ -23,3 +23,9 @@ class UserSignUpForm(UserCreationForm):
         if User.objects.filter(username=username).exists():
             raise ValidationError("This username is already taken. Please choose another one.")
         return username
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise ValidationError("This email address is already registered. Please log in instead.")
+        return email
