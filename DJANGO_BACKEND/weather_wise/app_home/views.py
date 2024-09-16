@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from app_home.forms import UserSignUpForm
+from app_home.forms import UserSignUpForm,UserProfileEditForm
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -82,3 +82,15 @@ def logout_view(request):
 @login_required
 def profile_view(request):
     return render(request,'registration/profile.html')
+
+@login_required
+def profile_edit_view(request):
+    if request.method == "POST":
+        form = UserProfileEditForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile_view')  # Redirect to the profile page after successful update
+    else:
+        form = UserProfileEditForm(instance=request.user)
+
+    return render(request, 'registration/profile_edit.html', {'form': form})
