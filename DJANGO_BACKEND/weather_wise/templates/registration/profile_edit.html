@@ -7,9 +7,65 @@
     <div class="card shadow-lg p-4" style="max-width: 600px; width: 100%;">
         <h3 class="card-title text-center mb-4">Edit Profile</h3>
         <hr>
+
+        <!-- Error Handling -->
+        {% if errors %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="text-align: left;">
+            <p><strong>Please Modify the Following</strong></p>
+            <ul style="list-style-type: none; padding-left: 0;">
+                {% for field, error_list in errors.items %}
+                    <ul style="list-style-type: none; padding-left: 0;">
+                        {% for error in error_list %}
+                            <li>{{ error|capfirst }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+
+        <!-- Form -->
         <form method="POST">
             {% csrf_token %}
-            {{ form.as_p }}
+
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" id="username" name="username" value="{{ form.username.value }}" 
+                       class="form-control {% if form.username.errors %}is-invalid{% endif %}" readonly>
+                {% for error in form.username.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" value="{{ form.email.value }}" 
+                       class="form-control {% if form.email.errors %}is-invalid{% endif %}">
+                {% for error in form.email.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                <label for="first_name" class="form-label">First Name</label>
+                <input type="text" id="first_name" name="first_name" value="{{ form.first_name.value }}" 
+                       class="form-control {% if form.first_name.errors %}is-invalid{% endif %}">
+                {% for error in form.first_name.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                <label for="last_name" class="form-label">Last Name</label>
+                <input type="text" id="last_name" name="last_name" value="{{ form.last_name.value }}" 
+                       class="form-control {% if form.last_name.errors %}is-invalid{% endif %}">
+                {% for error in form.last_name.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <!-- Submit and Cancel buttons -->
             <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-success mx-4">Save Changes</button>
                 <a href="{% url 'profile_view' %}" class="btn btn-secondary mx-4">Cancel</a>

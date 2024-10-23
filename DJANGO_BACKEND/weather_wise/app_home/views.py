@@ -89,7 +89,11 @@ def profile_edit_view(request):
         form = UserProfileEditForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('profile_view')  # Redirect to the profile page after successful update
+            return redirect('profile_view')
+        else:
+            print(form.errors)
+            render(request, 'registration/profile_edit.html', {'form': form,'errors':form.errors})
+            pass  # Redirect to the profile page after successful update
     else:
         form = UserProfileEditForm(instance=request.user)
 
