@@ -1,0 +1,121 @@
+
+body,
+html {
+    height: 90%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: url('bg4.jpg') no-repeat center center fixed;
+    background-size: cover;
+    background-attachment: fixed;
+    
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: transparent;
+}
+
+.login-box {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 45px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    opacity: 0.8;
+}
+
+.login-box h1 {
+    margin-bottom: 20px;
+}
+
+.input-box {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.input-box label {
+    position: absolute;
+    left: px;
+    top: 55px;
+    transition: 0.1s;
+    pointer-events: visibleStroke;
+}
+
+.input-box input:focus+label,
+.input-box input:not(:placeholder-shown)+label {
+    top: -10px;
+    left: 5px;
+    font-size: 12px;
+    color: #0a0a0a;
+    padding-bottom: 5px;
+}
+
+.btn {
+    background: #3ca6c1;
+    color: rgb(231, 236, 231);
+    padding: 10px 5px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    z-index: 1;
+}
+
+.forgot-password {
+    display: block;
+    margin: 10px 0;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.create-account {
+    margin: 20px 0;
+}
+
+.create-account a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+
+.navbar-outer {
+    background: linear-gradient(270deg, #00bfff, #00ffff, #1e90ff, #4682b4, #ff00ff, #ff69b4, #d8bfd8);
+    animation: swirling-neon 15s ease infinite; /* Keep the animation here */
+    border-radius: 45px;
+    padding: 5px;
+    width: 50%;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+}
+
+.navbar-inner {
+    background: white; /* Optional: add a simple background color */
+    border-radius: 40px;
+    padding: 5px;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Remove any animations here */
+}
+
+.navbar-custom {
+    background: transparent; /* Ensure the navbar is transparent to show the outer background */
+}
