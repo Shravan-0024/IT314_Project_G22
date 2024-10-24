@@ -29,52 +29,62 @@
         <form method="POST">
             {% csrf_token %}
 
+            <!-- User Profile Edit Form -->
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
-                <input type="text" id="username" name="username" value="{{ form.username.value }}" 
-                       class="form-control {% if form.username.errors %}is-invalid{% endif %}" readonly>
-                {% for error in form.username.errors %}
+                <input type="text" id="username" name="username" value="{{ profile_form.username.value }}" 
+                       class="form-control {% if profile_form.username.errors %}is-invalid{% endif %}" readonly>
+                {% for error in profile_form.username.errors %}
                 <div class="invalid-feedback">{{ error }}</div>
                 {% endfor %}
             </div>
 
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" name="email" value="{{ form.email.value }}" 
-                       class="form-control {% if form.email.errors %}is-invalid{% endif %}">
-                {% for error in form.email.errors %}
+                <input type="email" id="email" name="email" value="{{ profile_form.email.value }}" 
+                       class="form-control {% if profile_form.email.errors %}is-invalid{% endif %}">
+                {% for error in profile_form.email.errors %}
                 <div class="invalid-feedback">{{ error }}</div>
                 {% endfor %}
             </div>
 
             <div class="mb-3">
                 <label for="first_name" class="form-label">First Name</label>
-                <input type="text" id="first_name" name="first_name" value="{{ form.first_name.value }}" 
-                       class="form-control {% if form.first_name.errors %}is-invalid{% endif %}">
-                {% for error in form.first_name.errors %}
+                <input type="text" id="first_name" name="first_name" value="{{ profile_form.first_name.value }}" 
+                       class="form-control {% if profile_form.first_name.errors %}is-invalid{% endif %}">
+                {% for error in profile_form.first_name.errors %}
                 <div class="invalid-feedback">{{ error }}</div>
                 {% endfor %}
             </div>
 
             <div class="mb-3">
                 <label for="last_name" class="form-label">Last Name</label>
-                <input type="text" id="last_name" name="last_name" value="{{ form.last_name.value }}" 
-                       class="form-control {% if form.last_name.errors %}is-invalid{% endif %}">
-                {% for error in form.last_name.errors %}
+                <input type="text" id="last_name" name="last_name" value="{{ profile_form.last_name.value }}" 
+                       class="form-control {% if profile_form.last_name.errors %}is-invalid{% endif %}">
+                {% for error in profile_form.last_name.errors %}
                 <div class="invalid-feedback">{{ error }}</div>
                 {% endfor %}
             </div>
 
-            <!-- Prefer Alert Messages Checkbox -->
+            <!-- Notify Form -->
             <div class="form-check mb-3">
-                <input type="checkbox" id="prefer_alerts" name="prefer_alerts" class="form-check-input">
-                <label class="form-check-label" for="prefer_alerts">Prefer Alert Messages</label>
+                <input type="checkbox" id="get_notifications" name="get_notifications" 
+                       class="form-check-input {% if notify_form.get_notifications.errors %}is-invalid{% endif %}" 
+                       {% if notify_form.get_notifications.value %}checked{% endif %}>
+                <label class="form-check-label" for="get_notifications">Receive Notifications</label>
+                {% for error in notify_form.get_notifications.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
             </div>
 
-            <!-- Preferred Location Input -->
             <div class="mb-3">
                 <label for="preferred_location" class="form-label">Preferred Location</label>
-                <input type="text" id="preferred_location" name="preferred_location" class="form-control">
+                <input type="text" id="preferred_location" name="preferred_location" 
+                       value="{{ notify_form.preferred_location.value }}" 
+                       class="form-control {% if notify_form.preferred_location.errors %}is-invalid{% endif %}">
+                {% for error in notify_form.preferred_location.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
             </div>
 
             <!-- Submit and Cancel buttons -->

@@ -52,9 +52,6 @@ class UserProfileEditForm(forms.ModelForm):
         if User.objects.filter(email=email).exclude(pk=self.instance.pk).exists():
             raise ValidationError("This email address is already registered with another account.")
         return email
-    
-
-
 
 class NotifyForm(forms.ModelForm):
     get_notifications = forms.BooleanField(required=False, label="Receive Notifications")
@@ -63,3 +60,16 @@ class NotifyForm(forms.ModelForm):
     class Meta:
         model = Notify
         fields = ['preferred_location']
+
+    def clean(self):
+        cleaned_data = super().clean()
+        get_notifications = cleaned_data.get('get_notifications')
+        preferred_location = cleaned_data.get('preferred_location')
+
+        # Validation logic
+        if not get_notifications and preferred_location:
+            raise ValidationError("You need to enable notifications to have a preferred location.")
+        if get_notifications and not preferred_location:
+            raise ValidationError("Enter a valid location if you want notifications.")
+
+        return cleaned_data
