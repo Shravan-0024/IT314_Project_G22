@@ -116,7 +116,7 @@ def profile_edit_view(request):
                     notify.preferred_location = preferred_location
                 notify.save()
 
-            elif get_notifications != 'on' or not preferred_location:
+            elif get_notifications != 'on' and not preferred_location:
                 if notify:
                     notify.delete()
 
