@@ -2,6 +2,8 @@ from django.shortcuts import render,redirect
 from app_home.forms import UserSignUpForm,UserProfileEditForm
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
+from .models import Notify
+from .forms import NotifyForm
 from django.contrib.auth.models import User
 from django.db.models import Q
 
@@ -85,16 +87,59 @@ def profile_view(request):
 
 @login_required
 def profile_edit_view(request):
-    if request.method == "POST":
-        form = UserProfileEditForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect('profile_view')
-        else:
-            print(form.errors)
-            render(request, 'registration/profile_edit.html', {'form': form,'errors':form.errors})
-            pass  # Redirect to the profile page after successful update
-    else:
-        form = UserProfileEditForm(instance=request.user)
+    user = request.user
 
-    return render(request, 'registration/profile_edit.html', {'form': form})
+    # Try to get the Notify object for the user, if it exists
+    try:
+        notify = Notify.objects.get(user=user)
+    except Notify.DoesNotExist:
+        notify = None
+
+    if request.method == "POST":
+        # Initialize both forms with POST data
+        profile_form = UserProfileEditForm(request.POST, instance=user)
+        notify_form = NotifyForm(request.POST)
+
+        if profile_form.is_valid() and notify_form.is_valid():
+            # Save the user profile form
+            profile_form.save()
+
+            # Handle the notify form logic based on the conditions
+            get_notifications = request.POST.get('get_notifications', False)
+            preferred_location = notify_form.cleaned_data['preferred_location']
+
+            # Apply update conditions
+            if get_notifications == 'on' and preferred_location:
+                if notify is None:
+                    notify = Notify(user=user, preferred_location=preferred_location)
+                else:
+                    notify.preferred_location = preferred_location
+                notify.save()
+
+            elif get_notifications != 'on' or not preferred_location:
+                if notify:
+                    notify.delete()
+
+            return redirect('profile_view')  # Redirect after successful update
+        else:
+            # print(profile_form.errors, notify_form.errors)
+            # Pass errors back to the template
+            return render(request, 'registration/profile_edit.html', {
+                'profile_form': profile_form,
+                'notify_form': notify_form,
+                'errors': profile_form.errors | notify_form.errors
+            })
+
+    else:
+        # Initialize forms with existing user data and Notify data if available
+        profile_form = UserProfileEditForm(instance=user)
+        initial_data = {
+            'preferred_location': notify.preferred_location if notify else '',
+            'get_notifications': bool(notify)
+        }
+        notify_form = NotifyForm(initial=initial_data)
+
+    return render(request, 'registration/profile_edit.html', {
+        'profile_form': profile_form,
+        'notify_form': notify_form
+    })
