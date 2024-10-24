@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
+from .models import Notify
 
 class UserSignUpForm(UserCreationForm):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
@@ -51,3 +52,14 @@ class UserProfileEditForm(forms.ModelForm):
         if User.objects.filter(email=email).exclude(pk=self.instance.pk).exists():
             raise ValidationError("This email address is already registered with another account.")
         return email
+    
+
+
+
+class NotifyForm(forms.ModelForm):
+    get_notifications = forms.BooleanField(required=False, label="Receive Notifications")
+    preferred_location = forms.CharField(max_length=100, required=False, label="Preferred Location")
+
+    class Meta:
+        model = Notify
+        fields = ['preferred_location']
