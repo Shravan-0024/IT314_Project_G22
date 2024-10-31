@@ -30,24 +30,35 @@ html {
 }
 
 .input-box {
-    position: relative;
-    margin-bottom: 30px;
+    /* position: relative;
+    margin-bottom: 30px; */
+    text-align: left;
 }
 
-.input-box input {
+.create-account-box form input {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 10px;
+    margin: 0 0 20px;
 }
 
-.input-box label {
-    position: absolute;
+.create-account-box form label {
+    /* position: absolute;
     left: 10px;
     top: 10px;
     transition: 0.3s;
-    pointer-events: none;
+    pointer-events: none; */
+    font-size: 14px;
+    color: #0b0303;
+    margin: 0 0 5px;
+    font-weight: 600;
     
+}
+.create-account-box form input::placeholder {
+    color: #888; 
+    font-size: 12px; 
+    opacity: 1;
 }
 
 .input-box input:focus+label,
@@ -59,17 +70,21 @@ html {
     margin: 15px;
 }
 
-.btn {
+.create-account-box .btn {
     background-color: #1299d3;
-    
+    color: #fff;
     padding: 10px 15px;
-    border: none;
+    border: 1px solid #1299d3;
     border-radius: 10px;
     cursor: pointer;
     width: 100%;
     font-size: 16px;
 }
-
+.create-account-box .btn:hover{
+    border: 1px solid #1299d3;
+    background-color: transparent;
+    color: #1299d3;;
+}
 .navbar-outer {
     background: linear-gradient(270deg, #00bfff, #00ffff, #1e90ff, #4682b4, #ff00ff, #ff69b4, #d8bfd8);
     animation: swirling-neon 15s ease infinite;
@@ -102,4 +117,14 @@ html {
 .navbar-custom {
     background: transparent;
     /* Ensure the navbar is transparent to show the outer background */
+}
+.create-account-box .input-box .password-box{
+    position: relative;
+}
+.create-account-box .input-box .password-box i{
+    position: absolute; 
+    right: 10px;
+     top: 35%; 
+    transform: translateY(-50%); 
+    cursor: pointer;
 }
