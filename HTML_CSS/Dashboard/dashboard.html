@@ -1,5 +1,8 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DashBoard</title>
     <link href="./dashboard.css" rel="stylesheet">
 </head>
@@ -7,27 +10,44 @@
 <body>
 
 <div class="dash-board">
-    <div class="rectangle-1"></div>
-    <img class="mask-group" src="mask-group0.svg" />
-    <div class="search-location">Search Location</div>
-    <img class="rectangle-4" src="rectangle-40.png" />
-    <div class="rectangle-7"></div>
-    <div class="weather-wise">WeatherWise</div>
-    <div class="rectangle-5"></div>
-    <div class="dashboard">Dashboard</div>
-    <div class="prediction">Prediction</div>
-    <div class="settings-layout">Settings/Layout</div>
-    <div class="logout">Logout</div>
-    <div class="rectangle-6"></div>
-    <div class="rectangle-17"></div>
-    <div class="rectangle-18"></div>
-    <div class="rectangle-19"></div>
-    <div class="rectangle-10"></div>
-    <div class="rectangle-13"></div>
-    <div class="rectangle-9"></div>
-    <div class="rectangle-11"></div>
-    <div class="rectangle-12"></div>
-  </div>
+    <!-- Sidebar (fixed) -->
+    <aside class="sidebar">
+        <div class="weather-wise">WeatherWise</div>
+        <nav class="nav-menu">
+            <a href="#" class="nav-item">Dashboard</a>
+            <a href="#" class="nav-item">Prediction</a>
+            <a href="#" class="nav-item">Settings/Layout</a>
+            <a href="#" class="nav-item">Logout</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <header class="header">
+            <div class="search-bar">
+                <img class="mask-group" src="search.svg" alt="Search Icon" />
+                <input type="text" placeholder="Search Location" class="search-input">
+            </div>
+            <div class="user-profile">
+                <img src="account-logo.png" alt="User Profile" class="rectangle-4">
+            </div>
+        </header>
+
+        <main class="content">
+            <div class="widget rectangle-6"></div>
+            <div class="grid">
+                <div class="rectangle-17"></div>
+                <div class="rectangle-18"></div>
+                <div class="rectangle-19"></div>
+                <div class="rectangle-10"></div>
+                <div class="rectangle-13"></div>
+                <div class="rectangle-9"></div>
+                <div class="rectangle-11"></div>
+                <div class="rectangle-12"></div>
+            </div>
+        </main>
+    </div>
+</div>
 
 </body>
 </html>
