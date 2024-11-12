@@ -1,0 +1,181 @@
+body,
+html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: url('bg4.jpg') no-repeat center center fixed;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.navbar-container {
+    width: 100%;
+}
+
+.navbar-outer {
+    background: linear-gradient(270deg, #00bfff, #00ffff, #1e90ff, #4682b4, #ff00ff, #ff69b4, #d8bfd8);
+    animation: swirling-neon 15s ease infinite;
+    border-radius: 45px;
+    padding: 5px;
+    width: 50%; /* Base width */
+    max-width: 800px; /* Limit max width */
+    min-width: 300px; /* Prevent it from becoming too narrow */
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    transition: width 0.5s ease; /* Smooth resizing */
+}
+
+.navbar-inner {
+    background: white;
+    border-radius: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center align all contents vertically */
+}
+
+.logo {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    font-size: 2rem;
+    background: linear-gradient(45deg, #3ca6c1, #00bfff, #4682b4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+.navbar-custom {
+    background: transparent;
+}
+
+.navbar-brand {
+    color: #3ca6c1 !important;
+    font-weight: bold;
+}
+
+.nav-link {
+    color: #3ca6c1;
+}
+
+.nav-link:hover {
+    color: #1e90ff;
+}
+
+.navbar-toggler {
+    margin-left: auto;
+    border: none;
+    background: none;
+}
+
+.collapse.show {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+}
+
+/* Base Navbar Styles */
+.navbar-outer {
+    width: 50%;
+    transition: width 0.3s ease; /* Smooth width transition */
+}
+
+.logo {
+    font-size: 1.8rem;
+    white-space: nowrap; /* Prevent wrapping */
+}
+
+/* Responsive Navbar Adjustments */
+
+/* For very small screens */
+@media (max-width: 576px) {
+    .navbar-outer {
+        width: 90%;
+    }
+
+    .navbar-inner {
+        flex-direction: column;
+    }
+
+    .logo {
+        font-size: 1.5rem;
+    }
+
+    .nav-link {
+        font-size: 0.9rem; /* Adjust font size to keep items on one line */
+        padding: 5px 0; /* Reduce padding for a compact layout */
+    }
+}
+
+/* For smaller screens */
+@media (max-width: 768px) {
+    .navbar-outer {
+        width: 80%;
+    }
+
+    .navbar-inner {
+        flex-direction: column;
+    }
+
+    .navbar-collapse {
+        display: none; /* Hide navbar links initially on small screens */
+    }
+
+    .navbar-collapse.show {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+    .navbar-nav .nav-item {
+        margin: 5px 0;
+    }
+}
+
+/* For medium screens */
+@media (max-width: 992px) {
+    .navbar-outer {
+        width: 70%;
+    }
+
+    .navbar-collapse {
+        display: none;
+    }
+
+    .navbar-collapse.show {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+    .navbar-nav .nav-item {
+        margin: 5px 0;
+    }
+
+    .nav-link {
+        font-size: 1rem; /* Maintain readability */
+    }
+}
+
+/* For medium-large screens */
+@media (max-width: 1268px) {
+    .navbar-outer {
+        width: 65%;
+    }
+}
+
+/* For wide screens */
+@media (min-width: 1400px) {
+    .navbar-outer {
+        width: 60%;
+    }
+}
