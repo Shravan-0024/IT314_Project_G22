@@ -7,4 +7,3 @@ class Notify(models.Model):
 
     def __str__(self):
         return f"Notify preferences for {self.user.username}"
-
