@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Prediction</title>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>7-Day Weather Prediction</h1>
+        
+        <!-- Input Form for Location -->
+        <div class="input-section">
+            <label for="location">Enter Location:</label>
+            <input type="text" id="location" placeholder="City or Zip Code">
+            <button onclick="getWeatherPrediction()">Predict</button>
+        </div>
+        
+        <!-- Forecast Display -->
+        <div id="forecast-container" class="forecast-container">
+            <h2>Forecast for <span id="location-name"></span></h2>
+            <div id="forecast" class="forecast">
+                <!-- Forecast Days will be inserted here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
