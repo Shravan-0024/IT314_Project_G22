@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+    <title>WeatherWise | Profile</title>
+    <!-- Tailwind CSS CDN -->
+    <script
+        src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-900 text-white">
+
+    <div
+        class="flex justify-center items-center min-h-screen px-4">
+        <div
+            class="card shadow-lg p-6 max-w-lg w-full bg-gray-800 rounded-lg">
+            <h3
+                class="text-3xl font-semibold text-center mb-6">
+                User Profile</h3>
+            <hr
+                class="border-t border-gray-600 mb-4">
+
+            <!-- Profile Information Section (Using Flexbox) -->
+            <div class="space-y-4">
+                <!-- Username -->
+                <div
+                    class="flex justify-between items-center">
+                    <p
+                        class="font-semibold w-1/3">
+                        Username:</p>
+                    <p class="w-1/2">
+                        JohnDoe</p>
+                </div>
+
+                <!-- First Name -->
+                <div
+                    class="flex justify-between items-center">
+                    <p
+                        class="font-semibold w-1/3">
+                        First Name:</p>
+                    <p class="w-1/2">
+                        John</p>
+                </div>
+
+                <!-- Last Name -->
+                <div
+                    class="flex justify-between items-center">
+                    <p
+                        class="font-semibold w-1/3">
+                        Last Name:</p>
+                    <p class="w-1/2">Doe
+                    </p>
+                </div>
+
+                <!-- Email -->
+                <div
+                    class="flex justify-between items-center">
+                    <p
+                        class="font-semibold w-1/3">
+                        Email:</p>
+                    <p class="w-1/2">
+                        johndoe@example.com
+                    </p>
+                </div>
+            </div>
+
+            <hr
+                class="border-t border-gray-600 my-6">
+
+            <!-- Buttons Section -->
+            <div
+                class="flex justify-center space-x-4">
+                <a href="profile_edit_url"
+                    class="btn bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md">
+                    Edit Profile
+                </a>
+                <a href="logout_url"
+                    class="btn bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-md">
+                    Log Out
+                </a>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

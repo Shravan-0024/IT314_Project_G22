@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block title %}WeatherWise | Login{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mt-4 mb-4 text-center">Login to WeatherWise</h2>
+    
+    <!-- Display error message if present -->
+    {% if error %}
+        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+            <p>BAD REQUEST PLEASE TRY AGAIN</p>
+            <p><strong>{{error}}</strong></p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+
+    <!-- Centered and structured login form -->
+    <form method="POST" class="mx-auto" style="max-width: 500px;">
+        {% csrf_token %}
+
+        <!-- Username or Email -->
+        <div class="mb-3">
+            <label for="username_or_email" class="form-label"><strong>Username or Email:</strong></label>
+            <input type="text" class="form-control" id="username_or_email" name="username_or_email" required>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+            <label for="password" class="form-label"><strong>Password:</strong></label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+
+        <!-- Login Button -->
+        <button type="submit" class="btn btn-primary w-100"><strong>Login</strong></button>
+    </form>
+
+    <!-- Signup Link -->
+    <p class="mt-4 text-center">
+        Don't have an account? <a href="{% url 'signup_view' %}">Sign Up</a>
+    </p>
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block title %}WeatherWise | SignUp{% endblock %}
+
+{% block content %}
+    <h2 class="mt-4 mb-4 text-center">Signup with WeatherWise</h2> 
+    {% if errors %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="text-align: left;">
+            <p><strong>Please Modify Following</strong></p>
+            <ul style="list-style-type: none; padding-left: 0;">
+                {% for field, error_list in errors.items %}
+                    <ul style="list-style-type: none; padding-left: 0;">
+                        {% for error in error_list %}
+                            <li>{{ error|capfirst }}</li>
+                        {% endfor %}
+                    </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+
+    <form method="post" class="mx-auto" style="max-width: 600px;">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="id_username" class="form-label"><b>{{form.username.label}}:</b></label>
+            {{form.username}}
+        </div>
+        
+        <div class="mb-3">
+            <label for="id_email" class="form-label"><b>{{form.email.label}}:</b></label>
+            {{form.email}}
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="id_first_name" class="form-label"><b>{{form.first_name.label}}:</b></label>
+                {{form.first_name}}
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="id_last_name" class="form-label"><b>{{form.last_name.label}}:</b></label>
+                {{form.last_name}}
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <label for="id_password1" class="form-label"><b>{{form.password1.label}}:</b></label>
+            {{form.password1}}
+        </div>
+        
+        <div class="mb-3">
+            <label for="id_password2" class="form-label"><b>{{form.password2.label}}:</b></label>
+            {{form.password2}}
+        </div>
+        
+        <button class="btn btn-warning w-100" type="submit"><strong>Register</strong></button>
+    </form>
+
+    <p class="mt-4 text-center">Already have an account? <a href="{% url 'login_view' %}">Login</a></p>
+{% endblock %}

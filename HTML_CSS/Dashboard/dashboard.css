@@ -1,0 +1,146 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Inter-Regular", sans-serif;
+  display: flex;
+  background-color: #7c9797;
+  min-height: 100vh;
+}
+
+.dash-board {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 100vh;
+  background: linear-gradient(-90deg, rgba(124, 151, 151, 0.2), rgba(255, 255, 255, 0.2));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.weather-wise {
+  color: #ffffff;
+  font-size: 35px;
+  text-decoration: underline;
+  margin-bottom: 30px;
+}
+
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.nav-item {
+  color: #ffffff;
+  font-size: 27px;
+  text-decoration: none;
+}
+
+/* Adjust main content to account for fixed sidebar */
+.main-content {
+  margin-left: 320px; /* Account for sidebar width and padding */
+  width: calc(100% - 320px);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 30px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  max-width: 700px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+}
+
+.user-profile img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+}
+
+.widget {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 18px;
+  height: 150px;
+  margin-bottom: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.grid div {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 18px;
+  height: 150px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 10px;
+  }
+
+  .nav-item {
+    font-size: 18px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .search-bar {
+    width: 100%;
+  }
+}
