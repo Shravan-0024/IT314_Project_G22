@@ -4,52 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+    <script
+        src="https://cdn.tailwindcss.com"></script>
 </head>
+<body class="flex min-h-screen bg-[#7c9797] font-sans">
 
-<body class="bg-gray-900 text-white flex">
-
-<div class="w-full h-screen flex">
+<div class="flex w-full max-w-6xl">
     <!-- Sidebar (fixed) -->
-    <aside class="bg-gray-800 text-white w-72 h-full flex flex-col items-start py-8 px-6 shadow-lg">
-        <h1 class="text-4xl font-bold mb-8">WeatherWise</h1>
-        <nav class="flex flex-col space-y-4 text-lg">
-            <a href="#" class="hover:text-blue-500">Dashboard</a>
-            <a href="#" class="hover:text-blue-500">Prediction</a>
-            <a href="#" class="hover:text-blue-500">Settings/Layout</a>
-            <a href="#" class="hover:text-blue-500">Logout</a>
+    <aside class="fixed top-0 left-0 h-full w-[300px] bg-gradient-to-l from-[#7c9797]/20 to-white/20 flex flex-col items-start p-5">
+        <div class="text-white text-4xl underline mb-8">WeatherWise</div>
+        <nav class="flex flex-col gap-5">
+            <a href="#" class="text-white text-2xl no-underline hover:underline">Dashboard</a>
+            <a href="#" class="text-white text-2xl no-underline hover:underline">Prediction</a>
+            <a href="#" class="text-white text-2xl no-underline hover:underline">Settings/Layout</a>
+            <a href="#" class="text-white text-2xl no-underline hover:underline">Logout</a>
         </nav>
     </aside>
 
     <!-- Main Content Area -->
-    <div class="flex-1 p-6">
-        <!-- Header with search and profile -->
-        <header class="flex justify-between items-center bg-gray-800 rounded-lg p-4 mb-6 shadow-md">
-            <div class="flex items-center w-full max-w-2xl bg-gray-700 rounded-lg px-4 py-2 border border-gray-700">
-                <img src="search.svg" alt="Search Icon" class="w-6 h-6 mr-3" />
-                <input 
-                    type="text" 
-                    placeholder="Search Location" 
-                    class="w-full bg-transparent outline-none text-base text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
+    <div class="ml-[320px] flex flex-col w-full p-5 space-y-5">
+        <header class="flex justify-between items-center p-5 bg-white/50 rounded-xl">
+            <div class="flex items-center gap-3 w-full max-w-[700px]">
+                <img class="w-6 h-6" src="search.svg" alt="Search Icon">
+                <input type="text" placeholder="Search Location" class="flex-grow p-2 px-4 rounded-full text-base outline-none">
             </div>
-            <div class="w-12 h-12 rounded-full overflow-hidden ml-4">
-                <img src="account-logo.png" alt="User Profile" class="w-full h-full object-cover" />
+            <div class="w-12 h-12 rounded-full overflow-hidden">
+                <img src="account-logo.png" alt="User Profile" class="w-full h-full object-cover">
             </div>
         </header>
 
-        <!-- Main Content Widgets -->
-        <main class="space-y-4">
-            <div class="bg-gray-800 rounded-lg p-6 h-36 shadow-lg"></div>
-
-            <!-- Responsive Grid for Dashboard Widgets -->
-            <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                <div class="bg-gray-800 rounded-lg h-36 shadow-lg"></div>
-                <div class="bg-gray-800 rounded-lg h-36 shadow-lg"></div>
-                <div class="bg-gray-800 rounded-lg h-36 shadow-lg"></div>
-                <div class="bg-gray-800 rounded-lg h-36 shadow-lg"></div>
-                <div class="bg-gray-800 rounded-lg h-36 shadow-lg"></div>
-                <div class="bg-gray-800 rounded-lg h-36 shadow-lg"></div>
+        <main class="flex flex-col space-y-5">
+            <div class="bg-white/50 rounded-lg h-[150px]"></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div class="bg-white/50 rounded-lg h-[150px]"></div>
+                <div class="bg-white/50 rounded-lg h-[150px]"></div>
+                <div class="bg-white/50 rounded-lg h-[150px]"></div>
+                <div class="bg-white/50 rounded-lg h-[150px]"></div>
+                <div class="bg-white/50 rounded-lg h-[150px]"></div>
+                <div class="bg-white/50 rounded-lg h-[150px]"></div>
+                <div class="bg-white/50 rounded-lg h-[150px]"></div>
+                <div class="bg-white/50 rounded-lg h-[150px]"></div>
             </div>
         </main>
     </div>
