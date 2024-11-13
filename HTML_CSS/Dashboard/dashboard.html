@@ -3,47 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DashBoard</title>
-    <link href="./dashboard.css" rel="stylesheet">
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
-<body>
+<body class="bg-gray-900 text-white flex">
 
-<div class="dash-board">
+<div class="w-full h-screen flex">
     <!-- Sidebar (fixed) -->
-    <aside class="sidebar">
-        <div class="weather-wise">WeatherWise</div>
-        <nav class="nav-menu">
-            <a href="#" class="nav-item">Dashboard</a>
-            <a href="#" class="nav-item">Prediction</a>
-            <a href="#" class="nav-item">Settings/Layout</a>
-            <a href="#" class="nav-item">Logout</a>
+    <aside class="bg-gray-800 text-white w-72 h-full flex flex-col items-start py-8 px-6 shadow-lg">
+        <h1 class="text-4xl font-bold mb-8">WeatherWise</h1>
+        <nav class="flex flex-col space-y-4 text-lg">
+            <a href="#" class="hover:text-blue-500">Dashboard</a>
+            <a href="#" class="hover:text-blue-500">Prediction</a>
+            <a href="#" class="hover:text-blue-500">Settings/Layout</a>
+            <a href="#" class="hover:text-blue-500">Logout</a>
         </nav>
     </aside>
 
     <!-- Main Content Area -->
-    <div class="main-content">
-        <header class="header">
-            <div class="search-bar">
-                <img class="mask-group" src="search.svg" alt="Search Icon" />
-                <input type="text" placeholder="Search Location" class="search-input">
+    <div class="flex-1 p-6">
+        <!-- Header with search and profile -->
+        <header class="flex justify-between items-center bg-gray-800 rounded-lg p-4 mb-6 shadow-md">
+            <div class="flex items-center w-full max-w-2xl bg-gray-700 rounded-lg px-4 py-2 border border-gray-700">
+                <img src="search.svg" alt="Search Icon" class="w-6 h-6 mr-3" />
+                <input 
+                    type="text" 
+                    placeholder="Search Location" 
+                    class="w-full bg-transparent outline-none text-base text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
             </div>
-            <div class="user-profile">
-                <img src="account-logo.png" alt="User Profile" class="rectangle-4">
+            <div class="w-12 h-12 rounded-full overflow-hidden ml-4">
+                <img src="account-logo.png" alt="User Profile" class="w-full h-full object-cover" />
             </div>
         </header>
 
-        <main class="content">
-            <div class="widget rectangle-6"></div>
-            <div class="grid">
-                <div class="rectangle-17"></div>
-                <div class="rectangle-18"></div>
-                <div class="rectangle-19"></div>
-                <div class="rectangle-10"></div>
-                <div class="rectangle-13"></div>
-                <div class="rectangle-9"></div>
-                <div class="rectangle-11"></div>
-                <div class="rectangle-12"></div>
+        <!-- Main Content Widgets -->
+        <main class="space-y-4">
+            <div class="bg-gray-800 rounded-lg p-6 h-36 shadow-lg"></div>
+
+            <!-- Responsive Grid for Dashboard Widgets -->
+            <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <div class="bg-gray-800 rounded-lg h-36 shadow-lg"></div>
+                <div class="bg-gray-800 rounded-lg h-36 shadow-lg"></div>
+                <div class="bg-gray-800 rounded-lg h-36 shadow-lg"></div>
+                <div class="bg-gray-800 rounded-lg h-36 shadow-lg"></div>
+                <div class="bg-gray-800 rounded-lg h-36 shadow-lg"></div>
+                <div class="bg-gray-800 rounded-lg h-36 shadow-lg"></div>
             </div>
         </main>
     </div>
