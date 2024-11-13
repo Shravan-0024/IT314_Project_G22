@@ -1,81 +1,37 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="page">
-     <img style="width: 50%; height: 50%" src="bg-img.png" /> -->
-    <!-- <div class="left-panel">
-
-        <div class="time">10:30 am</div>
-        <div class="day-date">Sun, 3 November 2024</div>
-        <div class="temp">temp</div>
-        <div class="humidity">humidity</div>
-        <div class="sunrise">sunrise</div>
-        <div class="sunset">sunset</div>
-        <div class="location">location</div>
-    </div> 
-    <div style="width: 100%; height: 100%; position: relative; background: #3386BE">
-        <div class="Greeting">Good <br/>Morning</div>
-        <img src="https://via.placeholder.com/872x592" />
-        <div style="width: 1370px; height: 954px; left: 35px; top: 35px; position: absolute; border-radius: 30px; border: 2px white solid"></div>
-        <div style="left: 141px; top: 115px; position: absolute; color: white; font-size: 32px; font-family: Inter; font-weight: 500; letter-spacing: 0.32px; word-wrap: break-word">Login/Signup</div>
-        <img style="width: 48px; height: 48px; left: 986px; top: 521px; position: absolute" src="https://via.placeholder.com/48x48" />
-        <div style="width: 366px; height: 232px; left: 986px; top: 205px; position: absolute">
-            <div style="left: 48px; top: 0px; position: absolute; color: white; font-size: 192px; font-family: Inter; font-weight: 400; letter-spacing: 1.92px; word-wrap: break-word">27°</div>
-            <img style="width: 48px; height: 48px; left: 0px; top: 45px; position: absolute" src="https://via.placeholder.com/48x48" />
-            <div style="left: 245px; top: 151px; position: absolute; color: white; font-size: 36px; font-family: Inter; font-weight: 400; letter-spacing: 0.36px; word-wrap: break-word">celcius</div>
-        </div>
-        <img style="width: 48px; height: 48px; left: 986px; top: 621px; position: absolute" src="https://via.placeholder.com/48x48" />
-        <img style="width: 48px; height: 48px; left: 986px; top: 721px; position: absolute" src="https://via.placeholder.com/48x48" />
-        <img style="width: 48px; height: 48px; left: 986px; top: 858px; position: absolute" src="https://via.placeholder.com/48x48" />
-        <div style="left: 1043px; top: 867px; position: absolute; color: white; font-size: 32px; font-family: Inter; font-weight: 400; letter-spacing: 0.32px; word-wrap: break-word">Gandhinagar, India</div>
-        <div style="left: 995px; top: 115px; position: absolute; color: white; font-size: 32px; font-family: Inter; font-weight: 400; letter-spacing: 0.32px; word-wrap: break-word">10:30 am</div>
-        <div style="left: 995px; top: 157px; position: absolute; color: white; font-size: 32px; font-family: Inter; font-weight: 400; letter-spacing: 0.32px; word-wrap: break-word">Sun, 3 November 2024</div>
-        <div style="left: 1065px; top: 523px; position: absolute; color: white; font-size: 36px; font-family: Inter; font-weight: 400; letter-spacing: 0.36px; word-wrap: break-word">21%</div>
-        <div style="left: 1065px; top: 623px; position: absolute; color: white; font-size: 36px; font-family: Inter; font-weight: 400; letter-spacing: 0.36px; word-wrap: break-word">7:01 am</div>
-        <div style="left: 1065px; top: 723px; position: absolute; color: white; font-size: 36px; font-family: Inter; font-weight: 400; letter-spacing: 0.36px; word-wrap: break-word">7:01 pm</div>
-        <div style="left: 87px; top: 844px; position: absolute; color: white; font-size: 64px; font-family: Inter; font-weight: 600; letter-spacing: 0.64px; word-wrap: break-word">WeatherWise</div>
-        <div style="width: 40px; height: 40px; left: 87px; top: 115px; position: absolute; border: 3.50px white solid"></div>
-    </div>
-</div>
-</body>
-</html> -->
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WeatherWise</title>
-  <link rel="stylesheet" href="style.css">
+  <title>WeatherWise - Landing Page</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="weather-card">
-    <div class="header">
-      <button onclick="toggleLogin()">Login/Signup</button>
+  
+  <header class="header">
+    <div class="header-content">
+      <button onclick="login()" class="btn">Login</button>
+      <button onclick="signup()" class="btn">Signup</button>
     </div>
-    <div class="greeting">Good<br>Morning</div>
-    <div class="weather-image"></div>
-    <div class="weather-info">
-      <div class="time">10:30 am<br>Sun, 3 November 2024</div>
-      <div class="temp">27°<span>celcius</span></div>
-      <div class="details">
-        <div><img src="icons/humidity.png" alt="Humidity"> 21%</div>
-        <div><img src="icons/sunrise.png" alt="Sunrise"> 7:01 am</div>
-        <div><img src="icons/sunset.png" alt="Sunset"> 7:01 pm</div>
+  </header>
+
+  
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">WeatherWise</h1>
+      <p class="hero-description">Stay informed with accurate weather forecasts.</p>
+      <div id="greeting" class="greeting-message">Good Morning</div>
+      <div class="weather-info">
+        <div class="temperature" id="temperature">27°<span>Celcius</span></div>
+        <div class="date-time">
+          <span id="time">10:30 am</span><br>
+          <span id="date">Sun, 3 November 2024</span>
+        </div>
+        <div class="location" id="location">Gandhinagar, India</div>
       </div>
     </div>
-    <div class="footer">
-      <div>WeatherWise</div>
-      <div id="location">Gandhinagar, India</div>
-    </div>
-  </div>
+  </section>
+
   <script src="script.js"></script>
 </body>
 </html>

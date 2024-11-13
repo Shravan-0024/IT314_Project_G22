@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body class="min-h-screen bg-[url('bg4.jpg')] bg-cover bg-center bg-fixed">
+    <div class="container mx-auto px-4 py-8 min-h-screen flex items-center justify-center">
+        <div class="w-full max-w-lg">
+            <div class="bg-white/80 p-8 md:p-10 lg:p-12 rounded-lg shadow-lg text-black backdrop-blur-sm mt-20">
+                <h1 class="text-4xl font-bold mb-8 text-center">Create Account</h1>
+
+                <form class="space-y-6">
+                    <div class="space-y-2">
+                        <label for="username" class="block text-sm font-semibold text-gray-800">Username</label>
+                        <input type="text" id="username" placeholder="Enter Username" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="email" class="block text-sm font-semibold text-gray-800">Email</label>
+                        <input type="email" id="email" placeholder="Enter your email"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label for="first-name" class="block text-sm font-semibold text-gray-800">First Name</label>
+                            <input type="text" id="first-name" placeholder="Enter your First Name"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="last-name" class="block text-sm font-semibold text-gray-800">Last Name</label>
+                            <input type="text" id="last-name" placeholder="Enter your Last Name"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="password" class="block text-sm font-semibold text-gray-800">Password</label>
+                        <div class="relative">
+                            <input type="password" id="password" placeholder="Enter your password"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required>
+                            <i class="fas fa-eye-slash toggle-password absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500"></i>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="confirm-password" class="block text-sm font-semibold text-gray-800">Confirm Password</label>
+                        <div class="relative">
+                            <input type="password" id="confirm-password" placeholder="Confirm your password"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required>
+                            <i class="fas fa-eye-slash toggle-password absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500"></i>
+                        </div>
+                    </div>
+
+                    <button type="submit" 
+                        class="w-full bg-sky-500 text-white py-2 px-4 rounded-lg text-base font-medium hover:bg-transparent hover:text-sky-500 border border-sky-500 transition-colors duration-300">
+                        Create
+                    </button>
+
+                    <p class="mt-6 text-center text-sm text-gray-600">
+                        Already have an account? 
+                        <a href="#" class="text-sky-500 hover:underline">Login</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $(".toggle-password").click(function() {
+                const input = $(this).siblings("input");
+                if (input.attr("type") === "password") {
+                    input.attr("type", "text");
+                    $(this).removeClass("fa-eye-slash").addClass("fa-eye");
+                } else {
+                    input.attr("type", "password");
+                    $(this).removeClass("fa-eye").addClass("fa-eye-slash");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
