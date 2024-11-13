@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weatherwise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'gradient': 'gradient 15s ease infinite',
+                    },
+                    keyframes: {
+                        gradient: {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            },
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .bg-gradient-custom {
+            background: linear-gradient(270deg, #00bfff, #00ffff, #1e90ff, #4682b4, #ff00ff, #ff69b4, #d8bfd8);
+        }
+    </style>
+</head>
+<body class="min-h-screen m-0 font-sans bg-cover bg-center bg-fixed" style="background-image: url('bg4.jpg')">
+    <div class="w-full">
+        <div class="mx-auto mt-5 w-[90%] md:w-[80%] lg:w-[70%] xl:w-[60%] max-w-[800px] min-w-[300px] p-1.5 rounded-[45px] bg-gradient-custom animate-gradient">
+            <div class="w-full bg-white rounded-[40px] flex justify-center items-center">
+                <nav class="w-full px-4 py-4">
+                    <div class="container mx-auto flex flex-wrap items-center justify-between">
+                        <!-- Logo -->
+                        <a href="#" class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-[#3ca6c1] via-[#00bfff] to-[#4682b4] bg-clip-text text-transparent">
+                            WeatherWise
+                        </a>
+
+                        <!-- Mobile Menu Button -->
+                        <button 
+                            onclick="toggleNavbar()"
+                            class="lg:hidden text-[#3ca6c1] text-2xl focus:outline-none"
+                        >
+                            <i class="bi bi-list"></i>
+                        </button>
+
+                        <!-- Navigation Links -->
+                        <div id="navbarNav" class="hidden lg:flex flex-col lg:flex-row items-center w-full lg:w-auto">
+                            <ul class="flex flex-col lg:flex-row lg:mx-auto space-y-2 lg:space-y-0 lg:space-x-6">
+                                <li><a href="#" class="text-[#3ca6c1] hover:text-[#1e90ff] transition-colors">Home</a></li>
+                                <li><a href="#" class="text-[#3ca6c1] hover:text-[#1e90ff] transition-colors">Prediction</a></li>
+                                <li><a href="#" class="text-[#3ca6c1] hover:text-[#1e90ff] transition-colors">About</a></li>
+                                <li><a href="#" class="text-[#3ca6c1] hover:text-[#1e90ff] transition-colors">About Us</a></li>
+                            </ul>
+                            <!-- Increased left margin from default to lg:ml-16 -->
+                            <div class="mt-4 lg:mt-0 lg:ml-16">
+                                <a href="#" class="text-[#3ca6c1]">
+                                    <i class="bi bi-person-circle text-4xl"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleNavbar() {
+            const navbar = document.getElementById("navbarNav");
+            navbar.classList.toggle("hidden");
+            if (!navbar.classList.contains("hidden")) {
+                navbar.classList.add("bg-white/90", "p-4", "rounded-lg", "mt-2");
+            } else {
+                navbar.classList.remove("bg-white/90", "p-4", "rounded-lg", "mt-2");
+            }
+        }
+    </script>
+</body>
+</html>
