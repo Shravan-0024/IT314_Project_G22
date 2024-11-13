@@ -1,43 +1,85 @@
-{% extends "layout.html" %}
-
-{% block title %}WeatherWise | Login{% endblock %}
-
+{% extends "layout.html" %} {% block title %}WeatherWise | Login{% endblock %}
 {% block content %}
-<div class="container">
-    <h2 class="mt-4 mb-4 text-center">Login to WeatherWise</h2>
-    
-    <!-- Display error message if present -->
-    {% if error %}
-        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-            <p>BAD REQUEST PLEASE TRY AGAIN</p>
-            <p><strong>{{error}}</strong></p>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% endif %}
+<div class="container mx-auto px-4 py-8">
+  <h2 class="text-2xl font-bold text-center my-4">Login to WeatherWise</h2>
 
-    <!-- Centered and structured login form -->
-    <form method="POST" class="mx-auto" style="max-width: 500px;">
-        {% csrf_token %}
+  <!-- Display error message if present -->
+  {% if error %}
+  <div
+    class="bg-red-500 text-white text-center p-4 rounded-md mb-4 relative max-w-md mx-auto"
+  >
+    <p>BAD REQUEST PLEASE TRY AGAIN</p>
+    <p><strong>{{ error }}</strong></p>
+    <button
+      type="button"
+      class="absolute top-2 right-2 text-white font-bold bg-transparent border-none focus:outline-none"
+      onclick="this.parentElement.remove()"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6 text-white"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        stroke-width="2"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M6 18L18 6M6 6l12 12"
+        />
+      </svg>
+    </button>
+  </div>
+  {% endif %}
 
-        <!-- Username or Email -->
-        <div class="mb-3">
-            <label for="username_or_email" class="form-label"><strong>Username or Email:</strong></label>
-            <input type="text" class="form-control" id="username_or_email" name="username_or_email" required>
-        </div>
+  <!-- Centered and structured login form -->
+  <form method="POST" class="mx-auto max-w-md mt-8">
+    {% csrf_token %}
 
-        <!-- Password -->
-        <div class="mb-3">
-            <label for="password" class="form-label"><strong>Password:</strong></label>
-            <input type="password" class="form-control" id="password" name="password" required>
-        </div>
+    <!-- Username or Email -->
+    <div class="mb-4">
+      <label for="username_or_email" class="block text-lg font-semibold mb-2"
+        >Username or Email:</label
+      >
+      <input
+        type="text"
+        class="w-full px-4 py-2 border border-gray-700 rounded-md text-white bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        id="username_or_email"
+        name="username_or_email"
+        required
+      />
+    </div>
 
-        <!-- Login Button -->
-        <button type="submit" class="btn btn-primary w-100"><strong>Login</strong></button>
-    </form>
+    <!-- Password -->
+    <div class="mb-4">
+      <label for="password" class="block text-lg font-semibold mb-2"
+        >Password:</label
+      >
+      <input
+        type="password"
+        class="w-full px-4 py-2 border border-gray-700 rounded-md text-white bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        id="password"
+        name="password"
+        required
+      />
+    </div>
 
-    <!-- Signup Link -->
-    <p class="mt-4 text-center">
-        Don't have an account? <a href="{% url 'signup_view' %}">Sign Up</a>
-    </p>
+    <!-- Login Button -->
+    <button
+      type="submit"
+      class="w-full bg-blue-500 text-white py-2 rounded-md font-semibold hover:bg-blue-600 transition-colors"
+    >
+      Login
+    </button>
+  </form>
+
+  <!-- Signup Link -->
+  <p class="text-center mt-6">
+    Don't have an account?
+    <a href="{% url 'signup_view' %}" class="text-blue-500 hover:underline"
+      >Sign Up</a
+    >
+  </p>
 </div>
 {% endblock %}
