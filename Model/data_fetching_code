@@ -1,0 +1,88 @@
+import requests
+import pandas as pd
+from datetime import datetime, timedelta
+import os
+
+#API endpoint
+url = "https://visual-crossing-weather.p.rapidapi.com/history"
+
+
+cities = [
+    "Mumbai,India", "Delhi,India", "Bangalore,India", "Kolkata,India",
+    "Chennai,India", "Hyderabad,India", "Ahmedabad,India", "Pune,India",
+    "Jaipur,India", "Lucknow,India", "Kanpur,India", "Nagpur,India",
+    "Indore,India", "Thane,India", "Bhopal,India", "Visakhapatnam,India",
+    "Vadodara,India", "Ghaziabad,India", "Surat,India", "Meerut,India",
+    "Patna,India", "Agra,India", "Varanasi,India", "Madurai,India",
+    "Coimbatore,India", "Jabalpur,India", "Ranchi,India", "Chandigarh,India",
+    "Mysore,India", "Bhubaneswar,India", "Guwahati,India", "Noida,India",
+    "Udaipur,India", "Dehradun,India", "Shimla,India", "Amritsar,India",
+    "Srinagar,India", "Rourkela,India", "Jodhpur,India", "Jalandhar,India",
+    "Kochi,India", "Trivandrum,India", "Durgapur,India", "Davanagere,India"
+]
+
+#API key
+headers = {
+    "x-rapidapi-key": "346e3fd39amsh9263b543383c3e7p155a17jsn042ae0ec7432",
+    "x-rapidapi-host": "visual-crossing-weather.p.rapidapi.com"
+}
+
+all_weather_data = []
+
+end_date = datetime.now()
+start_date = end_date - timedelta(days=15)  # One year ago
+
+start_date_str = start_date.strftime('%Y-%m-%dT00:00:00')
+end_date_str = end_date.strftime('%Y-%m-%dT00:00:00')
+
+desired_columns = [
+    'Address', 'Date time', 'Latitude', 'Longitude', 'Resolved Address', 
+    'Name', 'Wind Direction', 'Minimum Temperature', 'Maximum Temperature',
+    'Temperature', 'Wind Speed', 'Cloud Cover', 'Heat Index', 
+    'Chance Precipitation (%)', 'Precipitation', 'Sea Level Pressure', 
+    'Snow Depth', 'Snow', 'Relative Humidity', 'Wind Gust', 
+    'Wind Chill', 'Conditions'
+]
+
+for city in cities:
+    querystring = {
+        "startDateTime": start_date_str,
+        "aggregateHours": "24",
+        "location": city,
+        "endDateTime": end_date_str,
+        "unitGroup": "us",
+        "dayStartTime": "0:00:00",
+        "contentType": "csv",
+        "dayEndTime": "23:59:59",
+        "shortColumnNames": "false"
+    }
+
+    response = requests.get(url, headers=headers, params=querystring)
+
+    if response.status_code == 200:
+        temp_csv_file = 'temp_weather_data.csv'
+        with open(temp_csv_file, 'wb') as file:
+            file.write(response.content)
+        
+        df = pd.read_csv(temp_csv_file)
+
+        available_columns = [col for col in desired_columns if col in df.columns]
+        df = df[available_columns]
+        
+        df['City'] = city.split(',')[0]  # Add a city column to the DataFrame
+        all_weather_data.append(df)
+    else:
+        print(f"Failed to retrieve data for {city}. Status code: {response.status_code}")
+        print(response.text)
+
+combined_df = pd.concat(all_weather_data, ignore_index=True)
+
+desktop_path = r'C:\Users\vrajk\OneDrive\Desktop\Weather predicter'
+os.makedirs(desktop_path, exist_ok=True)  # Ensure the directory exists
+csv_file_path = os.path.join(desktop_path, 'historical_weather_data_past_year.csv')
+
+try:
+    combined_df.to_csv(csv_file_path, index=False)
+    print(f"Data saved successfully to {csv_file_path}")
+except Exception as e:
+    print(f"Failed to save CSV file: {e}")
