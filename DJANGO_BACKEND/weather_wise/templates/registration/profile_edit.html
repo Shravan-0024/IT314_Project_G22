@@ -7,25 +7,58 @@
     <div class="card shadow-lg p-6 max-w-lg w-full bg-gray-800 rounded-lg">
         <h3 class="text-3xl font-semibold text-center mb-6">Edit Profile</h3>
         <hr class="border-t border-gray-600 mb-4">
+
+        {% if 'email' in profile_form.errors or 'first_name' in profile_form.errors or 'last_name' in profile_form.errors %}
+        <div class="bg-red-500 text-white text-center p-4 rounded-md mb-4 relative max-w-md mx-auto">
+            <p>BAD REQUEST PLEASE TRY AGAIN</p>
+
+            {% if 'email' in profile_form.errors and 'first_name' in profile_form.errors and 'last_name' in profile_form.errors %}
+            <p><strong>Email, First Name, and Last Name are required</strong></p>
+            {% endif %}
+
+            {% if 'email' in profile_form.errors and 'first_name' in profile_form.errors and not 'last_name' in profile_form.errors %}
+            <p><strong>Email and First Name are required</strong></p>
+            {% endif %}
+
+            {% if 'email' in profile_form.errors and 'last_name' in profile_form.errors and not 'first_name' in profile_form.errors %}
+            <p><strong>Email and Last Name are required</strong></p>
+            {% endif %}
+
+            {% if 'first_name' in profile_form.errors and 'last_name' in profile_form.errors and not 'email' in profile_form.errors %}
+            <p><strong>First Name and Last Name are required</strong></p>
+            {% endif %}
+
+            {% if 'email' in profile_form.errors and not 'first_name' in profile_form.errors and not 'last_name' in profile_form.errors %}
+            <p><strong>Email is required</strong></p>
+            {% endif %}
+
+            {% if 'first_name' in profile_form.errors and not 'email' in profile_form.errors and not 'last_name' in profile_form.errors %}
+            <p><strong>First Name is required</strong></p>
+            {% endif %}
+
+            {% if 'last_name' in profile_form.errors and not 'email' in profile_form.errors and not 'first_name' in profile_form.errors %}
+            <p><strong>Last Name is required</strong></p>
+            {% endif %}
+
+            <button type="button"
+                class="absolute top-2 right-2 text-white font-bold bg-transparent border-none focus:outline-none"
+                onclick="this.parentElement.remove()">X</button>
+        </div>
+        {% endif %}
+
         {% for field, field_errors in errors.items %}
-            {% if field_errors %}
-                <div class="bg-red-500 text-white text-center p-4 rounded-md mb-4 relative max-w-md mx-auto">
-                    <p>BAD REQUEST PLEASE TRY AGAIN</p>
-                    
-                    {% if field == 'email' %}
-                        <p><strong>Email is required</strong></p>
-                    {% elif field == 'first_name' %}
-                        <p><strong>First Name is required</strong></p>
-                    {% elif field == 'last_name' %}
-                        <p><strong>Last Name is required</strong></p>
-                    {% endif %}
-                    
-                    <button type="button"
-                        class="absolute top-2 right-2 text-white font-bold bg-transparent border-none focus:outline-none"
-                        onclick="this.parentElement.remove()">X</button>
-                </div>
+            {% if field in notify_form.errors %}
+            <div class="bg-red-500 text-white text-center p-4 rounded-md mb-4 relative max-w-md mx-auto">
+                <p>BAD REQUEST PLEASE TRY AGAIN</p>
+                <p><strong>{{ field_errors }}</strong></p>
+
+                <button type="button"
+                    class="absolute top-2 right-2 text-white font-bold bg-transparent border-none focus:outline-none"
+                    onclick="this.parentElement.remove()">X</button>
+            </div>
             {% endif %}
         {% endfor %}
+
         <!-- Form -->
         <form method="POST">
             {% csrf_token %}
@@ -37,38 +70,31 @@
                 <input type="text" id="username" name="username" value="{{ profile_form.username.value }}"
                     class="w-2/3 px-4 py-2 border rounded-md text-white bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 {% if profile_form.username.errors %}is-invalid{% endif %}"
                     readonly>
-                
             </div>
 
             <div class="mb-3 flex justify-between items-center">
                 <label for="email" class="font-semibold w-1/3">Email</label>
                 <input type="email" id="email" name="email" value="{{ profile_form.email.value }}"
                     class="w-2/3 px-4 py-2 border rounded-md text-white bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 {% if profile_form.email.errors %}is-invalid{% endif %}">
-                
             </div>
 
             <div class="mb-3 flex justify-between items-center">
                 <label for="first_name" class="font-semibold w-1/3">First Name</label>
                 <input type="text" id="first_name" name="first_name" value="{{ profile_form.first_name.value }}"
                     class="w-2/3 px-4 py-2 border rounded-md text-white bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 {% if profile_form.first_name.errors %}is-invalid{% endif %}">
-                
             </div>
 
             <div class="mb-3 flex justify-between items-center">
                 <label for="last_name" class="font-semibold w-1/3">Last Name</label>
                 <input type="text" id="last_name" name="last_name" value="{{ profile_form.last_name.value }}"
                     class="w-2/3 px-4 py-2 border rounded-md text-white bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 {% if profile_form.last_name.errors %}is-invalid{% endif %}">
-               
             </div>
 
             <!-- Notify Form -->
             <div class="mb-3 flex justify-between items-center">
-                
                 <label class="font-semibold w-1/3" for="get_notifications">Receive Notifications</label>
                 <input type="checkbox" id="get_notifications" name="get_notifications"
-                    class="form-checkbox {% if notify_form.get_notifications.errors %}is-invalid{% endif %}"
-                    {% if notify_form.get_notifications.value %}checked{% endif %}>
-               
+                    class="form-checkbox {% if notify_form.get_notifications.errors %}is-invalid{% endif %}" {% if notify_form.get_notifications.value %}checked{% endif %}>
             </div>
 
             <div class="mb-3 flex justify-between items-center">
@@ -76,7 +102,6 @@
                 <input type="text" id="preferred_location" name="preferred_location"
                     value="{{ notify_form.preferred_location.value }}"
                     class="w-2/3 px-4 py-2 border rounded-md text-white bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 {% if notify_form.preferred_location.errors %}is-invalid{% endif %}">
-                
             </div>
 
             <!-- Submit and Cancel buttons -->
@@ -87,4 +112,4 @@
         </form>
     </div>
 </div>
-{% endblock %}.
+{% endblock %}
