@@ -2,12 +2,12 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
-from .models import Notify
+from .models import Notify,Feedback
 
 class UserSignUpForm(UserCreationForm):
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
-    first_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    last_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'w-full px-4 py-2 border border-gray-700 rounded-md text-white bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500'}))
+    first_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class': 'w-full px-4 py-2 border border-gray-700 rounded-md text-white bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500'}))
+    last_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class': 'w-full px-4 py-2 border border-gray-700 rounded-md text-white bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500'}))
 
     class Meta:
         model = User
@@ -73,3 +73,82 @@ class NotifyForm(forms.ModelForm):
             raise ValidationError("Enter a valid location if you want notifications.")
 
         return cleaned_data
+
+class FeedbackForm(forms.Form):
+    PREDICTION_CHOICES = [
+        ('accurate', 'Yes, the predictions were accurate'),
+        ('inaccurate', 'No, the predictions were inaccurate'),
+        ('not_sure', 'Not sure')
+    ]
+    
+    USABILITY_CHOICES = [
+        ('easy', 'Yes, the app was easy to use'),
+        ('difficult', 'No, the app was difficult to use'),
+        ('average', 'It was average')
+    ]
+    
+    INTERFACE_CHOICES = [
+        ('intuitive', 'Yes, the interface was intuitive'),
+        ('confusing', 'No, the interface was confusing'),
+        ('okay', 'It was okay')
+    ]
+    
+    INFO_CHOICES = [
+        ('helpful', 'Yes, the information provided was helpful'),
+        ('not_helpful', 'No, the information was not helpful'),
+        ('partially_helpful', 'It was partially helpful')
+    ]
+    
+    RECOMMEND_CHOICES = [
+        ('yes', 'Yes, I would recommend this app'),
+        ('no', 'No, I would not recommend it'),
+        ('maybe', 'Maybe, I might recommend it')
+    ]
+    
+    predictions_accuracy = forms.MultipleChoiceField(
+        label="How accurate were today's predictions?",
+        choices=PREDICTION_CHOICES,
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
+    
+    app_usability = forms.MultipleChoiceField(
+        label="Was the app easy to use?",
+        choices=USABILITY_CHOICES,
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
+    
+    user_interface = forms.MultipleChoiceField(
+        label="Was the user interface intuitive?",
+        choices=INTERFACE_CHOICES,
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
+    
+    helpful_info = forms.MultipleChoiceField(
+        label="Did you find the information provided helpful?",
+        choices=INFO_CHOICES,
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
+    
+    app_recommend = forms.MultipleChoiceField(
+        label="Would you recommend this app to others?",
+        choices=RECOMMEND_CHOICES,
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
+
+    def save(self, user=None):
+        # Save feedback to the model
+        feedback = Feedback(
+            user=user,
+            predictions_accuracy=', '.join(self.cleaned_data['predictions_accuracy']),
+            app_usability=', '.join(self.cleaned_data['app_usability']),
+            user_interface=', '.join(self.cleaned_data['user_interface']),
+            helpful_info=', '.join(self.cleaned_data['helpful_info']),
+            app_recommend=', '.join(self.cleaned_data['app_recommend'])
+        )
+        feedback.save()
+        return feedback
