@@ -14,7 +14,51 @@
 {% endif %}
 <a href="{% url "predict_view" %}"><button class="bg-blue-500 px-4 py-2 rounded text-white font-semibold">Prediction</button></a>
 <!-- Include dashboard.html -->
-
+<main class="flex-1 w-full">
+      <section class="min-h-[90vh] bg-gradient-to-b from-secondary to-primary flex items-center justify-center p-4">
+        <div class="max-w-[900px] w-full bg-white/10 rounded-[15px] shadow-custom p-[60px] text-center">
+          <h1 class="text-[4.5rem] font-bold text-white mb-4">WeatherWise</h1>
+          <p class="text-[1.7rem] text-light mb-8">Stay informed with accurate weather forecasts.</p>
+          <div id="greeting" class="text-[3.5rem] text-white mb-6">Good Morning</div>
+          <div class="text-[1.8rem] text-white">
+            <div class="text-[5rem] font-bold text-accent mb-6">
+              27°<span class="text-[1.5rem] text-white ml-2">Celcius</span>
+            </div>
+            <div class="text-[18px] text-white mb-6">
+              <span id="time">10:30 am</span><br>
+              <span id="date">Sun, 3 November 2024</span>
+            </div>
+            <div id="location" class="text-[1.8rem] text-white">
+              Gandhinagar, India
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    
+    <script>
+      function updateDateTime() {
+        const now = new Date();
+        const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const date = now.toLocaleDateString('en-US', { 
+          weekday: 'short', 
+          day: 'numeric', 
+          month: 'long', 
+          year: 'numeric' 
+        });
+        
+        document.getElementById('time').textContent = time;
+        document.getElementById('date').textContent = date;
+        
+        const hour = now.getHours();
+        let greeting = "Good Morning";
+        if (hour >= 12 && hour < 18) greeting = "Good Afternoon";
+        else if (hour >= 18) greeting = "Good Evening";
+        document.getElementById('greeting').textContent = greeting;
+      }
+      document.addEventListener('DOMContentLoaded', updateDateTime);
+      setInterval(updateDateTime, 60000); // Update every minute
+    </script>
 
 
 
