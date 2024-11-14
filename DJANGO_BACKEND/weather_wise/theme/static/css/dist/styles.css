@@ -920,6 +920,14 @@ select {
   margin-bottom: 1.5rem;
 }
 
+.mb-8 {
+  margin-bottom: 2rem;
+}
+
+.ml-2 {
+  margin-left: 0.5rem;
+}
+
 .mt-2 {
   margin-top: 0.5rem;
 }
@@ -968,6 +976,10 @@ select {
   min-height: 80vh;
 }
 
+.min-h-\[90vh\] {
+  min-height: 90vh;
+}
+
 .min-h-screen {
   min-height: 100vh;
 }
@@ -988,12 +1000,20 @@ select {
   width: 100%;
 }
 
+.max-w-\[900px\] {
+  max-width: 900px;
+}
+
 .max-w-lg {
   max-width: 32rem;
 }
 
 .max-w-md {
   max-width: 28rem;
+}
+
+.flex-1 {
+  flex: 1 1 0%;
 }
 
 .flex-grow {
@@ -1054,6 +1074,10 @@ select {
 
 .rounded {
   border-radius: 0.25rem;
+}
+
+.rounded-\[15px\] {
+  border-radius: 15px;
 }
 
 .rounded-lg {
@@ -1140,6 +1164,10 @@ select {
   background-color: transparent;
 }
 
+.bg-white\/10 {
+  background-color: rgb(255 255 255 / 0.1);
+}
+
 .bg-yellow-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(234 179 8 / var(--tw-bg-opacity));
@@ -1148,6 +1176,10 @@ select {
 .bg-yellow-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(202 138 4 / var(--tw-bg-opacity));
+}
+
+.bg-gradient-to-b {
+  background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
 }
 
 .p-0 {
@@ -1164,6 +1196,10 @@ select {
 
 .p-8 {
   padding: 2rem;
+}
+
+.p-\[60px\] {
+  padding: 60px;
 }
 
 .px-3 {
@@ -1227,6 +1263,34 @@ select {
 .text-5xl {
   font-size: 3rem;
   line-height: 1;
+}
+
+.text-\[1\.5rem\] {
+  font-size: 1.5rem;
+}
+
+.text-\[1\.7rem\] {
+  font-size: 1.7rem;
+}
+
+.text-\[1\.8rem\] {
+  font-size: 1.8rem;
+}
+
+.text-\[18px\] {
+  font-size: 18px;
+}
+
+.text-\[3\.5rem\] {
+  font-size: 3.5rem;
+}
+
+.text-\[4\.5rem\] {
+  font-size: 4.5rem;
+}
+
+.text-\[5rem\] {
+  font-size: 5rem;
 }
 
 .text-lg {
