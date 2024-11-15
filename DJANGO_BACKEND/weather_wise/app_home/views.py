@@ -2,8 +2,8 @@ from django.shortcuts import render,redirect
 from app_home.forms import UserSignUpForm,UserProfileEditForm
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
-from .models import Notify
-from .forms import NotifyForm
+from .models import Notify,Feedback
+from .forms import NotifyForm,FeedbackForm
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.utils.http import url_has_allowed_host_and_scheme
@@ -147,3 +147,17 @@ def profile_edit_view(request):
         'profile_form': profile_form,
         'notify_form': notify_form
     })
+
+@login_required
+def feedback_view(request):
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            # Save feedback form data
+            feedback = form.save(user=request.user)  # Save with optional user
+           
+            return redirect('home_view')  # Redirect to homepage after submitting
+    else:
+        form = FeedbackForm()
+    
+    return render(request, 'home/feedback.html', {'form': form})
