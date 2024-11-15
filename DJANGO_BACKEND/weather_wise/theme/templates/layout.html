@@ -15,17 +15,24 @@
   
 
 
-  <body class="flex flex-col min-h-screen bg-gray-50 dark:bg-slate-700 text-black dark:text-gray-50 font-roboto">
-    <nav class=" dark:bg-slate-900 shadow-md">
+  <body class="flex flex-col min-h-screen bg-slate-200 dark:bg-slate-700 text-black dark:text-gray-50 font-roboto">
+    <nav class="bg-slate-300 dark:bg-slate-900 shadow-md">
       <div class="container mx-auto px-4 py-4 flex justify-between items-center">
         <!-- WeatherWise Logo Positioned to Left -->
-        <a href="/" class="text-yellow-400 text-2xl font-bold mb-2 md:mb-0"
+        <a href="/" class="text-blue-500 hover:scale-105 transition-transform duration-300 dark:text-yellow-400 text-2xl font-bold mb-2 md:mb-0 "
           >WeatherWise</a
         >
 
         <!-- Hamburger Menu for Mobile -->
         <div class="lg:hidden flex items-center">
-          <button class="text-white focus:outline-none" id="navbar-toggle">
+          <a href="{% url 'change-theme' %}" class="bg-gray-100 px-4 mx-4 py-2 rounded-xl hover:bg-gray-300 duration-300 dark:bg-slate-600">
+            {% if is_dark_theme %}
+              <i class="fa-solid fa-sun text-black dark:text-white"></i> 
+            {% else %}
+              <i class="fa-solid fa-moon text-black dark:text-white"></i> 
+            {% endif %}
+          </a>
+          <button class="text-black dark:text-white focus:outline-none" id="navbar-toggle">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="w-6 h-6"
@@ -47,17 +54,14 @@
         <div class="hidden lg:flex items-center space-x-6">
           <a
             href="{% url 'about_view' %}"
-            class="text-gray-300 hover:text-white"
+            class="text-gray-800 hover:text-gray-900 dark:hover:text-white dark:text-gray-200 text-lg"
             >Who We Are</a
           >
-          <!--   {% if is_dark_theme %} 
-           {% else %}
-                <i class="fa-solid fa-moon"></i> 
-            {% endif %}-->
+          
           <!-- Dark Mode Toggle -->
           <a href="{% url 'change-theme' %}" class="bg-gray-100 px-4 py-2 rounded-xl hover:bg-gray-300 duration-300 dark:bg-slate-600">
             {% if is_dark_theme %}
-              <i class="fa-solid fa-sun"></i> 
+              <i class="fa-solid fa-sun "></i> 
            {% else %}
               <i class="fa-solid fa-moon"></i> 
             {% endif %} 
@@ -66,13 +70,13 @@
           {% if user.is_authenticated %}
           <a
             href="{% url 'logout_view' %}"
-            class="bg-red-500 px-3 py-1 rounded text-white font-semibold"
+            class="bg-red-600 px-4 py-2 rounded-lg text-white font-semibold hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-800 hover:bg-red-700 hover:shadow-xl transform transition-all duration-300 ease-in-out"
             >LogOut</a
           >
           <a href="{% url 'profile_view' %}">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="w-6 h-6 text-white"
+              class="w-6 h-6 text-black dark:text-gray-200"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -88,12 +92,12 @@
           {% else %}
           <a
             href="{% url 'login_view' %}"
-            class="bg-green-500 px-3 py-1 rounded text-white font-semibold"
+            class="bg-green-600 px-4 py-2 rounded-lg text-white font-semibold hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-800 hover:bg-green-700 hover:shadow-xl transform transition-all duration-300 ease-in-out"
             >Login</a
           >
           <a
             href="{% url 'signup_view' %}"
-            class="bg-green-500 px-3 py-1 rounded text-white font-semibold"
+            class="bg-green-600 px-4 py-2 rounded-lg text-white font-semibold hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-800 hover:bg-green-700 hover:shadow-xl transform transition-all duration-300 ease-in-out"
             >SignUp</a
           >
           {% endif %}
@@ -102,43 +106,46 @@
     </nav>
 
     <!-- Mobile Dropdown (Initially hidden) -->
-    <div class="lg:hidden hidden bg-gray-800 p-4" id="navbar-menu">
+    <div class="lg:hidden hidden bg-slate-300 dark:bg-slate-900 shadow-md text-center" id="navbar-menu">
       <a
         href="{% url 'about_view' %}"
-        class="block text-gray-300 hover:text-white py-2"
+        class="block text-gray-800 hover:text-gray-900 dark:hover:text-white dark:text-gray-200 text-lg my-2"
         >Who We Are</a
       >
       {% if user.is_authenticated %}
       <a
         href="{% url 'logout_view' %}"
-        class="block bg-red-500 px-3 py-1 rounded text-white font-semibold my-2"
+        class="block bg-red-600 px-4 py-2 rounded-lg text-white font-semibold focus:outline-none focus:ring-4 focus:ring-red-800 hover:bg-red-700 hover:shadow-xl transform transition-all duration-300 ease-in-out my-2"
         >LogOut</a
       >
-      <a href="{% url 'profile_view' %}" class="block py-2">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="w-6 h-6 text-white"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-4.41 0-8 2.69-8 6v2h16v-2c0-3.31-3.59-6-8-6z"
-          />
-        </svg>
-      </a>
+      <button class="w-full justify-center align-middle ">
+        <a href="{% url 'profile_view' %}" class="block py-2 text-black dark:text-gray-200 text-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-6 h-6 text-black dark:text-gray-200 mx-auto"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-4.41 0-8 2.69-8 6v2h16v-2c0-3.31-3.59-6-8-6z"
+            />
+          </svg>
+        </a>
+      </button>
+      
       {% else %}
       <a
         href="{% url 'login_view' %}"
-        class="block bg-green-500 px-3 py-1 rounded text-white font-semibold my-2"
+        class="block bg-green-600 px-4 py-2 rounded-lg text-white font-semibold focus:outline-none focus:ring-4 focus:ring-green-800 hover:bg-green-700 hover:shadow-xl transform transition-all duration-300 ease-in-out my-2"
         >Login</a
       >
       <a
         href="{% url 'signup_view' %}"
-        class="block bg-green-500 px-3 py-1 rounded text-white font-semibold"
+        class="block bg-green-600 px-4 py-2 rounded-lg text-white font-semibold  focus:outline-none focus:ring-4 focus:ring-green-800 hover:bg-green-700 hover:shadow-xl transform transition-all duration-300 ease-in-out my-2"
         >SignUp</a
       >
       {% endif %}
@@ -150,15 +157,14 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-center py-6 mt-auto">
-      <p class="text-gray-500 mb-4">Our Work</p>
-      <a
-        href="https://github.com/Shravan-0024/IT314_Project_G22"
-        target="_blank"
-        class="bg-yellow-500 px-6 py-1 rounded-lg text-white font-semibold transition-colors hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-600"
-      >
-        Github
-      </a>
+    <footer class="bg-slate-300 dark:bg-slate-900 shadow-md text-center py-6 mt-auto">
+      <p class="text-gray-800 hover:text-gray-900 dark:hover:text-white dark:text-gray-200 text-lg mb-4">Our Work</p>
+
+      <button class="bg-blue-500 hover:bg-blue-400 px-4 py-2 rounded-lg text-white font-semibold shadow-lg hover:shadow-xl transform transition-all duration-300 ease-in-out hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 mt-2 dark:bg-yellow-500 dark:hover:bg-yellow-400 dark:focus:ring-yellow-300">
+        <a href="https://github.com/Shravan-0024/IT314_Project_G22" target="_blank" class="block">Github</a>
+      </button>
+
+
     </footer>
 
     <script>
