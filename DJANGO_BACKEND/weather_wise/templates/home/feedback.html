@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block title %}WeatherWise | Feedback{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mt-4 mb-4 text-center">We Value Your Feedback</h2>
+
+    <!-- Centered feedback form -->
+    <form method="POST" class="mx-auto" style="max-width: 500px;">
+        {% csrf_token %}
+
+        <!-- Predictions Accuracy -->
+        <div class="mb-3">
+            <label for="predictions_accuracy" class="form-label"><strong>Were the weather predictions accurate?</strong></label>
+            {{ form.predictions_accuracy }}
+        </div>
+
+        <!-- App Usability -->
+        <div class="mb-3">
+            <label for="app_usability" class="form-label"><strong>Was the app easy to use?</strong></label>
+            {{ form.app_usability }}
+        </div>
+
+        <!-- User Interface -->
+        <div class="mb-3">
+            <label for="user_interface" class="form-label"><strong>How would you rate the user interface?</strong></label>
+            {{ form.user_interface }}
+        </div>
+
+        <!-- Helpful Information -->
+        <div class="mb-3">
+            <label for="helpful_info" class="form-label"><strong>Was the information provided helpful?</strong></label>
+            {{ form.helpful_info }}
+        </div>
+
+        <!-- App Recommend -->
+        <div class="mb-3">
+            <label for="app_recommend" class="form-label"><strong>Would you recommend this app to others?</strong></label>
+            {{ form.app_recommend }}
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-100"><strong>Submit Feedback</strong></button>
+    </form>
+</div>
+
+{% endblock %}
