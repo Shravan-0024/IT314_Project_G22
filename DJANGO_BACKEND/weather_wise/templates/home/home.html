@@ -11,6 +11,11 @@
     <br>
     Happy to see you here !!
 </p>
+<a href="{% url 'feedback' %}" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+  <button class="bg-yellow-500 px-4 py-2 rounded text-white font-semibold">
+      Feedback
+  </button>
+</a>
 {% endif %}
 <a href="{% url "predict_view" %}"><button class="bg-blue-500 px-4 py-2 rounded text-white font-semibold">Prediction</button></a>
 <!-- Include dashboard.html -->
