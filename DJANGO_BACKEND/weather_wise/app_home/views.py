@@ -9,6 +9,7 @@ from django.db.models import Q
 from django.utils.http import url_has_allowed_host_and_scheme
 import requests
 
+
 API_KEY = '3fd909629968761c4f36f936ba57ef90'
 
 

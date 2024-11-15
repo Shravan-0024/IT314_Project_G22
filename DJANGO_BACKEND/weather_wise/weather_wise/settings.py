@@ -65,6 +65,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'theme.context_processors.theme',
             ],
         },
     },
@@ -131,6 +132,6 @@ INTERNAL_IPS = ['127.0.0.1']
 
 # use your npm path @backend team
 # @shravan 
-# NPM_BIN_PATH = "/opt/homebrew/bin/npm"
+NPM_BIN_PATH = "/opt/homebrew/bin/npm"
 # @madhav
-NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
+#NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"

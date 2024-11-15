@@ -1,5 +1,6 @@
 from django.urls import path
 from app_home import views
+from theme.views import change_theme
 urlpatterns = [
     path('',views.home_view,name="home_view"),
     path('about/',views.about_view,name="about_view"),
@@ -10,4 +11,5 @@ urlpatterns = [
     path('profile/',views.profile_view,name="profile_view"),
     path('profile/edit/', views.profile_edit_view, name='profile_edit_view'),
     path('feedback/', views.feedback_view, name='feedback'),
+    path('switch-theme/', change_theme, name='change-theme'),
 ]
