@@ -1,8 +1,98 @@
-{% load static tailwind_tags %}
+{% extends "layout.html" %}
 
-{% block title %}WeatherWise | Predictor{% endblock  %}
+{% load static tailwind_tags %}
+{% block title %}WeatherWise | Predictor{% endblock %}
 
 {% block content %}
-<h2 class="mt-4 mb-4 text-center text-2xl font-semibold">Predictor Page</h2>
+<h2 class="mt-4 mb-4 text-center text-2xl font-semibold"></h2>
 
-{% endblock  %}
+<body class="bg-cyan-50 text-gray-700 flex items-center justify-center min-h-screen py-8">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-2xl">
+        <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg">
+            <h1 class="text-3xl font-bold text-teal-700 mb-10 text-center">7-Day Weather Prediction</h1>
+
+            <div class="mb-8 text-center space-y-4 sm:space-y-0 sm:flex sm:items-center sm:space-x-4 justify-center">
+                <div class="flex-grow max-w-md">
+                    <label for="location" class="sr-only">Enter Location:</label>
+                    <input type="text" id="location" placeholder="Enter City or Zip Code"
+                    class="w-full px-4 py-2 text-base border border-green-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 placeholder:text-gray-400 text-black">
+                </div>
+                <button id="predict-btn" onclick="getWeatherPrediction()"
+                    class="w-full sm:w-auto px-6 py-2 bg-teal-700 text-white rounded-lg hover:bg-teal-800 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                    Predict
+                </button>
+            </div>
+
+            <div id="forecast-container" class="hidden">
+                <h2 class="text-teal-700 font-semibold mb-6">Forecast for <span id="location-name"
+                        class="text-teal-700"></span></h2>
+                <div id="forecast" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to handle the "Enter" key press
+        document.getElementById("location").addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                getWeatherPrediction();
+            }
+        });
+
+        function getWeatherPrediction() {
+            const location = document.getElementById("location").value;
+            const forecastContainer = document.getElementById("forecast-container");
+            const locationName = document.getElementById("location-name");
+            const forecast = document.getElementById("forecast");
+
+            if (location.trim() === "") {
+                alert("Please enter a location.");
+                return;
+            }
+
+            const mockForecast = [
+                { day: "Monday", high: "30°C", low: "20°C", condition: "Sunny" },
+                { day: "Tuesday", high: "28°C", low: "18°C", condition: "Partly Cloudy" },
+                { day: "Wednesday", high: "26°C", low: "17°C", condition: "Rainy" },
+                { day: "Thursday", high: "25°C", low: "16°C", condition: "Cloudy" },
+                { day: "Friday", high: "29°C", low: "19°C", condition: "Sunny" },
+                { day: "Saturday", high: "32°C", low: "21°C", condition: "Sunny" },
+                { day: "Sunday", high: "31°C", low: "20°C", condition: "Windy" }
+            ];
+
+            const conditionIcons = {
+                "Sunny": "/static/images/sun.png",
+                "Partly Cloudy": "/static/images/partly-cloudy.png",
+                "Rainy": "/static/images/rainy-day.png",
+                "Cloudy": "/static/images/cloudy.png",
+                "Windy": "/static/images/cloud.png",
+            };
+
+            locationName.textContent = location;
+            forecast.innerHTML = "";
+
+            mockForecast.forEach((day) => {
+                const dayDiv = document.createElement("div");
+                dayDiv.className = "bg-gray-50 p-6 rounded-xl shadow-md";
+
+                const iconSrc = conditionIcons[day.condition] || "path/to/default-icon.png";
+
+                dayDiv.innerHTML = `
+                    <h3 class="text-lg font-semibold text-teal-700 mb-4">${day.day}</h3>
+                    <p class="text-gray-600 mb-1">High: ${day.high}</p>
+                    <p class="text-gray-600 mb-1">Low: ${day.low}</p>
+                    <div class="flex items-center gap-2 text-gray-600">
+                        <span>${day.condition}</span>
+                        <img src="${iconSrc}" alt="${day.condition} icon" class="w-8 h-8 object-contain">
+                    </div>
+                `;
+
+                forecast.appendChild(dayDiv);
+            });
+
+            forecastContainer.classList.remove('hidden');
+        }
+    </script>
+</body>
+{% endblock %}
