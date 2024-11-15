@@ -1,70 +1,44 @@
 {% extends "layout.html" %}
 
-{% block title %}WeatherWise | Home{% endblock  %}
+{% block title %}WeatherWise | Home{% endblock %}
 
 {% block content %}
-<h2 class="mt-4 mb-4 text-center">Home Page</h2>
-<hr>
-{% if user.is_authenticated %}
-<p class="mt-2 mb-2 text-center">
-    Welcome {{user.first_name}} {{user.last_name}}
-    <br>
-    Happy to see you here !!
-</p>
-<a href="{% url 'feedback' %}" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
-  <button class="bg-yellow-500 px-4 py-2 rounded text-white font-semibold">
-      Feedback
-  </button>
-</a>
-{% endif %}
-<a href="{% url "predict_view" %}"><button class="bg-blue-500 px-4 py-2 rounded text-white font-semibold">Prediction</button></a>
-<!-- Include dashboard.html -->
-<main class="flex-1 w-full">
-      <section class="min-h-[90vh] bg-gradient-to-b from-secondary to-primary flex items-center justify-center p-4">
-        <div class="max-w-[900px] w-full bg-white/10 rounded-[15px] shadow-custom p-[60px] text-center">
-          <h1 class="text-[4.5rem] font-bold text-white mb-4">WeatherWise</h1>
-          <p class="text-[1.7rem] text-light mb-8">Stay informed with accurate weather forecasts.</p>
-          <div id="greeting" class="text-[3.5rem] text-white mb-6">Good Morning</div>
-          <div class="text-[1.8rem] text-white">
-            <div class="text-[5rem] font-bold text-accent mb-6">
-              27°<span class="text-[1.5rem] text-white ml-2">Celcius</span>
-            </div>
-            <div class="text-[18px] text-white mb-6">
-              <span id="time">10:30 am</span><br>
-              <span id="date">Sun, 3 November 2024</span>
-            </div>
-            <div id="location" class="text-[1.8rem] text-white">
-              Gandhinagar, India
-            </div>
-          </div>
+<div class=" p-8 sm:p-16">
+    <div class="container mx-auto text-center text-white">
+        <h2 class="text-4xl sm:text-5xl font-bold tracking-tight mb-6">
+            Welcome to WeatherWise!
+        </h2>
+        <hr class="border-white opacity-30 mb-6 w-1/4 mx-auto">
+
+        {% if user.is_authenticated %}
+        <p class="text-xl sm:text-2xl mb-4">
+            Welcome, {{ user.first_name }} {{ user.last_name }}!
+            <br>
+            We’re happy to have you here.
+        </p>
+        
+        <!-- Feedback Button -->
+        <a href="{% url 'feedback' %}" class="fixed bottom-8 right-8 z-50">
+            <button class="bg-yellow-500 hover:bg-yellow-400 px-8 py-4 rounded-lg text-white font-semibold shadow-lg hover:shadow-xl transform transition-all duration-300 ease-in-out hover:scale-110 focus:outline-none focus:ring-4 focus:ring-yellow-300">
+                Feedback
+            </button>
+        </a>
+        {% endif %}
+
+        <!-- Prediction Button -->
+        <div class="mt-8">
+            <a href="{% url 'predict_view' %}">
+                <button class="bg-blue-500 hover:bg-blue-400 px-8 py-4 rounded-lg text-white font-semibold shadow-lg hover:shadow-xl transform transition-all duration-300 ease-in-out hover:scale-110 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                    Prediction
+                </button>
+            </a>
         </div>
-      </section>
-    </main>
-    
-    <script>
-      function updateDateTime() {
-        const now = new Date();
-        const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        const date = now.toLocaleDateString('en-US', { 
-          weekday: 'short', 
-          day: 'numeric', 
-          month: 'long', 
-          year: 'numeric' 
-        });
-        
-        document.getElementById('time').textContent = time;
-        document.getElementById('date').textContent = date;
-        
-        const hour = now.getHours();
-        let greeting = "Good Morning";
-        if (hour >= 12 && hour < 18) greeting = "Good Afternoon";
-        else if (hour >= 18) greeting = "Good Evening";
-        document.getElementById('greeting').textContent = greeting;
-      }
-      document.addEventListener('DOMContentLoaded', updateDateTime);
-      setInterval(updateDateTime, 60000); // Update every minute
-    </script>
 
+        <!-- Include Dashboard -->
+        <div class="mt-12">
+            {% include "home/dashboard.html" %}
+        </div>
+    </div>
+</div>
 
-
-{% endblock  %}   
+{% endblock %}
