@@ -6,6 +6,8 @@ from .models import Notify
 from .forms import NotifyForm
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.utils.http import url_has_allowed_host_and_scheme
+from urllib.parse import urlparse
 
 def home_view(request):
     return render(request,'home/home.html')
@@ -14,13 +16,15 @@ def about_view(request):
     return render(request,'home/about.html')
 
 def login_view(request):
-
+    # Check if the user is already authenticated
     if request.user.is_authenticated:
         logout(request)
         return redirect('login_view')
 
+    # Get the 'next' parameter from the URL if it exists
+    next_url = request.GET.get('next', 'home_view')  # Default to 'home_view' if 'next' is not provided
+
     if request.method == "POST":
-        # Get the entered username/email and password
         username_or_email = request.POST.get('username_or_email')
         password = request.POST.get('password')
 
@@ -29,25 +33,24 @@ def login_view(request):
         except User.DoesNotExist:
             user = None
 
-        # If no user was found, return a 'User Not Found' error
         if user is None:
             error = "User Not Found. Please Sign Up First."
             return render(request, 'registration/login.html', {'error': error})
 
-        # Authenticate using the username (if found) and password
         user = authenticate(request, username=user.username, password=password)
 
-        # If authentication is successful, log the user in
         if user is not None:
             login(request, user)
+            # Redirect to the next URL if valid, otherwise go to the home page
+            if url_has_allowed_host_and_scheme(next_url, request.get_host()):
+                return redirect(next_url)
             return redirect('home_view')
         else:
-            # If authentication failed, show error message
             error = "Incorrect Username/Email or Password."
             return render(request, 'registration/login.html', {'error': error})
 
-    # Render the login form if the request is not POST
-    return render(request, 'registration/login.html')
+    return render(request, 'registration/login.html', {'next': next_url})
+
 
 
 def signup_view(request):
@@ -73,9 +76,10 @@ def signup_view(request):
         return render(request, 'registration/signup.html', {'form': form})
 
     
-@login_required(login_url='/login')
+@login_required(login_url='/login?next=/predict')
 def predict_view(request):
-    return render(request,'home/predict.html')
+    return render(request, 'home/predict.html')
+
 
 def logout_view(request):
     logout(request)
