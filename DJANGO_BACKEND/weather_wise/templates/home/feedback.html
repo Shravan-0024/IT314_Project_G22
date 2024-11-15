@@ -1,48 +1,74 @@
-{% extends "layout.html" %}
-
-{% block title %}WeatherWise | Feedback{% endblock %}
-
+{% extends "layout.html" %} {% block title %}WeatherWise | Feedback{% endblock%}
 {% block content %}
-<div class="container">
-    <h2 class="mt-4 mb-4 text-center">We Value Your Feedback</h2>
+<!-- Add some spacing at the top and bottom to separate from the footer -->
+<div
+  class="container mx-auto my-6 p-8 bg-gray-900 text-gray-100 rounded-lg shadow-lg max-w-lg mb-6"
+>
+  <h2 class="text-3xl font-semibold text-center mb-8 text-yellow-400">
+    We Value Your Feedback
+  </h2>
 
-    <!-- Centered feedback form -->
-    <form method="POST" class="mx-auto" style="max-width: 500px;">
-        {% csrf_token %}
+  <!-- Feedback form -->
+  <form method="POST" class="space-y-6">
+    {% csrf_token %}
 
-        <!-- Predictions Accuracy -->
-        <div class="mb-3">
-            <label for="predictions_accuracy" class="form-label"><strong>Were the weather predictions accurate?</strong></label>
-            {{ form.predictions_accuracy }}
-        </div>
+    <!-- Predictions Accuracy -->
+    <div>
+      <label
+        for="predictions_accuracy"
+        class="block mb-2 text-lg font-medium text-gray-200"
+        >Were the weather predictions accurate?</label
+      >
+      <div class="space-y-2">{{ form.predictions_accuracy }}</div>
+    </div>
 
-        <!-- App Usability -->
-        <div class="mb-3">
-            <label for="app_usability" class="form-label"><strong>Was the app easy to use?</strong></label>
-            {{ form.app_usability }}
-        </div>
+    <!-- App Usability -->
+    <div>
+      <label
+        for="app_usability"
+        class="block mb-2 text-lg font-medium text-gray-200"
+        >Was the app easy to use?</label
+      >
+      <div class="space-y-2">{{ form.app_usability }}</div>
+    </div>
 
-        <!-- User Interface -->
-        <div class="mb-3">
-            <label for="user_interface" class="form-label"><strong>How would you rate the user interface?</strong></label>
-            {{ form.user_interface }}
-        </div>
+    <!-- User Interface -->
+    <div>
+      <label
+        for="user_interface"
+        class="block mb-2 text-lg font-medium text-gray-200"
+        >How would you rate the user interface?</label
+      >
+      <div class="space-y-2">{{ form.user_interface }}</div>
+    </div>
 
-        <!-- Helpful Information -->
-        <div class="mb-3">
-            <label for="helpful_info" class="form-label"><strong>Was the information provided helpful?</strong></label>
-            {{ form.helpful_info }}
-        </div>
+    <!-- Helpful Information -->
+    <div>
+      <label
+        for="helpful_info"
+        class="block mb-2 text-lg font-medium text-gray-200"
+        >Was the information provided helpful?</label
+      >
+      <div class="space-y-2">{{ form.helpful_info }}</div>
+    </div>
 
-        <!-- App Recommend -->
-        <div class="mb-3">
-            <label for="app_recommend" class="form-label"><strong>Would you recommend this app to others?</strong></label>
-            {{ form.app_recommend }}
-        </div>
+    <!-- App Recommend -->
+    <div>
+      <label
+        for="app_recommend"
+        class="block mb-2 text-lg font-medium text-gray-200"
+        >Would you recommend this app to others?</label
+      >
+      <div class="space-y-2">{{ form.app_recommend }}</div>
+    </div>
 
-        <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary w-100"><strong>Submit Feedback</strong></button>
-    </form>
+    <!-- Submit Button -->
+    <button
+      type="submit"
+      class="w-full py-3 px-4 bg-yellow-500 text-gray-900 font-semibold rounded-lg shadow hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:ring-offset-2 py-2"
+    >
+      Submit Feedback
+    </button>
+  </form>
 </div>
-
 {% endblock %}

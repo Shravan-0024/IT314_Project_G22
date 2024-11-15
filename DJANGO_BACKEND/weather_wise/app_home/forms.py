@@ -105,50 +105,51 @@ class FeedbackForm(forms.Form):
         ('maybe', 'Maybe, I might recommend it')
     ]
     
-    predictions_accuracy = forms.MultipleChoiceField(
+    # Change fields to ChoiceField with RadioSelect widgets to allow only one choice
+    predictions_accuracy = forms.ChoiceField(
         label="How accurate were today's predictions?",
         choices=PREDICTION_CHOICES,
-        widget=forms.CheckboxSelectMultiple,
+        widget=forms.RadioSelect,
         required=False
     )
     
-    app_usability = forms.MultipleChoiceField(
+    app_usability = forms.ChoiceField(
         label="Was the app easy to use?",
         choices=USABILITY_CHOICES,
-        widget=forms.CheckboxSelectMultiple,
+        widget=forms.RadioSelect,
         required=False
     )
     
-    user_interface = forms.MultipleChoiceField(
+    user_interface = forms.ChoiceField(
         label="Was the user interface intuitive?",
         choices=INTERFACE_CHOICES,
-        widget=forms.CheckboxSelectMultiple,
+        widget=forms.RadioSelect,
         required=False
     )
     
-    helpful_info = forms.MultipleChoiceField(
+    helpful_info = forms.ChoiceField(
         label="Did you find the information provided helpful?",
         choices=INFO_CHOICES,
-        widget=forms.CheckboxSelectMultiple,
+        widget=forms.RadioSelect,
         required=False
     )
     
-    app_recommend = forms.MultipleChoiceField(
+    app_recommend = forms.ChoiceField(
         label="Would you recommend this app to others?",
         choices=RECOMMEND_CHOICES,
-        widget=forms.CheckboxSelectMultiple,
+        widget=forms.RadioSelect,
         required=False
     )
 
     def save(self, user=None):
-        # Save feedback to the model
+    # Save feedback to the model
         feedback = Feedback(
             user=user,
-            predictions_accuracy=', '.join(self.cleaned_data['predictions_accuracy']),
-            app_usability=', '.join(self.cleaned_data['app_usability']),
-            user_interface=', '.join(self.cleaned_data['user_interface']),
-            helpful_info=', '.join(self.cleaned_data['helpful_info']),
-            app_recommend=', '.join(self.cleaned_data['app_recommend'])
-        )
+            predictions_accuracy=self.cleaned_data['predictions_accuracy'],
+            app_usability=self.cleaned_data['app_usability'],
+            user_interface=self.cleaned_data['user_interface'],
+            helpful_info=self.cleaned_data['helpful_info'],
+            app_recommend=self.cleaned_data['app_recommend']
+    )
         feedback.save()
         return feedback
