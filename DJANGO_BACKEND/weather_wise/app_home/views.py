@@ -2,15 +2,32 @@ from django.shortcuts import render,redirect
 from app_home.forms import UserSignUpForm,UserProfileEditForm
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
-from .models import Notify,Feedback
+from .models import Notify
 from .forms import NotifyForm,FeedbackForm
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.utils.http import url_has_allowed_host_and_scheme
-from urllib.parse import urlparse
+import requests
+
+API_KEY = '3fd909629968761c4f36f936ba57ef90'
+
 
 def home_view(request):
-    return render(request,'home/home.html')
+    if request.method == "POST":
+        city = request.POST["location"]
+        url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric'
+
+        response = requests.get(url)
+        data = response.json()
+
+        if response.status_code == 200:
+            print(data)
+            return render(request,'home/home.html',{"data":data})
+        else:
+            return render(request,'home/home.html',{"error":"No such City Found"})
+        
+    else:
+        return render(request,'home/home.html')
 
 def about_view(request):
     return render(request,'home/about.html')
