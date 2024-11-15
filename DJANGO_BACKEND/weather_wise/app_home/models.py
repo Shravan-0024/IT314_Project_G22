@@ -13,32 +13,35 @@ from django.contrib.auth.models import User
 
 class Feedback(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)  # Optional user association
+    RECOMMEND_CHOICES = [
+        ('yes', '👍 Yes, I would recommend this app'),
+        ('no', '👎 No, I would not recommend it'),
+        ('maybe', '🤔 Maybe, I might recommend it')
+    ]
 
-    PREDICTION_CHOICES = [
-        ('accurate', 'Yes, the predictions were accurate'),
-        ('inaccurate', 'No, the predictions were inaccurate'),
-        ('not_sure', 'Not sure')
-    ]
-    USABILITY_CHOICES = [
-        ('easy', 'Yes, the app was easy to use'),
-        ('difficult', 'No, the app was difficult to use'),
-        ('average', 'It was average')
-    ]
     INTERFACE_CHOICES = [
-        ('intuitive', 'Yes, the interface was intuitive'),
-        ('confusing', 'No, the interface was confusing'),
-        ('okay', 'It was okay')
+        ('intuitive', '👌 Yes, the interface was intuitive'),
+        ('confusing', '😕 No, the interface was confusing'),
+        ('okay', '🙂 It was okay')
+    ]
+
+    USABILITY_CHOICES = [
+        ('easy', '✅ Yes, the site was easy to use'),
+        ('difficult', '❌ No, the site was difficult to use'),
+        ('average', '😐 It was average')
     ]
     INFO_CHOICES = [
-        ('helpful', 'Yes, the information provided was helpful'),
-        ('not_helpful', 'No, the information was not helpful'),
-        ('partially_helpful', 'It was partially helpful')
+        ('helpful', '👍 Yes, it was very helpful!'),
+        ('not_helpful', '👎 No, it wasn’t helpful.'),
+        ('partially_helpful', '🤔 It was somewhat helpful.')
     ]
-    RECOMMEND_CHOICES = [
-        ('yes', 'Yes, I would recommend this app'),
-        ('no', 'No, I would not recommend it'),
-        ('maybe', 'Maybe, I might recommend it')
+
+    PREDICTION_CHOICES = [
+        ('accurate', '🎯 Yes, the predictions were accurate'),
+        ('inaccurate', '❌ No, the predictions were inaccurate'),
+        ('not_sure', '🤷 Not sure')
     ]
+
 
     predictions_accuracy = models.CharField(max_length=20, choices=PREDICTION_CHOICES, null=True, blank=True)
     app_usability = models.CharField(max_length=20, choices=USABILITY_CHOICES, null=True, blank=True)

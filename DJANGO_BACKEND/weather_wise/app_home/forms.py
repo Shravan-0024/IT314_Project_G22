@@ -75,37 +75,37 @@ class NotifyForm(forms.ModelForm):
         return cleaned_data
 
 class FeedbackForm(forms.Form):
-    PREDICTION_CHOICES = [
-        ('accurate', 'Yes, the predictions were accurate'),
-        ('inaccurate', 'No, the predictions were inaccurate'),
-        ('not_sure', 'Not sure')
-    ]
-    
-    USABILITY_CHOICES = [
-        ('easy', 'Yes, the app was easy to use'),
-        ('difficult', 'No, the app was difficult to use'),
-        ('average', 'It was average')
-    ]
-    
-    INTERFACE_CHOICES = [
-        ('intuitive', 'Yes, the interface was intuitive'),
-        ('confusing', 'No, the interface was confusing'),
-        ('okay', 'It was okay')
-    ]
-    
-    INFO_CHOICES = [
-        ('helpful', 'Yes, the information provided was helpful'),
-        ('not_helpful', 'No, the information was not helpful'),
-        ('partially_helpful', 'It was partially helpful')
-    ]
-    
     RECOMMEND_CHOICES = [
-        ('yes', 'Yes, I would recommend this app'),
-        ('no', 'No, I would not recommend it'),
-        ('maybe', 'Maybe, I might recommend it')
+        ('yes', '👍 Yes, I would recommend this app'),
+        ('no', '👎 No, I would not recommend it'),
+        ('maybe', '🤔 Maybe, I might recommend it')
     ]
+
+    INFO_CHOICES = [
+        ('helpful', '👍 Yes, it was very helpful!'),
+        ('not_helpful', '👎 No, it wasn’t helpful.'),
+        ('partially_helpful', '🤔 It was somewhat helpful.')
+    ]
+
+    INTERFACE_CHOICES = [
+        ('intuitive', '👌 Yes, the interface was intuitive'),
+        ('confusing', '😕 No, the interface was confusing'),
+        ('okay', '🙂 It was okay')
+    ]
+
+    USABILITY_CHOICES = [
+        ('easy', '✅ Yes, the site was easy to use'),
+        ('difficult', '❌ No, the site was difficult to use'),
+        ('average', '😐 It was average')
+    ]
+
+    PREDICTION_CHOICES = [
+        ('accurate', '🎯 Yes, the predictions were accurate'),
+        ('inaccurate', '❌ No, the predictions were inaccurate'),
+        ('not_sure', '🤷 Not sure')
+    ]
+
     
-    # Change fields to ChoiceField with RadioSelect widgets to allow only one choice
     predictions_accuracy = forms.ChoiceField(
         label="How accurate were today's predictions?",
         choices=PREDICTION_CHOICES,
@@ -142,14 +142,14 @@ class FeedbackForm(forms.Form):
     )
 
     def save(self, user=None):
-    # Save feedback to the model
+        # Save feedback to the model
         feedback = Feedback(
             user=user,
-            predictions_accuracy=self.cleaned_data['predictions_accuracy'],
-            app_usability=self.cleaned_data['app_usability'],
-            user_interface=self.cleaned_data['user_interface'],
-            helpful_info=self.cleaned_data['helpful_info'],
-            app_recommend=self.cleaned_data['app_recommend']
-    )
+            predictions_accuracy=', '.join(self.cleaned_data['predictions_accuracy']),
+            app_usability=', '.join(self.cleaned_data['app_usability']),
+            user_interface=', '.join(self.cleaned_data['user_interface']),
+            helpful_info=', '.join(self.cleaned_data['helpful_info']),
+            app_recommend=', '.join(self.cleaned_data['app_recommend'])
+        )
         feedback.save()
         return feedback
