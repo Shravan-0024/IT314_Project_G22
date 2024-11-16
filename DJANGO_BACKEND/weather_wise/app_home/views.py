@@ -87,7 +87,7 @@ def dashboard_view(request):
             return render(request,'home/dashboard.html',{'sunrise': sunrise,
                 'sunset': sunset,"data":data})
         else:
-            return render(request,'home/dashboard.html',{"error":"No Such City Found"})
+            return render(request,'home/dashboard.html',{"error":f"Some Error Occured for '{city}' \nCurrently we are unable to serve you"})
     else:
         return render(request,'home/dashboard.html')
 

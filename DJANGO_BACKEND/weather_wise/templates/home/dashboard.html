@@ -44,11 +44,11 @@
             <form method="POST" class="mt-4 mb-4 text-center w-full max-w-lg mx-auto rounded-xl">
                 {% csrf_token %}
                 <div
-                    class="flex items-center rounded-full bg-slate-200 dark:bg-slate-700 text-black dark:text-gray-50 font-roboto shadow-lg">
+                    class="flex items-center rounded-full bg-slate-200 dark:bg-slate-700 text-black dark:text-gray-50 font-roboto ">
                     <!-- Input Field -->
                     <div class="flex-grow flex relative">
                         <input type="text" name="location" placeholder="Enter location"
-                        class="flex-grow p-4 rounded-full text-black text-lg focus:outline-none shadow-lg" />
+                        class="flex-grow p-4 rounded-full text-black text-lg focus:outline-none" />
                         
                     <!-- Favorite Button -->
                     <button type="button" id="favoriteButton" class="absolute top-[5px] right-[10px] p-2 rounded-ful focus:outline-none"
@@ -75,6 +75,9 @@
             </form>
 
         </div>
+        {% if error %}  
+            <div class="text-red-500 text-xl mt-2">{{ error }}</div>
+        {% endif %}
     </div>
 </div>
 
