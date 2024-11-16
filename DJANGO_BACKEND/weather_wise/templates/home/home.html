@@ -22,7 +22,7 @@
     <div class="mt-8">
       <a href="{% url 'predict_view' %}">
         <button
-          class="bg-blue-500 hover:bg-blue-600 px-8 py-4 rounded-lg text-white font-semibold shadow-lg hover:shadow-xl transform transition-all duration-300 ease-in-out hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300">
+          class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg text-white font-semibold shadow-lg hover:shadow-xl transform transition-all duration-300 ease-in-out hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-yellow-500 dark:hover:bg-yellow-600 dark:focus:ring-yellow-300">
           Prediction
         </button>
       </a>
@@ -38,7 +38,7 @@
           <input type="text" name="location" placeholder="Enter location"
             class="flex-grow p-4 rounded-full text-black text-lg focus:outline-none shadow-lg" />
           <button type="submit"
-            class="bg-blue-500 hover:bg-blue-400 p-4 text-white font-semibold shadow-lg transition-all duration-300 ease-in-out rounded-full dark:bg-yellow-500 dark:hover:bg-blue-400"
+            class="bg-blue-500 hover:bg-blue-400 p-4 text-white font-semibold shadow-lg transition-all duration-300 ease-in-out rounded-full dark:bg-yellow-500 dark:hover:bg-yellow-600"
             aria-label="Search">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 rounded-full" fill="none" viewBox="0 0 24 24"
               stroke="currentColor" stroke-width="2">
@@ -51,90 +51,70 @@
     </div>
     {% if data %}
     <!-- Container for the Weather Information -->
-    <div class="container mx-auto p-8">
+    <div class="container mx-auto p-8 font-roboto mb-4">
       <!-- Weather Card -->
-      <div class="bg-gray-900 text-gray-100 p-8 rounded-lg shadow-2xl space-y-8 max-w-4xl mx-auto">
+      <div class="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 p-8 rounded-xl shadow-2xl space-y-8 max-w-4xl mx-auto transform transition-transform hover:scale-105">
         <!-- Location and Coordinates -->
-        <div class="flex flex-col sm:flex-row justify-between mb-6">
-          <p class="text-xl sm:text-2xl">
-            <strong>Location:</strong> {{ data.name }}, {{ data.sys.country }}
-          </p>
-          <p class="text-xl sm:text-2xl">
-            <strong>Coordinates:</strong> {{ data.coord.lat }}, {{ data.coord.lon }}
-          </p>
+        <div class="flex flex-col sm:flex-row justify-between items-center border-b border-gray-700 pb-4">
+          <div>
+            <p class="text-3xl font-bold">{{ data.name }}, {{ data.sys.country }}</p>
+            <p class="text-sm text-gray-400">Coordinates: {{ data.coord.lat }}, {{ data.coord.lon }}</p>
+          </div>
         </div>
 
         <!-- Weather Condition -->
-        <div class="flex flex-col sm:flex-row items-center space-x-6 mb-6">
-          <div>
-            <img src="http://openweathermap.org/img/wn/{{ data.weather.0.icon }}@2x.png" alt="Weather Icon"
-              class="w-24 h-24 sm:w-32 sm:h-32" />
-          </div>
-          <div>
-            <p class="text-2xl sm:text-3xl font-semibold">
-              <strong>Weather:</strong> {{ data.weather.0.main }}
-            </p>
-            <p class="text-xl sm:text-2xl">
-              <strong>Condition:</strong> {{ data.weather.0.description }}
-            </p>
+        <div class="flex flex-col sm:flex-row items-center space-x-8 py-6">
+          <img src="http://openweathermap.org/img/wn/{{ data.weather.0.icon }}@4x.png" alt="Weather Icon" class="w-32 h-32">
+          <div class="text-center sm:text-left">
+            <p class="text-3xl font-semibold">Weather: {{ data.weather.0.main }}</p>
+            <p class="text-lg text-gray-400">Condition: {{ data.weather.0.description }}</p>
           </div>
         </div>
 
         <!-- Temperature, Pressure & Humidity -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-          <div>
-            <p class="text-xl sm:text-2xl">
-              <strong>Temperature:</strong> {{ data.main.temp }}°C
-            </p>
-            <p class="text-xl sm:text-2xl">
-              <strong>Feels Like:</strong> {{ data.main.feels_like }}°C
-            </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-gray-700 pt-4">
+          <div class="space-y-2">
+            <p class="text-xl"><strong>Temperature:</strong> {{ data.main.temp }}°C</p>
+            <p class="text-xl text-gray-400">Feels Like: {{ data.main.feels_like }}°C</p>
           </div>
-          <div>
-            <p class="text-xl sm:text-2xl">
-              <strong>Pressure:</strong> {{ data.main.pressure }} hPa
-            </p>
-            <p class="text-xl sm:text-2xl">
-              <strong>Humidity:</strong> {{ data.main.humidity }}%
-            </p>
+          <div class="space-y-2">
+            <p class="text-xl"><strong>Pressure:</strong> {{ data.main.pressure }} hPa</p>
+            <p class="text-xl text-gray-400">Humidity: {{ data.main.humidity }}%</p>
           </div>
         </div>
 
         <!-- Wind Information -->
-        <div class="flex flex-col sm:flex-row justify-between mb-6">
-          <p class="text-xl sm:text-2xl">
-            <strong>Wind Speed:</strong> {{ data.wind.speed }} m/s
-          </p>
-          <p class="text-xl sm:text-2xl">
-            <strong>Wind Direction:</strong> {{ data.wind.deg }}°
-          </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-gray-700 pt-4">
+          <div>
+            <p class="text-xl"><strong>Wind Speed:</strong> {{ data.wind.speed }} m/s</p>
+          </div>
+          <div>
+            <p class="text-xl"><strong>Wind Direction:</strong> {{ data.wind.deg }}°</p>
+          </div>
         </div>
 
         <!-- Cloud Coverage -->
-        <div class="mb-6">
-          <p class="text-xl sm:text-2xl">
-            <strong>Cloud Coverage:</strong> {{ data.clouds.all }}%
-          </p>
+        <div class="border-t border-gray-700 pt-4">
+          <p class="text-xl"><strong>Cloud Coverage:</strong> {{ data.clouds.all }}%</p>
         </div>
 
         <!-- Visibility -->
-        <div class="mb-6">
-          <p class="text-xl sm:text-2xl">
-            <strong>Visibility:</strong> {{ data.visibility }} meters
-          </p>
+        <div class="border-t border-gray-700 pt-4">
+          <p class="text-xl"><strong>Visibility:</strong> {{ data.visibility }} meters</p>
         </div>
 
         <!-- Sunrise & Sunset -->
-        <div class="flex flex-col sm:flex-row justify-between mb-6">
-          <p class="text-xl sm:text-2xl">
-            <strong>Sunrise:</strong> {{ sunrise }} AM
-          </p>
-          <p class="text-xl sm:text-2xl">
-            <strong>Sunset:</strong> {{ sunset }} PM
-          </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-gray-700 pt-4">
+          <div>
+            <p class="text-xl"><strong>Sunrise:</strong> {{ sunrise }} AM</p>
+          </div>
+          <div>
+            <p class="text-xl"><strong>Sunset:</strong> {{ sunset }} PM</p>
+          </div>
         </div>
       </div>
     </div>
+
     {% elif data_Delhi and data_Mumbai and data_Hyderabad %}
     <div class="container mx-auto p-8 font-roboto">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
