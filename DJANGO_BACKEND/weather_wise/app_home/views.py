@@ -29,6 +29,9 @@ def home_view(request):
         
     else:
         return render(request,'home/home.html')
+    
+def dashboard_view(request):
+    return render(request,'home/dashboard.html')
 
 def about_view(request):
     return render(request,'home/about.html')
@@ -40,7 +43,7 @@ def login_view(request):
         return redirect('login_view')
 
     # Get the 'next' parameter from the URL if it exists
-    next_url = request.GET.get('next', 'home_view')  # Default to 'home_view' if 'next' is not provided
+    next_url = request.GET.get('next', 'dashboard_view')  # Default to 'home_view' if 'next' is not provided
 
     if request.method == "POST":
         username_or_email = request.POST.get('username_or_email')
@@ -62,7 +65,7 @@ def login_view(request):
             # Redirect to the next URL if valid, otherwise go to the home page
             if url_has_allowed_host_and_scheme(next_url, request.get_host()):
                 return redirect(next_url)
-            return redirect('home_view')
+            return redirect('dashboard_view')
         else:
             error = "Incorrect Username/Email or Password."
             return render(request, 'registration/login.html', {'error': error})
@@ -84,7 +87,7 @@ def signup_view(request):
             user.set_password(form.cleaned_data['password1'])
             user.save()
             login(request, user)
-            return redirect('home_view')
+            return redirect('dashboard_view')
         else:
             # Collect all form errors
             errors = form.errors
@@ -174,7 +177,7 @@ def feedback_view(request):
             # Save feedback form data
             feedback = form.save(user=request.user)  # Save with optional user
            
-            return redirect('home_view')  # Redirect to homepage after submitting
+            return redirect('dashboard_view')  # Redirect to homepage after submitting
     else:
         form = FeedbackForm()
     

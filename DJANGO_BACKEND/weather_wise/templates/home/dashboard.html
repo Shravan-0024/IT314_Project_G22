@@ -1,3 +1,70 @@
+{% extends "layout.html" %}
+
+{% block title %}WeatherWise | Dashboard{% endblock %}
+
+{% block content %}
+
+<div class=" p-8 sm:p-16">
+    <div class="container mx-auto text-center text-white">
+        <h2 class="text-4xl sm:text-5xl font-bold tracking-tight mb-6">
+            Welcome to WeatherWise!
+        </h2>
+        <hr class="border-white opacity-30 mb-6 w-1/4 mx-auto">
+
+        {% if user.is_authenticated %}
+        <p class="text-xl sm:text-2xl mb-4">
+            Welcome, {{ user.first_name }} {{ user.last_name }}!
+            <br>
+            We are happy to have you here.
+        </p>
+        
+        <!-- Feedback Button -->
+        <a href="{% url 'feedback' %}" class="fixed bottom-8 right-8 z-50">
+            <button class="bg-yellow-500 hover:bg-yellow-400 px-4 py-2 rounded-lg text-white font-semibold shadow-lg hover:shadow-xl transform transition-all duration-300 ease-in-out hover:scale-105 focus:outline-none focus:ring-4 focus:ring-yellow-300">
+                Feedback
+            </button>
+        </a>
+        {% endif %}
+
+        <!-- Prediction Button -->
+        <div class="mt-8">
+            <a href="{% url 'predict_view' %}">
+                <button class="bg-blue-500 hover:bg-blue-600 px-8 py-4 rounded-lg text-white font-semibold shadow-lg hover:shadow-xl transform transition-all duration-300 ease-in-out hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                    Prediction
+                </button>
+            </a>
+        </div>
+
+        <!-- Include Dashboard -->
+        <div class="mt-12">
+          <!-- Search form -->
+            <form method="POST" class="mt-4 mb-4 text-center w-full max-w-lg mx-auto rounded-xl">
+    {% csrf_token %}
+    <div class="flex items-center border border-gray-400 focus-within:ring-2 focus-within:ring-blue-500 bg-white shadow-md rounded-md">
+        <input
+            type="text"
+            name="location"
+            placeholder="Enter location"
+            class="flex-grow p-4 rounded-full text-black text-lg focus:outline-none"
+        >
+        <button
+            type="submit"
+            class="bg-yellow-500 hover:bg-yellow-400 p-4 text-white font-semibold shadow-lg transition-all duration-300 ease-in-out rounded-3xl"
+            aria-label="Search"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 rounded-full" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m1.55-4.65a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+        </button>
+    </div>
+</form>
+
+
+        </div>
+    </div>
+</div>
+
+
 <!-- Container for the Weather Information -->
 <div class="container mx-auto p-8">
 
@@ -87,3 +154,5 @@
         </div>
     </div>
 </div>
+
+{% endblock %}
