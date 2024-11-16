@@ -8,9 +8,7 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.utils.http import url_has_allowed_host_and_scheme
 import requests
-from django.utils.timezone import make_aware
 from datetime import datetime
-
 
 API_KEY = '3fd909629968761c4f36f936ba57ef90'
 
@@ -25,7 +23,16 @@ def home_view(request):
 
         if response.status_code == 200:
             print(data)
-            return render(request,'home/home.html',{"data":data})
+            # Extract sunrise and sunset timestamps and convert them
+            sunrise_timestamp = data['sys']['sunrise']
+            sunset_timestamp = data['sys']['sunset']
+            sunrise = datetime.fromtimestamp(sunrise_timestamp).strftime('%Y-%m-%d %H:%M:%S')
+            sunset = datetime.fromtimestamp(sunset_timestamp).strftime('%Y-%m-%d %H:%M:%S')
+
+            # Add the formatted timestamps to the context
+            
+            return render(request,'home/home.html',{'sunrise': sunrise,
+                'sunset': sunset,"data":data})
         else:
             return render(request,'home/home.html',{"error":"No such City Found"})
         

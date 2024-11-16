@@ -5,8 +5,9 @@
     <h2 class="text-4xl sm:text-5xl font-bold tracking-tight mb-6">
       Welcome to WeatherWise!
     </h2>
-    <hr class="border-gray-900 dark:border-slate-100 opacity-30 mb-6 w-1/4 mx-auto" />
-
+    <hr
+      class="border-gray-900 dark:border-slate-100 opacity-30 mb-6 w-1/4 mx-auto"
+    />
 
     {% if user.is_authenticated %}
     <p class="text-xl sm:text-2xl mb-4">
@@ -14,15 +15,6 @@
       <br />
       We’re happy to have you here.
     </p>
-
-    <!-- Feedback Button -->
-    <a href="{% url 'feedback' %}" class="fixed bottom-8 right-8 z-50">
-      <button
-        class="bg-yellow-500 hover:bg-yellow-400 px-4 py-2 rounded-lg text-white font-semibold shadow-lg hover:shadow-xl transform transition-all duration-300 ease-in-out hover:scale-105 focus:outline-none focus:ring-4 focus:ring-yellow-300"
-      >
-        Feedback
-      </button>
-    </a>
     {% endif %}
 
     <!-- Prediction Button -->
@@ -45,19 +37,19 @@
       >
         {% csrf_token %}
         <div
-          class="flex items-center border border-gray-400 focus-within:ring-2 focus-within:ring-blue-500 bg-white shadow-md rounded-md"
+          class="flex items-center rounded-md bg-slate-200 dark:bg-slate-700 text-black dark:text-gray-50 font-roboto"
         >
           <input
             type="text"
             name="location"
             placeholder="Enter location"
-            class="flex-grow p-4 rounded-full text-black text-lg focus:outline-none"
+            class="flex-grow p-4 rounded-full text-black text-lg focus:outline-none shadow-lg"
           />
           <button
             type="submit"
-            class="bg-yellow-500 hover:bg-yellow-400 p-4 text-white font-semibold shadow-lg transition-all duration-300 ease-in-out rounded-3xl"
+            class="bg-blue-500 hover:bg-blue-400 p-4 text-white font-semibold shadow-lg transition-all duration-300 ease-in-out rounded-full dark:bg-yellow-500 dark:hover:bg-blue-400"
             aria-label="Search"
-          >
+            >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="h-8 w-8 rounded-full"
@@ -86,10 +78,11 @@
         <!-- Location and Coordinates -->
         <div class="flex flex-col sm:flex-row justify-between mb-6">
           <p class="text-xl sm:text-2xl">
-            <strong>Location:</strong> Ankleshwar, IN
+            <strong>Location:</strong> {{ data.name }}, {{ data.sys.country }}
           </p>
           <p class="text-xl sm:text-2xl">
-            <strong>Coordinates:</strong> 21.6, 73
+            <strong>Coordinates:</strong> {{ data.coord.lat }}, {{
+            data.coord.lon }}
           </p>
         </div>
 
@@ -97,17 +90,17 @@
         <div class="flex flex-col sm:flex-row items-center space-x-6 mb-6">
           <div>
             <img
-              src="http://openweathermap.org/img/wn/04d@2x.png"
+              src="http://openweathermap.org/img/wn/{{ data.weather.0.icon }}@2x.png"
               alt="Weather Icon"
               class="w-24 h-24 sm:w-32 sm:h-32"
             />
           </div>
           <div>
             <p class="text-2xl sm:text-3xl font-semibold">
-              <strong>Weather:</strong> Broken Clouds
+              <strong>Weather:</strong> {{ data.weather.0.main }}
             </p>
             <p class="text-xl sm:text-2xl">
-              <strong>Condition:</strong> Clouds
+              <strong>Condition:</strong> {{ data.weather.0.description }}
             </p>
           </div>
         </div>
@@ -116,52 +109,53 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
           <div>
             <p class="text-xl sm:text-2xl">
-              <strong>Temperature:</strong> 28.3°C
+              <strong>Temperature:</strong> {{ data.main.temp }}°C
             </p>
             <p class="text-xl sm:text-2xl">
-              <strong>Feels Like:</strong> 28.08°C
+              <strong>Feels Like:</strong> {{ data.main.feels_like }}°C
             </p>
           </div>
           <div>
             <p class="text-xl sm:text-2xl">
-              <strong>Pressure:</strong> 1011 hPa
+              <strong>Pressure:</strong> {{ data.main.pressure }} hPa
             </p>
-            <p class="text-xl sm:text-2xl"><strong>Humidity:</strong> 42%</p>
+            <p class="text-xl sm:text-2xl">
+              <strong>Humidity:</strong> {{ data.main.humidity }}%
+            </p>
           </div>
         </div>
 
         <!-- Wind Information -->
         <div class="flex flex-col sm:flex-row justify-between mb-6">
           <p class="text-xl sm:text-2xl">
-            <strong>Wind Speed:</strong> 2.22 m/s
+            <strong>Wind Speed:</strong> {{ data.wind.speed }} m/s
           </p>
           <p class="text-xl sm:text-2xl">
-            <strong>Wind Gust:</strong> 2.64 m/s
-          </p>
-          <p class="text-xl sm:text-2xl">
-            <strong>Wind Direction:</strong> 319°
+            <strong>Wind Direction:</strong> {{ data.wind.deg }}°
           </p>
         </div>
 
         <!-- Cloud Coverage -->
         <div class="mb-6">
           <p class="text-xl sm:text-2xl">
-            <strong>Cloud Coverage:</strong> 77%
+            <strong>Cloud Coverage:</strong> {{ data.clouds.all }}%
           </p>
         </div>
 
         <!-- Visibility -->
         <div class="mb-6">
-          <p class="text-xl sm:text-2xl"><strong>Visibility:</strong> 10 km</p>
+          <p class="text-xl sm:text-2xl">
+            <strong>Visibility:</strong> {{ data.visibility }} meters
+          </p>
         </div>
 
         <!-- Sunrise & Sunset -->
         <div class="flex flex-col sm:flex-row justify-between mb-6">
           <p class="text-xl sm:text-2xl">
-            <strong>Sunrise:</strong> 2023-11-15 05:39:27
+            <strong>Sunrise:</strong> {{ sunrise }} AM
           </p>
           <p class="text-xl sm:text-2xl">
-            <strong>Sunset:</strong> 2023-11-15 17:46:00
+            <strong>Sunset:</strong> {{ sunset }} PM
           </p>
         </div>
       </div>
