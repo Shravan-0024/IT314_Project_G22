@@ -1,12 +1,16 @@
-{% extends "layout.html" %} {% block title %}WeatherWise | Login{% endblock %}
+{% extends "layout.html" %}
+{% block title %}WeatherWise | Login{% endblock %}
+
 {% block content %}
 <div class="container mx-auto px-4 py-8">
-  <h2 class="text-2xl font-bold text-center my-4">Login to WeatherWise</h2>
+  <h2 class="text-2xl font-bold text-center my-4 text-gray-800 dark:text-gray-200">
+    Login to WeatherWise
+  </h2>
 
   <!-- Display error message if present -->
   {% if error %}
   <div
-    class="bg-red-500 text-white text-center p-4 rounded-md mb-4 relative max-w-md mx-auto"
+    class="bg-red-500 dark:bg-red-700 text-white text-center p-4 rounded-md mb-4 relative max-w-md mx-auto"
   >
     <p>BAD REQUEST PLEASE TRY AGAIN</p>
     <p><strong>{{ error }}</strong></p>
@@ -17,7 +21,7 @@
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="h-6 w-6 text-white"
+        class="h-6 w-6"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -34,17 +38,17 @@
   {% endif %}
 
   <!-- Centered and structured login form -->
-  <form method="POST" class="mx-auto max-w-md mt-8">
+  <form method="POST" class="mx-auto max-w-md mt-8 bg-slate-100 dark:bg-slate-800 p-6 rounded-lg shadow-lg">
     {% csrf_token %}
 
     <!-- Username or Email -->
     <div class="mb-4">
-      <label for="username_or_email" class="block text-lg font-semibold mb-2"
-        >Username or Email:</label
-      >
+      <label for="username_or_email" class="block text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200">
+        Username or Email:
+      </label>
       <input
         type="text"
-        class="w-full px-4 py-2 border border-gray-700 rounded-md text-white bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-yellow-400"
         id="username_or_email"
         name="username_or_email"
         required
@@ -53,12 +57,12 @@
 
     <!-- Password -->
     <div class="mb-4">
-      <label for="password" class="block text-lg font-semibold mb-2"
-        >Password:</label
-      >
+      <label for="password" class="block text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200">
+        Password:
+      </label>
       <input
         type="password"
-        class="w-full px-4 py-2 border border-gray-700 rounded-md text-white bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 bg-white dark:text-gray-200 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-yellow-400"
         id="password"
         name="password"
         required
@@ -68,18 +72,18 @@
     <!-- Login Button -->
     <button
       type="submit"
-      class="w-full bg-blue-500 text-white py-2 rounded-md font-semibold hover:bg-blue-600 transition-colors"
+      class="w-full bg-blue-500 text-white py-2 rounded-md font-semibold hover:bg-blue-600 dark:bg-yellow-500 dark:hover:bg-yellow-400 transition-colors"
     >
       Login
     </button>
   </form>
 
   <!-- Signup Link -->
-  <p class="text-center mt-6">
+  <p class="text-center mt-6 text-gray-800 dark:text-gray-200">
     Don't have an account?
-    <a href="{% url 'signup_view' %}" class="text-blue-500 hover:underline"
-      >Sign Up</a
-    >
+    <a href="{% url 'signup_view' %}" class="text-blue-500 hover:underline dark:text-yellow-400">
+      Sign Up
+    </a>
   </p>
 </div>
 {% endblock %}
