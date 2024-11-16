@@ -33,7 +33,7 @@ def home_view(request):
             return render(request,'home/home.html',{'sunrise': sunrise,
                 'sunset': sunset,"data":data})
         else:
-            return render(request,'home/home.html',{"error":"No such City Found"})
+            return render(request,'home/home.html',{"error":f"Some Error Occured for '{city}' \nCurrently we are unable to serve you"})
         
     else:
         city1 = 'Delhi'

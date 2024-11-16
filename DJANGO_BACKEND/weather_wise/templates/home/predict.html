@@ -1,98 +1,164 @@
 {% extends "layout.html" %}
 
 {% load static tailwind_tags %}
-{% block title %}WeatherWise | Predictor{% endblock %}
+{% block title %}WeatherWise | 5-Day Forecast{% endblock %}
 
 {% block content %}
-<h2 class="mt-4 mb-4 text-center text-2xl font-semibold"></h2>
-
-<body class="bg-cyan-50 text-gray-700 flex items-center justify-center min-h-screen py-8">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-2xl">
-        <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg">
-            <h1 class="text-3xl font-bold text-teal-700 mb-10 text-center">7-Day Weather Prediction</h1>
-
-            <div class="mb-8 text-center space-y-4 sm:space-y-0 sm:flex sm:items-center sm:space-x-4 justify-center">
-                <div class="flex-grow max-w-md">
-                    <label for="location" class="sr-only">Enter Location:</label>
-                    <input type="text" id="location" placeholder="Enter City or Zip Code"
-                    class="w-full px-4 py-2 text-base border border-green-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 placeholder:text-gray-400 text-black">
+<body class="bg-gradient-to-br from-gray-50 to-cyan-100 text-gray-700 flex items-center justify-center min-h-screen py-8 font-roboto">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+        <!-- Welcome Section -->
+        <div class="text-center mb-10">
+            <h1 class="text-4xl font-bold text-blue-600 dark:text-yellow-500">5-Day Weather Forecast</h1>
+            <p class="text-lg text-gray-600 dark:text-slate-200 mt-2">Get a glimpse of the weather forecast for the next 5 days.</p>
+        </div>
+        <div class="my-8">
+      <!-- Search form -->
+      <form method="POST" class="mt-4 mb-4 text-center w-full max-w-lg mx-auto rounded-xl">
+        {% csrf_token %}
+        <div
+          class="flex items-center rounded-md bg-slate-200 dark:bg-slate-700 text-black dark:text-gray-50 font-roboto">
+          <input type="text" name="location" placeholder="Enter location"
+            class="flex-grow p-4 rounded-full text-black text-lg focus:outline-none shadow-lg" />
+          <button type="submit"
+            class="bg-blue-500 hover:bg-blue-400 p-4 text-white font-semibold shadow-lg transition-all duration-300 ease-in-out rounded-full dark:bg-yellow-500 dark:hover:bg-yellow-600"
+            aria-label="Search">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 rounded-full" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M21 21l-4.35-4.35m1.55-4.65a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+        <!-- Forecast Cards in Vertical Layout -->
+        <div id="forecast-container" class="space-y-8 mb-12">
+            <!-- Static Forecast Cards -->
+            <div class="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 rounded-xl shadow-xl p-8 transform transition-transform hover:scale-105 w-4/5 mx-auto">
+                <div class="text-center mb-6">
+                    <p class="text-3xl font-bold text-blue-600 dark:text-yellow-500">Monday</p>
+                    <p class="text-sm text-gray-400 mt-1">2024-11-20</p>
                 </div>
-                <button id="predict-btn" onclick="getWeatherPrediction()"
-                    class="w-full sm:w-auto px-6 py-2 bg-teal-700 text-white rounded-lg hover:bg-teal-800 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                    Predict
-                </button>
+                <div class="flex flex-col items-center mb-6">
+                    <img src="/static/images/sun.png" alt="Sunny icon" class="w-20 h-20 mb-4">
+                    <p class="text-xl font-medium">Sunny</p>
+                    <p class="text-sm text-gray-400">Clear skies</p>
+                </div>
+                <div class="flex justify-between border-t border-gray-700 pt-4">
+                    <div>
+                        <p class="text-2xl font-semibold">30°C</p>
+                        <p class="text-sm text-gray-400">Feels Like: 20°C</p>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-semibold">60%</p>
+                        <p class="text-sm text-gray-400">Humidity</p>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <p class="text-sm text-gray-400">Wind Speed: 5 m/s</p>
+                </div>
             </div>
 
-            <div id="forecast-container" class="hidden">
-                <h2 class="text-teal-700 font-semibold mb-6">Forecast for <span id="location-name"
-                        class="text-teal-700"></span></h2>
-                <div id="forecast" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 rounded-xl shadow-xl p-8 transform transition-transform hover:scale-105 w-4/5 mx-auto">
+                <div class="text-center mb-6">
+                    <p class="text-3xl font-bold text-blue-600 dark:text-yellow-500">Tuesday</p>
+                    <p class="text-sm text-gray-400 mt-1">2024-11-21</p>
+                </div>
+                <div class="flex flex-col items-center mb-6">
+                    <img src="/static/images/partly-cloudy.png" alt="Partly Cloudy icon" class="w-20 h-20 mb-4">
+                    <p class="text-xl font-medium">Partly Cloudy</p>
+                    <p class="text-sm text-gray-400">A mix of sun and clouds</p>
+                </div>
+                <div class="flex justify-between border-t border-gray-700 pt-4">
+                    <div>
+                        <p class="text-2xl font-semibold">28°C</p>
+                        <p class="text-sm text-gray-400">Feels Like: 18°C</p>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-semibold">65%</p>
+                        <p class="text-sm text-gray-400">Humidity</p>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <p class="text-sm text-gray-400">Wind Speed: 4 m/s</p>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 rounded-xl shadow-xl p-8 transform transition-transform hover:scale-105 w-4/5 mx-auto">
+                <div class="text-center mb-6">
+                    <p class="text-3xl font-bold text-blue-600 dark:text-yellow-500">Wednesday</p>
+                    <p class="text-sm text-gray-400 mt-1">2024-11-22</p>
+                </div>
+                <div class="flex flex-col items-center mb-6">
+                    <img src="/static/images/rainy-day.png" alt="Rainy icon" class="w-20 h-20 mb-4">
+                    <p class="text-xl font-medium">Rainy</p>
+                    <p class="text-sm text-gray-400">Expect rain showers</p>
+                </div>
+                <div class="flex justify-between border-t border-gray-700 pt-4">
+                    <div>
+                        <p class="text-2xl font-semibold">26°C</p>
+                        <p class="text-sm text-gray-400">Feels Like: 17°C</p>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-semibold">80%</p>
+                        <p class="text-sm text-gray-400">Humidity</p>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <p class="text-sm text-gray-400">Wind Speed: 6 m/s</p>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 rounded-xl shadow-xl p-8 transform transition-transform hover:scale-105 w-4/5 mx-auto">
+                <div class="text-center mb-6">
+                    <p class="text-3xl font-bold text-blue-600 dark:text-yellow-500">Thursday</p>
+                    <p class="text-sm text-gray-400 mt-1">2024-11-23</p>
+                </div>
+                <div class="flex flex-col items-center mb-6">
+                    <img src="/static/images/cloudy.png" alt="Cloudy icon" class="w-20 h-20 mb-4">
+                    <p class="text-xl font-medium">Cloudy</p>
+                    <p class="text-sm text-gray-400">Overcast conditions</p>
+                </div>
+                <div class="flex justify-between border-t border-gray-700 pt-4">
+                    <div>
+                        <p class="text-2xl font-semibold">25°C</p>
+                        <p class="text-sm text-gray-400">Feels Like: 16°C</p>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-semibold">70%</p>
+                        <p class="text-sm text-gray-400">Humidity</p>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <p class="text-sm text-gray-400">Wind Speed: 3 m/s</p>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 rounded-xl shadow-xl p-8 transform transition-transform hover:scale-105 w-4/5 mx-auto">
+                <div class="text-center mb-6">
+                    <p class="text-3xl font-bold text-blue-600 dark:text-yellow-500">Friday</p>
+                    <p class="text-sm text-gray-400 mt-1">2024-11-24</p>
+                </div>
+                <div class="flex flex-col items-center mb-6">
+                    <img src="/static/images/cloud.png" alt="Windy icon" class="w-20 h-20 mb-4">
+                    <p class="text-xl font-medium">Windy</p>
+                    <p class="text-sm text-gray-400">Expect high winds</p>
+                </div>
+                <div class="flex justify-between border-t border-gray-700 pt-4">
+                    <div>
+                        <p class="text-2xl font-semibold">29°C</p>
+                        <p class="text-sm text-gray-400">Feels Like: 19°C</p>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-semibold">75%</p>
+                        <p class="text-sm text-gray-400">Humidity</p>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <p class="text-sm text-gray-400">Wind Speed: 8 m/s</p>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        // Function to handle the "Enter" key press
-        document.getElementById("location").addEventListener("keydown", function(event) {
-            if (event.key === "Enter") {
-                getWeatherPrediction();
-            }
-        });
-
-        function getWeatherPrediction() {
-            const location = document.getElementById("location").value;
-            const forecastContainer = document.getElementById("forecast-container");
-            const locationName = document.getElementById("location-name");
-            const forecast = document.getElementById("forecast");
-
-            if (location.trim() === "") {
-                alert("Please enter a location.");
-                return;
-            }
-
-            const mockForecast = [
-                { day: "Monday", high: "30°C", low: "20°C", condition: "Sunny" },
-                { day: "Tuesday", high: "28°C", low: "18°C", condition: "Partly Cloudy" },
-                { day: "Wednesday", high: "26°C", low: "17°C", condition: "Rainy" },
-                { day: "Thursday", high: "25°C", low: "16°C", condition: "Cloudy" },
-                { day: "Friday", high: "29°C", low: "19°C", condition: "Sunny" },
-                { day: "Saturday", high: "32°C", low: "21°C", condition: "Sunny" },
-                { day: "Sunday", high: "31°C", low: "20°C", condition: "Windy" }
-            ];
-
-            const conditionIcons = {
-                "Sunny": "/static/images/sun.png",
-                "Partly Cloudy": "/static/images/partly-cloudy.png",
-                "Rainy": "/static/images/rainy-day.png",
-                "Cloudy": "/static/images/cloudy.png",
-                "Windy": "/static/images/cloud.png",
-            };
-
-            locationName.textContent = location;
-            forecast.innerHTML = "";
-
-            mockForecast.forEach((day) => {
-                const dayDiv = document.createElement("div");
-                dayDiv.className = "bg-gray-50 p-6 rounded-xl shadow-md";
-
-                const iconSrc = conditionIcons[day.condition] || "path/to/default-icon.png";
-
-                dayDiv.innerHTML = `
-                    <h3 class="text-lg font-semibold text-teal-700 mb-4">${day.day}</h3>
-                    <p class="text-gray-600 mb-1">High: ${day.high}</p>
-                    <p class="text-gray-600 mb-1">Low: ${day.low}</p>
-                    <div class="flex items-center gap-2 text-gray-600">
-                        <span>${day.condition}</span>
-                        <img src="${iconSrc}" alt="${day.condition} icon" class="w-8 h-8 object-contain">
-                    </div>
-                `;
-
-                forecast.appendChild(dayDiv);
-            });
-
-            forecastContainer.classList.remove('hidden');
-        }
-    </script>
 </body>
 {% endblock %}
