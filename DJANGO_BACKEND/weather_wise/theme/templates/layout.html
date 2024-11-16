@@ -17,8 +17,13 @@
   <nav class="bg-slate-300 dark:bg-slate-900 shadow-md">
     <div class="container mx-auto px-4 py-4 flex justify-between items-center">
       <!-- WeatherWise Logo Positioned to Left -->
-      <a href="/"
+      {% if user.is_authenticated %}
+        <a href="{% url "dashboard_view" %}"
         class="text-blue-500 hover:scale-105 transition-transform duration-300 dark:text-yellow-400 text-2xl font-bold mb-2 md:mb-0 ">WeatherWise</a>
+      {% else %}
+        <a href="{% url 'home_view' %}"
+        class="text-blue-500 hover:scale-105 transition-transform duration-300 dark:text-yellow-400 text-2xl font-bold mb-2 md:mb-0 ">WeatherWise</a>
+      {% endif %}
 
       <!-- Hamburger Menu for Mobile -->
       <div class="lg:hidden flex items-center">

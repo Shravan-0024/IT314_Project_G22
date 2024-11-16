@@ -81,95 +81,92 @@
     </div>
 </div>
 
-
-<!-- Container for the Weather Information -->
-<div class="container mx-auto p-8">
-
-    <!-- Weather Card -->
-    <div class="bg-gray-900 text-gray-100 p-8 rounded-lg shadow-2xl space-y-8 max-w-4xl mx-auto">
-
+{% if data %}
+    <!-- Container for the Weather Information -->
+    <div class="container mx-auto p-8">
+      <!-- Weather Card -->
+      <div class="bg-gray-900 text-gray-100 p-8 rounded-lg shadow-2xl space-y-8 max-w-4xl mx-auto">
         <!-- Location and Coordinates -->
         <div class="flex flex-col sm:flex-row justify-between mb-6">
-            <p class="text-xl sm:text-2xl">
-                <strong>Location:</strong> Ankleshwar, IN
-            </p>
-            <p class="text-xl sm:text-2xl">
-                <strong>Coordinates:</strong> 21.6, 73
-            </p>
+          <p class="text-xl sm:text-2xl">
+            <strong>Location:</strong> {{ data.name }}, {{ data.sys.country }}
+          </p>
+          <p class="text-xl sm:text-2xl">
+            <strong>Coordinates:</strong> {{ data.coord.lat }}, {{ data.coord.lon }}
+          </p>
         </div>
 
         <!-- Weather Condition -->
         <div class="flex flex-col sm:flex-row items-center space-x-6 mb-6">
-            <div>
-                <img src="http://openweathermap.org/img/wn/04d@2x.png" alt="Weather Icon" class="w-24 h-24 sm:w-32 sm:h-32">
-            </div>
-            <div>
-                <p class="text-2xl sm:text-3xl font-semibold">
-                    <strong>Weather:</strong> Broken Clouds
-                </p>
-                <p class="text-xl sm:text-2xl">
-                    <strong>Condition:</strong> Clouds
-                </p>
-            </div>
+          <div>
+            <img src="http://openweathermap.org/img/wn/{{ data.weather.0.icon }}@2x.png" alt="Weather Icon"
+              class="w-24 h-24 sm:w-32 sm:h-32" />
+          </div>
+          <div>
+            <p class="text-2xl sm:text-3xl font-semibold">
+              <strong>Weather:</strong> {{ data.weather.0.main }}
+            </p>
+            <p class="text-xl sm:text-2xl">
+              <strong>Condition:</strong> {{ data.weather.0.description }}
+            </p>
+          </div>
         </div>
 
         <!-- Temperature, Pressure & Humidity -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-            <div>
-                <p class="text-xl sm:text-2xl">
-                    <strong>Temperature:</strong> 28.3°C
-                </p>
-                <p class="text-xl sm:text-2xl">
-                    <strong>Feels Like:</strong> 28.08°C
-                </p>
-            </div>
-            <div>
-                <p class="text-xl sm:text-2xl">
-                    <strong>Pressure:</strong> 1011 hPa
-                </p>
-                <p class="text-xl sm:text-2xl">
-                    <strong>Humidity:</strong> 42%
-                </p>
-            </div>
+          <div>
+            <p class="text-xl sm:text-2xl">
+              <strong>Temperature:</strong> {{ data.main.temp }}°C
+            </p>
+            <p class="text-xl sm:text-2xl">
+              <strong>Feels Like:</strong> {{ data.main.feels_like }}°C
+            </p>
+          </div>
+          <div>
+            <p class="text-xl sm:text-2xl">
+              <strong>Pressure:</strong> {{ data.main.pressure }} hPa
+            </p>
+            <p class="text-xl sm:text-2xl">
+              <strong>Humidity:</strong> {{ data.main.humidity }}%
+            </p>
+          </div>
         </div>
 
         <!-- Wind Information -->
         <div class="flex flex-col sm:flex-row justify-between mb-6">
-            <p class="text-xl sm:text-2xl">
-                <strong>Wind Speed:</strong> 2.22 m/s
-            </p>
-            <p class="text-xl sm:text-2xl">
-                <strong>Wind Gust:</strong> 2.64 m/s
-            </p>
-            <p class="text-xl sm:text-2xl">
-                <strong>Wind Direction:</strong> 319°
-            </p>
+          <p class="text-xl sm:text-2xl">
+            <strong>Wind Speed:</strong> {{ data.wind.speed }} m/s
+          </p>
+          <p class="text-xl sm:text-2xl">
+            <strong>Wind Direction:</strong> {{ data.wind.deg }}°
+          </p>
         </div>
 
         <!-- Cloud Coverage -->
         <div class="mb-6">
-            <p class="text-xl sm:text-2xl">
-                <strong>Cloud Coverage:</strong> 77%
-            </p>
+          <p class="text-xl sm:text-2xl">
+            <strong>Cloud Coverage:</strong> {{ data.clouds.all }}%
+          </p>
         </div>
 
         <!-- Visibility -->
         <div class="mb-6">
-            <p class="text-xl sm:text-2xl">
-                <strong>Visibility:</strong> 10 km
-            </p>
+          <p class="text-xl sm:text-2xl">
+            <strong>Visibility:</strong> {{ data.visibility }} meters
+          </p>
         </div>
 
         <!-- Sunrise & Sunset -->
         <div class="flex flex-col sm:flex-row justify-between mb-6">
-            <p class="text-xl sm:text-2xl">
-                <strong>Sunrise:</strong> 2023-11-15 05:39:27
-            </p>
-            <p class="text-xl sm:text-2xl">
-                <strong>Sunset:</strong> 2023-11-15 17:46:00
-            </p>
+          <p class="text-xl sm:text-2xl">
+            <strong>Sunrise:</strong> {{ sunrise }} AM
+          </p>
+          <p class="text-xl sm:text-2xl">
+            <strong>Sunset:</strong> {{ sunset }} PM
+          </p>
         </div>
+      </div>
     </div>
-</div>
+{% endif %}
 
 {% endblock %}

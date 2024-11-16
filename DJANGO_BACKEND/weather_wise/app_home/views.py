@@ -19,7 +19,7 @@ def home_view(request):
 
         response = requests.get(url)
         data = response.json()
-
+        # allowing user to access home page even if he is logged in - Consider it as feature
         if response.status_code == 200:
             print(data)
             # Extract sunrise and sunset timestamps and convert them
@@ -67,7 +67,29 @@ def home_view(request):
                 'sunset_h': sunset_h })
     
 def dashboard_view(request):
-    return render(request,'home/dashboard.html')
+    if request.method == "POST":
+        city = request.POST["location"]
+        url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric'
+
+        response = requests.get(url)
+        data = response.json()
+
+        if response.status_code == 200:
+            print(data)
+            # Extract sunrise and sunset timestamps and convert them
+            sunrise_timestamp = data['sys']['sunrise']
+            sunset_timestamp = data['sys']['sunset']
+            sunrise = datetime.fromtimestamp(sunrise_timestamp).strftime('%Y-%m-%d %H:%M:%S')
+            sunset = datetime.fromtimestamp(sunset_timestamp).strftime('%Y-%m-%d %H:%M:%S')
+
+            # Add the formatted timestamps to the context
+            
+            return render(request,'home/dashboard.html',{'sunrise': sunrise,
+                'sunset': sunset,"data":data})
+        else:
+            return render(request,'home/dashboard.html',{"error":"No Such City Found"})
+    else:
+        return render(request,'home/dashboard.html')
 
 def about_view(request):
     return render(request,'home/about.html')
