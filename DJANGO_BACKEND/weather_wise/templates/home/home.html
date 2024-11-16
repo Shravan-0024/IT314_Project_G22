@@ -1,66 +1,173 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} {% block title %}WeatherWise | Home{% endblock %}
+{%block content %}
+<div class="p-8 sm:p-16">
+  <div class="container mx-auto text-center text-gray-900 dark:text-slate-100">
+    <h2 class="text-4xl sm:text-5xl font-bold tracking-tight mb-6">
+      Welcome to WeatherWise!
+    </h2>
+    <hr class="border-gray-900 dark:border-slate-100 opacity-30 mb-6 w-1/4 mx-auto" />
 
-{% block title %}WeatherWise | Home{% endblock %}
 
-{% block content %}
-<div class=" p-8 sm:p-16">
-    <div class="container mx-auto text-center text-white">
-        <h2 class="text-4xl sm:text-5xl font-bold tracking-tight mb-6">
-            Welcome to WeatherWise!
-        </h2>
-        <hr class="border-white opacity-30 mb-6 w-1/4 mx-auto">
+    {% if user.is_authenticated %}
+    <p class="text-xl sm:text-2xl mb-4">
+      Welcome, {{ user.first_name }} {{ user.last_name }}!
+      <br />
+      We’re happy to have you here.
+    </p>
 
-        {% if user.is_authenticated %}
-        <p class="text-xl sm:text-2xl mb-4">
-            Welcome, {{ user.first_name }} {{ user.last_name }}!
-            <br>
-            We’re happy to have you here.
-        </p>
-        
-        <!-- Feedback Button -->
-        <a href="{% url 'feedback' %}" class="fixed bottom-8 right-8 z-50">
-            <button class="bg-yellow-500 hover:bg-yellow-400 px-4 py-2 rounded-lg text-white font-semibold shadow-lg hover:shadow-xl transform transition-all duration-300 ease-in-out hover:scale-105 focus:outline-none focus:ring-4 focus:ring-yellow-300">
-                Feedback
-            </button>
-        </a>
-        {% endif %}
+    <!-- Feedback Button -->
+    <a href="{% url 'feedback' %}" class="fixed bottom-8 right-8 z-50">
+      <button
+        class="bg-yellow-500 hover:bg-yellow-400 px-4 py-2 rounded-lg text-white font-semibold shadow-lg hover:shadow-xl transform transition-all duration-300 ease-in-out hover:scale-105 focus:outline-none focus:ring-4 focus:ring-yellow-300"
+      >
+        Feedback
+      </button>
+    </a>
+    {% endif %}
 
-        <!-- Prediction Button -->
-        <div class="mt-8">
-            <a href="{% url 'predict_view' %}">
-                <button class="bg-blue-500 hover:bg-blue-600 px-8 py-4 rounded-lg text-white font-semibold shadow-lg hover:shadow-xl transform transition-all duration-300 ease-in-out hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                    Prediction
-                </button>
-            </a>
-        </div>
+    <!-- Prediction Button -->
+    <div class="mt-8">
+      <a href="{% url 'predict_view' %}">
+        <button
+          class="bg-blue-500 hover:bg-blue-600 px-8 py-4 rounded-lg text-white font-semibold shadow-lg hover:shadow-xl transform transition-all duration-300 ease-in-out hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
+        >
+          Prediction
+        </button>
+      </a>
+    </div>
 
-        <!-- Include Dashboard -->
-        <div class="mt-12">
-          <!-- Search form -->
-            <form method="POST" class="mt-4 mb-4 text-center w-full max-w-lg mx-auto rounded-xl">
-    {% csrf_token %}
-    <div class="flex items-center border border-gray-400 focus-within:ring-2 focus-within:ring-blue-500 bg-white shadow-md rounded-md">
-        <input
+    <!-- Include Dashboard -->
+    <div class="mt-12">
+      <!-- Search form -->
+      <form
+        method="POST"
+        class="mt-4 mb-4 text-center w-full max-w-lg mx-auto rounded-xl"
+      >
+        {% csrf_token %}
+        <div
+          class="flex items-center border border-gray-400 focus-within:ring-2 focus-within:ring-blue-500 bg-white shadow-md rounded-md"
+        >
+          <input
             type="text"
             name="location"
             placeholder="Enter location"
             class="flex-grow p-4 rounded-full text-black text-lg focus:outline-none"
-        >
-        <button
+          />
+          <button
             type="submit"
             class="bg-yellow-500 hover:bg-yellow-400 p-4 text-white font-semibold shadow-lg transition-all duration-300 ease-in-out rounded-3xl"
             aria-label="Search"
-        >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 rounded-full" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m1.55-4.65a7 7 0 11-14 0 7 7 0 0114 0z" />
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-8 w-8 rounded-full"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-4.35-4.35m1.55-4.65a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
             </svg>
-        </button>
-    </div>
-</form>
-
-
+          </button>
         </div>
+      </form>
     </div>
+    {% if data %}
+    <!-- Container for the Weather Information -->
+    <div class="container mx-auto p-8">
+      <!-- Weather Card -->
+      <div
+        class="bg-gray-900 text-gray-100 p-8 rounded-lg shadow-2xl space-y-8 max-w-4xl mx-auto"
+      >
+        <!-- Location and Coordinates -->
+        <div class="flex flex-col sm:flex-row justify-between mb-6">
+          <p class="text-xl sm:text-2xl">
+            <strong>Location:</strong> Ankleshwar, IN
+          </p>
+          <p class="text-xl sm:text-2xl">
+            <strong>Coordinates:</strong> 21.6, 73
+          </p>
+        </div>
+
+        <!-- Weather Condition -->
+        <div class="flex flex-col sm:flex-row items-center space-x-6 mb-6">
+          <div>
+            <img
+              src="http://openweathermap.org/img/wn/04d@2x.png"
+              alt="Weather Icon"
+              class="w-24 h-24 sm:w-32 sm:h-32"
+            />
+          </div>
+          <div>
+            <p class="text-2xl sm:text-3xl font-semibold">
+              <strong>Weather:</strong> Broken Clouds
+            </p>
+            <p class="text-xl sm:text-2xl">
+              <strong>Condition:</strong> Clouds
+            </p>
+          </div>
+        </div>
+
+        <!-- Temperature, Pressure & Humidity -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+          <div>
+            <p class="text-xl sm:text-2xl">
+              <strong>Temperature:</strong> 28.3°C
+            </p>
+            <p class="text-xl sm:text-2xl">
+              <strong>Feels Like:</strong> 28.08°C
+            </p>
+          </div>
+          <div>
+            <p class="text-xl sm:text-2xl">
+              <strong>Pressure:</strong> 1011 hPa
+            </p>
+            <p class="text-xl sm:text-2xl"><strong>Humidity:</strong> 42%</p>
+          </div>
+        </div>
+
+        <!-- Wind Information -->
+        <div class="flex flex-col sm:flex-row justify-between mb-6">
+          <p class="text-xl sm:text-2xl">
+            <strong>Wind Speed:</strong> 2.22 m/s
+          </p>
+          <p class="text-xl sm:text-2xl">
+            <strong>Wind Gust:</strong> 2.64 m/s
+          </p>
+          <p class="text-xl sm:text-2xl">
+            <strong>Wind Direction:</strong> 319°
+          </p>
+        </div>
+
+        <!-- Cloud Coverage -->
+        <div class="mb-6">
+          <p class="text-xl sm:text-2xl">
+            <strong>Cloud Coverage:</strong> 77%
+          </p>
+        </div>
+
+        <!-- Visibility -->
+        <div class="mb-6">
+          <p class="text-xl sm:text-2xl"><strong>Visibility:</strong> 10 km</p>
+        </div>
+
+        <!-- Sunrise & Sunset -->
+        <div class="flex flex-col sm:flex-row justify-between mb-6">
+          <p class="text-xl sm:text-2xl">
+            <strong>Sunrise:</strong> 2023-11-15 05:39:27
+          </p>
+          <p class="text-xl sm:text-2xl">
+            <strong>Sunset:</strong> 2023-11-15 17:46:00
+          </p>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
 </div>
 
 {% endblock %}

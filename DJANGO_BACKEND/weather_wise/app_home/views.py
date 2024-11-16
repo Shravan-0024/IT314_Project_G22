@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.utils.http import url_has_allowed_host_and_scheme
 import requests
+from django.utils.timezone import make_aware
+from datetime import datetime
 
 
 API_KEY = '3fd909629968761c4f36f936ba57ef90'
