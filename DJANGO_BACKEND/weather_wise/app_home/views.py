@@ -12,7 +12,6 @@ from datetime import datetime
 
 API_KEY = '3fd909629968761c4f36f936ba57ef90'
 
-
 def home_view(request):
     if request.method == "POST":
         city = request.POST["location"]
@@ -37,7 +36,35 @@ def home_view(request):
             return render(request,'home/home.html',{"error":"No such City Found"})
         
     else:
-        return render(request,'home/home.html')
+        city1 = 'Delhi'
+        url = f'https://api.openweathermap.org/data/2.5/weather?q={city1}&appid={API_KEY}&units=metric'
+        response = requests.get(url)
+        data_Delhi = response.json()
+        sunrise_timestamp_d = data_Delhi['sys']['sunrise']
+        sunset_timestamp_d = data_Delhi['sys']['sunset']
+        sunrise_d = datetime.fromtimestamp(sunrise_timestamp_d).strftime('%Y-%m-%d %H:%M:%S')
+        sunset_d = datetime.fromtimestamp(sunset_timestamp_d).strftime('%Y-%m-%d %H:%M:%S')
+        city2 = 'Mumbai'
+        url = f'https://api.openweathermap.org/data/2.5/weather?q={city2}&appid={API_KEY}&units=metric'
+        response = requests.get(url)
+        data_Mumbai = response.json()
+        sunrise_timestamp_m = data_Mumbai['sys']['sunrise']
+        sunset_timestamp_m = data_Mumbai['sys']['sunset']
+        sunrise_m = datetime.fromtimestamp(sunrise_timestamp_m).strftime('%Y-%m-%d %H:%M:%S')
+        sunset_m = datetime.fromtimestamp(sunset_timestamp_m).strftime('%Y-%m-%d %H:%M:%S')
+        city3 = 'Hyderabad'
+        url = f'https://api.openweathermap.org/data/2.5/weather?q={city3}&appid={API_KEY}&units=metric'
+        response = requests.get(url)
+        data_Hyderabad = response.json()
+        sunrise_timestamp_h = data_Hyderabad['sys']['sunrise']
+        sunset_timestamp_h = data_Hyderabad['sys']['sunset']
+        sunrise_h = datetime.fromtimestamp(sunrise_timestamp_h).strftime('%Y-%m-%d %H:%M:%S')
+        sunset_h = datetime.fromtimestamp(sunset_timestamp_h).strftime('%Y-%m-%d %H:%M:%S')
+        if response.status_code == 200:
+            return render(request,'home/home.html', {'data_Delhi': data_Delhi,
+                'data_Mumbai': data_Mumbai,"data_Hyderabad":data_Hyderabad, 'sunrise_d': sunrise_d,
+                'sunset_d': sunset_d, 'sunrise_m': sunrise_m, 'sunset_m': sunset_m, 'sunrise_h': sunrise_h,
+                'sunset_h': sunset_h })
     
 def dashboard_view(request):
     return render(request,'home/dashboard.html')
