@@ -8,8 +8,6 @@ class Notify(models.Model):
     def __str__(self):
         return f"Notify preferences for {self.user.username}"
 
-from django.db import models
-from django.contrib.auth.models import User
 
 class Feedback(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)  # Optional user association
