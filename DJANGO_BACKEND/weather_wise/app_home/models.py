@@ -9,7 +9,7 @@ class Notify(models.Model):
         return f"Notify preferences for {self.user.username}"
     
 class Fav_loc(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # One user can have many favorite locations
     favourite_location = models.CharField(max_length=100)
 
     def __str__(self):

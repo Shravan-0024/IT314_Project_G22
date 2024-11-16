@@ -4,18 +4,17 @@
 
 {% block content %}
 
-<div class=" p-8 sm:p-16">
-    <div class="container mx-auto text-center  text-gray-900 dark:text-slate-100">
+<div class="p-8 sm:p-16">
+    <div class="container mx-auto text-center text-gray-900 dark:text-slate-100">
         <h2 class="text-4xl sm:text-5xl font-bold tracking-tight mb-6">
             Welcome to WeatherWise!
         </h2>
         <hr class="border-gray-900 dark:border-slate-100 opacity-30 mb-6 w-1/4 mx-auto" />
 
-
         {% if user.is_authenticated %}
         <p class="text-xl sm:text-2xl mb-4">
             Welcome, {{ user.first_name }} {{ user.last_name }}!
-            <br>
+            <br />
             We are happy to have you here.
         </p>
 
@@ -44,22 +43,27 @@
             <form method="POST" class="mt-4 mb-4 text-center w-full max-w-lg mx-auto rounded-xl">
                 {% csrf_token %}
                 <div
-                    class="flex items-center rounded-full bg-slate-200 dark:bg-slate-700 text-black dark:text-gray-50 font-roboto ">
+                    class="flex items-center rounded-full bg-slate-200 dark:bg-slate-700 text-black dark:text-gray-50 font-roboto">
                     <!-- Input Field -->
                     <div class="flex-grow flex relative">
                         <input type="text" name="location" placeholder="Enter location"
-                        class="flex-grow p-4 rounded-full text-black text-lg focus:outline-none" />
-                        
-                    <!-- Favorite Button -->
-                    <button type="button" id="favoriteButton" class="absolute top-[5px] right-[10px] p-2 rounded-ful focus:outline-none"
-                        aria-label="Toggle Favorite" onclick="toggleFavorite(this)">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-500" fill="currentColor"
-                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path id="star-icon"
-                                d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                        </svg>
-                    </button>
+                            class="flex-grow p-4 rounded-full text-black text-lg focus:outline-none" />
+
+                        <!-- Hidden Field to Store Favorite Status -->
+                        <input type="hidden" id="isFavorite" name="is_favorite" value="false" />
+
+                        <!-- Favorite Button -->
+                        <button type="button" id="favoriteButton"
+                            class="absolute top-[5px] right-[10px] p-2 rounded-full focus:outline-none"
+                            aria-label="Toggle Favorite" onclick="toggleFavorite(this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-500" fill="currentColor"
+                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path id="star-icon"
+                                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                            </svg>
+                        </button>
                     </div>
+
                     <!-- Search Button -->
                     <button type="submit"
                         class="bg-blue-500 hover:bg-blue-400 p-4 text-white font-semibold rounded-full transition-all duration-300 ease-in-out dark:bg-yellow-500 dark:hover:bg-yellow-600"
@@ -71,12 +75,10 @@
                         </svg>
                     </button>
                 </div>
-
             </form>
-
         </div>
-        {% if error %}  
-            <div class="text-red-500 text-xl mt-2">{{ error }}</div>
+        {% if error %}
+        <div class="text-red-500 text-xl mt-2">{{ error }}</div>
         {% endif %}
     </div>
 </div>
@@ -90,29 +92,41 @@
         <!-- Location and Coordinates -->
         <div class="flex flex-col sm:flex-row justify-between items-center border-b border-gray-700 pb-4">
             <div>
-                <p class="text-3xl font-bold">{{ data.name }}, {{ data.sys.country }}</p>
-                <p class="text-sm text-gray-400">Coordinates: {{ data.coord.lat }}, {{ data.coord.lon }}</p>
+                <p class="text-3xl font-bold">
+                    {{ data.name }}, {{ data.sys.country }}
+                </p>
+                <p class="text-sm text-gray-400">
+                    Coordinates: {{ data.coord.lat }}, {{ data.coord.lon }}
+                </p>
             </div>
         </div>
 
         <!-- Weather Condition -->
         <div class="flex flex-col sm:flex-row items-center space-x-8 py-6">
             <img src="http://openweathermap.org/img/wn/{{ data.weather.0.icon }}@4x.png" alt="Weather Icon"
-                class="w-32 h-32">
+                class="w-32 h-32" />
             <div class="text-center sm:text-left">
                 <p class="text-3xl font-semibold">Weather: {{ data.weather.0.main }}</p>
-                <p class="text-lg text-gray-400">Condition: {{ data.weather.0.description }}</p>
+                <p class="text-lg text-gray-400">
+                    Condition: {{ data.weather.0.description }}
+                </p>
             </div>
         </div>
 
         <!-- Temperature, Pressure & Humidity -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-gray-700 pt-4">
             <div class="space-y-2">
-                <p class="text-xl"><strong>Temperature:</strong> {{ data.main.temp }}°C</p>
-                <p class="text-xl text-gray-400">Feels Like: {{ data.main.feels_like }}°C</p>
+                <p class="text-xl">
+                    <strong>Temperature:</strong> {{ data.main.temp }}°C
+                </p>
+                <p class="text-xl text-gray-400">
+                    Feels Like: {{ data.main.feels_like }}°C
+                </p>
             </div>
             <div class="space-y-2">
-                <p class="text-xl"><strong>Pressure:</strong> {{ data.main.pressure }} hPa</p>
+                <p class="text-xl">
+                    <strong>Pressure:</strong> {{ data.main.pressure }} hPa
+                </p>
                 <p class="text-xl text-gray-400">Humidity: {{ data.main.humidity }}%</p>
             </div>
         </div>
@@ -120,21 +134,29 @@
         <!-- Wind Information -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-gray-700 pt-4">
             <div>
-                <p class="text-xl"><strong>Wind Speed:</strong> {{ data.wind.speed }} m/s</p>
+                <p class="text-xl">
+                    <strong>Wind Speed:</strong> {{ data.wind.speed }} m/s
+                </p>
             </div>
             <div>
-                <p class="text-xl"><strong>Wind Direction:</strong> {{ data.wind.deg }}°</p>
+                <p class="text-xl">
+                    <strong>Wind Direction:</strong> {{ data.wind.deg }}°
+                </p>
             </div>
         </div>
 
         <!-- Cloud Coverage -->
         <div class="border-t border-gray-700 pt-4">
-            <p class="text-xl"><strong>Cloud Coverage:</strong> {{ data.clouds.all }}%</p>
+            <p class="text-xl">
+                <strong>Cloud Coverage:</strong> {{ data.clouds.all }}%
+            </p>
         </div>
 
         <!-- Visibility -->
         <div class="border-t border-gray-700 pt-4">
-            <p class="text-xl"><strong>Visibility:</strong> {{ data.visibility }} meters</p>
+            <p class="text-xl">
+                <strong>Visibility:</strong> {{ data.visibility }} meters
+            </p>
         </div>
 
         <!-- Sunrise & Sunset -->
@@ -149,21 +171,127 @@
     </div>
 </div>
 
+{% elif fav_locs_data %}
+<!-- Container for the Weather Information -->
+{% for data in fav_locs_data %}
+<div class="container mx-auto text-center p-8 font-roboto mb-4">
+    <!-- Weather Card -->
+
+    <div
+        class="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 p-8 rounded-xl shadow-2xl space-y-8 max-w-4xl mx-auto transform transition-transform hover:scale-105">
+        <!-- Location and Coordinates -->
+        <div class="flex flex-col sm:flex-row justify-between items-center border-b border-gray-700 pb-4">
+            <div>
+                <p class="text-3xl font-bold">
+                    {{ data.name }}, {{ data.sys.country }}
+                </p>
+                <p class="text-sm text-gray-400">
+                    Coordinates: {{ data.coord.lat }}, {{ data.coord.lon }}
+                </p>
+            </div>
+        </div>
+
+        <!-- Weather Condition -->
+        <div class="flex flex-col sm:flex-row items-center space-x-8 py-6">
+            <img src="http://openweathermap.org/img/wn/{{ data.weather.0.icon }}@4x.png" alt="Weather Icon"
+                class="w-32 h-32" />
+            <div class="text-center sm:text-left">
+                <p class="text-3xl font-semibold">Weather: {{ data.weather.0.main }}</p>
+                <p class="text-lg text-gray-400">
+                    Condition: {{ data.weather.0.description }}
+                </p>
+            </div>
+        </div>
+
+        <!-- Temperature, Pressure & Humidity -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-gray-700 pt-4">
+            <div class="space-y-2">
+                <p class="text-xl">
+                    <strong>Temperature:</strong> {{ data.main.temp }}°C
+                </p>
+                <p class="text-xl text-gray-400">
+                    Feels Like: {{ data.main.feels_like }}°C
+                </p>
+            </div>
+            <div class="space-y-2">
+                <p class="text-xl">
+                    <strong>Pressure:</strong> {{ data.main.pressure }} hPa
+                </p>
+                <p class="text-xl text-gray-400">Humidity: {{ data.main.humidity }}%</p>
+            </div>
+        </div>
+
+        <!-- Wind Information -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-gray-700 pt-4">
+            <div>
+                <p class="text-xl">
+                    <strong>Wind Speed:</strong> {{ data.wind.speed }} m/s
+                </p>
+            </div>
+            <div>
+                <p class="text-xl">
+                    <strong>Wind Direction:</strong> {{ data.wind.deg }}°
+                </p>
+            </div>
+        </div>
+
+        <!-- Cloud Coverage -->
+        <div class="border-t border-gray-700 pt-4">
+            <p class="text-xl">
+                <strong>Cloud Coverage:</strong> {{ data.clouds.all }}%
+            </p>
+        </div>
+
+        <!-- Visibility -->
+        <div class="border-t border-gray-700 pt-4">
+            <p class="text-xl">
+                <strong>Visibility:</strong> {{ data.visibility }} meters
+            </p>
+        </div>
+
+        <!-- Sunrise & Sunset -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-gray-700 pt-4">
+            <div>
+                <p class="text-xl"><strong>Sunrise:</strong> {{ sunrise }} AM</p>
+            </div>
+            <div>
+                <p class="text-xl"><strong>Sunset:</strong> {{ sunset }} PM</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% else %}
+
+<div class="container mx-auto text-center text-gray-900 dark:text-slate-100">
+    <p class="text-xl sm:text-xl font-bold mb-4 text-white bg-red-600">
+        OOPS!! You don't have any favourite locations so nothing to display here.
+        <br />
+        You can add it using "Star" button in the search bar.
+    </p>
+    <hr class="border-gray-900 dark:border-slate-100 opacity-30 mb-6 w-1/4 mx-auto" />
+</div>
+
 {% endif %}
+
 <script>
     function toggleFavorite(button) {
-        const icon = button.querySelector('#star-icon');
-        if (icon.classList.contains('text-gray-500')) {
-            // Change to yellow
-            icon.classList.remove('text-gray-500');
-            icon.classList.add('text-yellow-500');
+        const hiddenInput = document.getElementById('isFavorite');
+        const starIcon = button.querySelector('#star-icon');
+        const isCurrentlyFavorite = hiddenInput.value === "true";
+
+        // Toggle the state
+        if (isCurrentlyFavorite) {
+            hiddenInput.value = "false";
+            starIcon.setAttribute('fill', 'currentColor'); // Reset to default
+            button.querySelector('svg').classList.replace('text-yellow-500', 'text-gray-500');
         } else {
-            // Change back to gray
-            icon.classList.remove('text-yellow-500');
-            icon.classList.add('text-gray-500');
+            hiddenInput.value = "true";
+            starIcon.setAttribute('fill', '#FFD700'); // Set yellow fill
+            button.querySelector('svg').classList.replace('text-gray-500', 'text-yellow-500');
         }
     }
 </script>
-
 
 {% endblock %}
