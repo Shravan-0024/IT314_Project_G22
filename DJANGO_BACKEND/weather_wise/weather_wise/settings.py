@@ -132,6 +132,6 @@ INTERNAL_IPS = ['127.0.0.1']
 
 # use your npm path @backend team
 # @shravan 
-# NPM_BIN_PATH = "/opt/homebrew/bin/npm"
+NPM_BIN_PATH = "/opt/homebrew/bin/npm"
 # @madhav
-NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
+# NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"

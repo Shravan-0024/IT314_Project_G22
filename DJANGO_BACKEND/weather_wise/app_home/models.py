@@ -7,7 +7,13 @@ class Notify(models.Model):
 
     def __str__(self):
         return f"Notify preferences for {self.user.username}"
+    
+class Fav_loc(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    favourite_location = models.CharField(max_length=100)
 
+    def __str__(self):
+        return f"Favourite location for {self.user.username}"    
 
 class Feedback(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)  # Optional user association
