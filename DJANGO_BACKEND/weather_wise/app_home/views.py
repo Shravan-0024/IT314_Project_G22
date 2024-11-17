@@ -71,42 +71,56 @@ def dashboard_view(request):
     user = request.user
 
     if request.method == "POST":
+        print(request.POST)
+        if "fav_location_save" in request.POST:
 
-        city = request.POST.get("location", "").strip()
-        is_favorite = request.POST.get("is_favorite", "false") == "true"
+            print(f"Save request for {request.POST.get("fav_location_save")}")
+            checkExist = Fav_loc.objects.filter(user=user, favourite_location=request.POST.get("fav_location_save")).first()
 
-        try:
-            favloc = Fav_loc.objects.get(user=user, favourite_location = city)
-        except Fav_loc.DoesNotExist:
-            favloc = None
+            if not checkExist:
+                Fav_loc.objects.create(user=user, favourite_location=request.POST.get("fav_location_save"))
+            favlocs_data = []
+            favlocs = Fav_loc.objects.filter(user=user)  # Retrieve all favorite locations for the user
+            for loc in favlocs :
+                url = f'https://api.openweathermap.org/data/2.5/weather?q={loc.favourite_location}&appid={API_KEY}&units=metric'
+                response = requests.get(url)
+                data = response.json()
+                favlocs_data.append(data)
+            return render(request, 'home/dashboard.html', { 'fav_locs_data': favlocs_data })
+        if "fav_location_delete" in request.POST:
+            print(f"Delete request for {request.POST.get("fav_location_delete")}")
+            # Delete the favorite location from the database
+            Fav_loc.objects.filter(user=user, favourite_location=request.POST.get("fav_location_delete")).delete()
+            favlocs_data = []
+            favlocs = Fav_loc.objects.filter(user=user)  # Retrieve updated favorite locations for the user
+            for loc in favlocs:
+                url = f'https://api.openweathermap.org/data/2.5/weather?q={loc.favourite_location}&appid={API_KEY}&units=metric'
+                response = requests.get(url)
+                data = response.json()
+                favlocs_data.append(data)
+            
+            return render(request, 'home/dashboard.html', {'fav_locs_data': favlocs_data})
+        if "location" in request.POST:
+            print(f"Search request for {request.POST.get("location")}")
+            url = f'https://api.openweathermap.org/data/2.5/weather?q={request.POST.get("location")}&appid={API_KEY}&units=metric'
+            response = requests.get(url)
+            data = response.json()
 
+            if response.status_code == 200:
+                sunrise_timestamp = data['sys']['sunrise']
+                sunset_timestamp = data['sys']['sunset']
+                sunrise = datetime.fromtimestamp(sunrise_timestamp).strftime('%Y-%m-%d %H:%M:%S')
+                sunset = datetime.fromtimestamp(sunset_timestamp).strftime('%Y-%m-%d %H:%M:%S')
 
-        if is_favorite :
-            if favloc is None:
-                Fav_loc.objects.create(user=user, favourite_location=city)
-        else :
-            if favloc :
-                favloc.delete()
-
-        url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric'
-        response = requests.get(url)
-        data = response.json()
-
-        if response.status_code == 200:
-            sunrise_timestamp = data['sys']['sunrise']
-            sunset_timestamp = data['sys']['sunset']
-            sunrise = datetime.fromtimestamp(sunrise_timestamp).strftime('%Y-%m-%d %H:%M:%S')
-            sunset = datetime.fromtimestamp(sunset_timestamp).strftime('%Y-%m-%d %H:%M:%S')
-
-            return render(request, 'home/dashboard.html', {
-                'sunrise': sunrise,
-                'sunset': sunset,
-                "data": data
-            })
-        else:
-            return render(request, 'home/dashboard.html', {
-                "error": f"Some error occurred for '{city}'. Currently, we are unable to serve you."
-            })
+                return render(request, 'home/dashboard.html', {
+                    'sunrise': sunrise,
+                    'sunset': sunset,
+                    "data": data
+                })
+            else:
+                return render(request, 'home/dashboard.html', {
+                    "error": f"Some error occurred for '{request.POST.get("location")}'. Currently, we are unable to serve you."
+                })
     else:
         favlocs_data = []
         favlocs = Fav_loc.objects.filter(user=user)  # Retrieve all favorite locations for the user

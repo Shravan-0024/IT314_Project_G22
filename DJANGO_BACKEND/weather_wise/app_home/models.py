@@ -13,7 +13,7 @@ class Fav_loc(models.Model):
     favourite_location = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"Favourite location for {self.user.username}"    
+        return f"{self.user.username} saves {self.favourite_location}"    
 
 class Feedback(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)  # Optional user association
