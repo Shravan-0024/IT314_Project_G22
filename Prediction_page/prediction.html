@@ -1,32 +1,43 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Prediction</title>
-    
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Prediction</title>
+  <link href="styles.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="container">
-        <h1>7-Day Weather Prediction</h1>
-        
-        <!-- Input Form for Location -->
-        <div class="input-section">
-            <label for="location">Enter Location:</label>
-            <input type="text" id="location" placeholder="City or Zip Code">
-            <button onclick="getWeatherPrediction()">Predict</button>
-        </div>
-        
-        <!-- Forecast Display -->
-        <div id="forecast-container" class="forecast-container">
-            <h2>Forecast for <span id="location-name"></span></h2>
-            <div id="forecast" class="forecast">
-                <!-- Forecast Days will be inserted here by JavaScript -->
-            </div>
-        </div>
+<body class="font-sans">
+
+  <div class="container mx-auto p-8">
+    <div class="mb-8 text-center">
+      <h1 class="text-4xl font-bold mb-4 text-white">Weather Prediction</h1>
+      <p class="text-xl text-gray-300 mb-6">Enter your city name to get the next 7 days' weather forecast.</p>
+      <input id="city" type="text" class="input-box px-4 py-2 text-black rounded-lg mb-4 w-64" placeholder="Enter city name" />
+      <button id="get-weather-btn" class="btn hover:bg-blue-600">
+        Get Weather
+      </button>
     </div>
 
-    <script src="script.js"></script>
+    <div id="weather-info" class="hidden fade-in">
+      <div class="text-center mb-6">
+        <h2 id="city-name" class="text-2xl font-semibold mb-4"></h2>
+        <div id="forecast" class="forecast-container">
+        </div>
+        <div id="second-row" class="forecast-container second-row">
+        </div>
+      </div>
+    </div>
+
+    <div class="recent-locations-container mt-8">
+      <h3 class="text-2xl text-center text-white mb-4">Recent Locations</h3>
+      <div id="recent-locations" class="flex justify-center space-x-4">
+        <!-- Recent locations -->
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
