@@ -1,101 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Prediction</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Weather Prediction</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* ghjkjhghj */
+    @keyframes gradientAnimation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .gradient-bg {
+      background: linear-gradient(135deg, #2d3748, #4a5568);
+      background-size: 400% 400%;
+      animation: gradientAnimation 15s ease infinite;
+    }
+    .fade-in {
+      animation: fadeIn 1s ease-in-out;
+    }
+    .slide-in {
+      animation: slideIn 0.5s ease-out;
+    }
+  </style>
 </head>
-<body class="bg-cyan-50 text-gray-700 flex items-center justify-center min-h-screen py-8">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-2xl">
-        <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg">
-            <h1 class="text-3xl font-bold text-teal-700 mb-10 text-center">7-Day Weather Prediction</h1>
-            
-            
-            <div class="mb-8 text-center space-y-4 sm:space-y-0 sm:flex sm:items-center sm:space-x-4 justify-center">
-                <div class="flex-grow max-w-md">
-                    <label for="location" class="sr-only">Enter Location:</label>
-                    <input type="text" id="location" placeholder="City or Zip Code"
-                        class="w-full px-4 py-2 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 placeholder:text-sm placeholder:text-gray-400">
-                </div>
-                <button onclick="getWeatherPrediction()"
-                    class="w-full sm:w-auto px-6 py-2 bg-teal-700 text-white rounded-lg hover:bg-teal-800 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                    Predict
-                </button>
-            </div>
-            
-            
-            <div id="forecast-container" class="hidden">
-                <h2 class="text-xl font-semibold mb-6">Forecast for <span id="location-name" class="text-teal-700"></span></h2>
-                <div id="forecast" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    
-                </div>
-            </div>
-        </div>
+<body class="font-sans text-white gradient-bg min-h-screen flex flex-col items-center justify-center">
+
+  
+  <div class="container mx-auto px-4 py-8">
+    
+    <div class="text-center mb-8">
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Weather Prediction</h1>
+      <p class="text-sm md:text-lg text-gray-300 mb-6">Enter your city name to get the next 7 days' weather forecast.</p>
+      <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-2">
+        <input id="city" type="text" class="px-4 py-2 text-black rounded-lg w-full md:w-72 focus:outline-none focus:ring-4 focus:ring-blue-500" placeholder="Enter city name" />
+        <button id="get-weather-btn" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-transform transform hover:scale-105 w-full md:w-auto">
+          Get Weather
+        </button>
+      </div>
     </div>
 
-    <script>
-        function getWeatherPrediction() {
-            const location = document.getElementById("location").value;
-            const forecastContainer = document.getElementById("forecast-container");
-            const locationName = document.getElementById("location-name");
-            const forecast = document.getElementById("forecast");
+    
+    <div id="weather-info" class="hidden fade-in mt-8">
+      <div class="text-center">
+        <h2 id="city-name" class="text-2xl md:text-3xl font-semibold mb-6"></h2>
+        <div id="forecast" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 justify-items-center">
+          <!-- Forecast Cards Will Be Injected Here -->
+        </div>
+      </div>
+    </div>
 
-            if (location.trim() === "") {
-                alert("Please enter a location.");
-                return;
-            }
+    <!-- Recent Locations -->
+    <div class="mt-12">
+      <h3 class="text-xl md:text-2xl font-semibold text-center mb-6">Recent Locations</h3>
+      <div id="recent-locations" class="flex flex-wrap justify-center gap-4">
+        
+      </div>
+    </div>
+  </div>
 
-            
-            const mockForecast = [
-                { day: "Monday", high: "30°C", low: "20°C", condition: "Sunny" },
-                { day: "Tuesday", high: "28°C", low: "18°C", condition: "Partly Cloudy" },
-                { day: "Wednesday", high: "26°C", low: "17°C", condition: "Rainy" },
-                { day: "Thursday", high: "25°C", low: "16°C", condition: "Cloudy" },
-                { day: "Friday", high: "29°C", low: "19°C", condition: "Sunny" },
-                { day: "Saturday", high: "32°C", low: "21°C", condition: "Sunny" },
-                { day: "Sunday", high: "31°C", low: "20°C", condition: "Windy" }
-            ];
+  <script>
+    let recentLocations = JSON.parse(localStorage.getItem("recentLocations")) || [];
 
-            
-            const conditionIcons = {
-                "Sunny": "./images/sun.png",
-                "Partly Cloudy": "./images/partly-cloudy.png",
-                "Rainy": "./images/rainy-day.png",
-                "Cloudy": "./images/cloudy.png",
-                "Windy": "./images/cloud.png"
-            };
+    function getWeather() {
+      const city = document.getElementById("city").value;
+      if (!city.trim()) {
+        alert("Please enter a valid city name.");
+        return;
+      }
 
-            
-            locationName.textContent = location;
+      document.getElementById("get-weather-btn").disabled = true;
+      document.getElementById("city").disabled = true;
+      document.getElementById("weather-info").classList.remove("hidden");
 
-            
-            forecast.innerHTML = "";
+      const weatherData = {
+        forecast: [
+          { date: '2024-11-16', temp: 22, humidity: 50, precipitation: 5, windSpeed: 10, condition: 'Sunny' },
+          { date: '2024-11-17', temp: 20, humidity: 60, precipitation: 10, windSpeed: 12, condition: 'Partly Cloudy' },
+          { date: '2024-11-18', temp: 18, humidity: 70, precipitation: 15, windSpeed: 15, condition: 'Cloudy' },
+          { date: '2024-11-19', temp: 17, humidity: 80, precipitation: 25, windSpeed: 18, condition: 'Rainy' },
+          { date: '2024-11-20', temp: 16, humidity: 65, precipitation: 5, windSpeed: 8, condition: 'Showers' }
+        ]
+      };
 
-           
-            mockForecast.forEach((day) => {
-                const dayDiv = document.createElement("div");
-                dayDiv.className = "bg-gray-50 p-6 rounded-xl shadow-md";
-                
-                
-                const iconSrc = conditionIcons[day.condition] || "path/to/default-icon.png";
-                
-                dayDiv.innerHTML = `
-                    <h3 class="text-lg font-semibold text-teal-700 mb-4">${day.day}</h3>
-                    <p class="text-gray-600 mb-1">High: ${day.high}</p>
-                    <p class="text-gray-600 mb-1">Low: ${day.low}</p>
-                    <div class="flex items-center gap-2 text-gray-600">
-                        <span>${day.condition}</span>
-                        <img src="${iconSrc}" alt="${day.condition} icon" class="w-8 h-8 object-contain">
-                    </div>
-                `;
-                
-                forecast.appendChild(dayDiv);
-            });
+      displayWeatherInfo(weatherData.forecast);
 
-            
-            forecastContainer.classList.remove('hidden');
-        }
-    </script>
+      
+      recentLocations.unshift({ city, weatherData });
+      if (recentLocations.length > 3) {
+        recentLocations.pop(); 
+      }
+
+      localStorage.setItem("recentLocations", JSON.stringify(recentLocations));
+      
+      
+      displayRecentLocations();
+
+      setTimeout(() => {
+        document.getElementById("get-weather-btn").disabled = false;
+        document.getElementById("city").disabled = false;
+      }, 1000);
+    }
+
+    function displayWeatherInfo(forecast) {
+      const forecastContainer = document.getElementById("forecast");
+      forecastContainer.innerHTML = '';
+
+      forecast.forEach(day => {
+        const dayCard = document.createElement("div");
+        dayCard.classList.add("w-full", "h-64", "bg-white", "bg-opacity-10", "rounded-lg", "p-6", "shadow-lg", "hover:shadow-xl", "hover:scale-105", "transition-transform", "duration-300", "text-center", "fade-in");
+
+        const iconSrc = getWeatherIcon(day.condition);
+
+        dayCard.innerHTML = `
+          <div class="text-lg font-bold mb-2">${new Date(day.date).toLocaleDateString()}</div>
+          <div>
+            <img src="${iconSrc}" alt="${day.condition}" class="w-14 h-14 mx-auto mb-2">
+          </div>
+          <div class="text-sm md:text-md mb-1">Temp: ${day.temp}°C</div>
+          <div class="text-sm md:text-md mb-1">Wind: ${day.windSpeed} km/h</div>
+          <div class="text-sm md:text-md font-semibold">${day.condition}</div>
+        `;
+
+        forecastContainer.appendChild(dayCard);
+      });
+    }
+
+    function displayRecentLocations() {
+      const recentLocationsContainer = document.getElementById("recent-locations");
+      recentLocationsContainer.innerHTML = '';
+
+      recentLocations.forEach(location => {
+        const locationCard = document.createElement("div");
+        locationCard.classList.add("w-full", "md:w-40", "h-40", "bg-white", "bg-opacity-10", "rounded-lg", "p-4", "shadow-lg", "text-center", "slide-in");
+
+        locationCard.innerHTML = `
+          <p class="text-md font-semibold mb-2">${location.city}</p>
+          <button class="bg-blue-600 hover:bg-blue-700 text-white py-1 px-4 rounded-lg transition-transform transform hover:scale-105" onclick="getWeatherForRecentLocation('${location.city}')">View Weather</button>
+        `;
+        recentLocationsContainer.appendChild(locationCard);
+      });
+    }
+
+    function getWeatherForRecentLocation(city) {
+      document.getElementById("city").value = city;
+      getWeather(); 
+    }
+
+    function getWeatherIcon(condition) {
+      switch (condition) {
+        case 'Sunny': return 'https://cdn-icons-png.flaticon.com/512/869/869869.png';
+        case 'Partly Cloudy': return 'https://cdn-icons-png.flaticon.com/512/1163/1163642.png';
+        case 'Cloudy': return 'https://cdn-icons-png.flaticon.com/512/1163/1163659.png';
+        case 'Rainy': return 'https://cdn-icons-png.flaticon.com/512/1163/1163653.png';
+        case 'Showers': return 'https://cdn-icons-png.flaticon.com/512/1163/1163657.png';
+        default: return 'https://cdn-icons-png.flaticon.com/512/869/869869.png';
+      }
+    }
+
+    document.getElementById("get-weather-btn").addEventListener("click", getWeather);
+
+
+    window.onload = displayRecentLocations;
+  </script>
 </body>
 </html>
