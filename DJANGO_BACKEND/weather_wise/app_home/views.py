@@ -105,7 +105,7 @@ def dashboard_view(request):
             url = f'https://api.openweathermap.org/data/2.5/weather?q={request.POST.get("location")}&appid={API_KEY}&units=metric'
             response = requests.get(url)
             data = response.json()
-
+            print(data)
             if response.status_code == 200:
                 sunrise_timestamp = data['sys']['sunrise']
                 sunset_timestamp = data['sys']['sunset']

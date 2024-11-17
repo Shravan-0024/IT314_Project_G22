@@ -23,6 +23,7 @@ module.exports = {
             },
             fontFamily: {
                 roboto: ['Roboto', 'sans-serif'],
+                quicksand: ['"Quicksand"', 'sans-serif'],
             },
         },
     },
