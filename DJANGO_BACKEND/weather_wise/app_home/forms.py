@@ -144,12 +144,12 @@ class FeedbackForm(forms.Form):
     def save(self, user=None):
         # Save feedback to the model
         feedback = Feedback(
-            user=user,
-            predictions_accuracy=', '.join(self.cleaned_data['predictions_accuracy']),
-            app_usability=', '.join(self.cleaned_data['app_usability']),
-            user_interface=', '.join(self.cleaned_data['user_interface']),
-            helpful_info=', '.join(self.cleaned_data['helpful_info']),
-            app_recommend=', '.join(self.cleaned_data['app_recommend'])
-        )
+        user=user,
+        predictions_accuracy=self.cleaned_data['predictions_accuracy'],  
+        app_usability=self.cleaned_data['app_usability'],
+        user_interface=self.cleaned_data['user_interface'],
+        helpful_info=self.cleaned_data['helpful_info'],
+        app_recommend=self.cleaned_data['app_recommend'],
+    )
         feedback.save()
         return feedback
