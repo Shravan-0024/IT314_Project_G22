@@ -1,6 +1,6 @@
 import pytest
 from django.contrib.auth.models import User
-from app_home.models import Feedback, Notify, Fav_loc
+from app_home.models import Feedback, Notify, Fav_loc, Recent_loc
 from django.core.exceptions import ValidationError
 
 print("Sumit testing: Feedback, Notify and Favorite Locations Models")
@@ -177,4 +177,21 @@ def test_valid_multiple_fav_locs(user):
 def test_fav_loc_str(user):
     # to test the __str__ method of Fav_loc model
     fav_loc = Fav_loc.objects.create(user=user, favourite_location="Lucknow")
-    assert str(fav_loc) == f"Favourite location for {user.username}"
+    assert str(fav_loc) == f"{fav_loc.user.username} saves {fav_loc.favourite_location}"
+
+
+#Below is the testcase to test the recent location model return string
+@pytest.mark.django_db
+def test_recent_loc_str(user):
+    # to test the __str__ method of Fav_loc model
+    rec_loc = Recent_loc.objects.create(user=user, recent_location="Jamnagar")
+    assert str(rec_loc) == f"{rec_loc.user.username} saves {rec_loc.recent_location}"
+
+@pytest.mark.xfail(reason="This should fail if the recent location string >100 characters")
+@pytest.mark.django_db
+def test_recent_loc_string_length(user):
+    # to test the __str__ method of Fav_loc model
+    rec_loc = Recent_loc.objects.create(user=user, recent_location="Varanasi"*101)
+    assert str(rec_loc) == f"{rec_loc.user.username} saves {rec_loc.recent_location}"
+    if len(rec_loc.recent_location) > 100:
+        raise ValidationError("Favourite location string cant exceed 100 chars!")

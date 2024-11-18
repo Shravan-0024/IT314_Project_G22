@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 class Notify(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     preferred_location = models.CharField(max_length=100)
+    get_notifications = models.BooleanField(default=False) 
 
     def __str__(self):
         return f"Notify preferences for {self.user.username}"
