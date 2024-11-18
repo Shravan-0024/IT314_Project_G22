@@ -74,7 +74,7 @@ def dashboard_view(request):
         print(request.POST)
         if "fav_location_save" in request.POST:
 
-            print(f"Save request for {request.POST.get("fav_location_save")}")
+            #print(f"Save request for {request.POST.get("fav_location_save")}")
             checkExist = Fav_loc.objects.filter(user=user, favourite_location=request.POST.get("fav_location_save")).first()
 
             if not checkExist:
@@ -88,7 +88,7 @@ def dashboard_view(request):
                 favlocs_data.append(data)
             return render(request, 'home/dashboard.html', { 'fav_locs_data': favlocs_data })
         if "fav_location_delete" in request.POST:
-            print(f"Delete request for {request.POST.get("fav_location_delete")}")
+            #print(f"Delete request for {request.POST.get("fav_location_delete")}")
             # Delete the favorite location from the database
             Fav_loc.objects.filter(user=user, favourite_location=request.POST.get("fav_location_delete")).delete()
             favlocs_data = []
@@ -101,7 +101,7 @@ def dashboard_view(request):
             
             return render(request, 'home/dashboard.html', {'fav_locs_data': favlocs_data})
         if "location" in request.POST:
-            print(f"Search request for {request.POST.get("location")}")
+            #print(f"Search request for {request.POST.get("location")}")
             url = f'https://api.openweathermap.org/data/2.5/weather?q={request.POST.get("location")}&appid={API_KEY}&units=metric'
             response = requests.get(url)
             data = response.json()
@@ -119,7 +119,7 @@ def dashboard_view(request):
                 })
             else:
                 return render(request, 'home/dashboard.html', {
-                    "error": f"Some error occurred for '{request.POST.get("location")}'. Currently, we are unable to serve you."
+                    #"error": f"Some error occurred for '{request.POST.get("location")}'. Currently, we are unable to serve you."
                 })
     else:
         favlocs_data = []
@@ -200,6 +200,8 @@ def signup_view(request):
     
 @login_required(login_url='/login?next=/predict')
 def predict_view(request):
+    if request.method == "POST":
+        city = request.POST["location"]
     return render(request, 'home/predict.html')
 
 
