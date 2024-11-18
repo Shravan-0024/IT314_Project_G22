@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from app_home.forms import UserSignUpForm,UserProfileEditForm
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
-from .models import Notify
+from .models import Notify, Recent_loc
 from .models import Fav_loc
 from .forms import NotifyForm,FeedbackForm
 from django.contrib.auth.models import User
@@ -200,9 +200,17 @@ def signup_view(request):
     
 @login_required(login_url='/login?next=/predict')
 def predict_view(request):
+    user = request.user
+
     if request.method == "POST":
+        data = 1
         city = request.POST["location"]
-    return render(request, 'home/predict.html')
+        Recent_loc.objects.create(user=user, recent_location=city)
+        return render(request, 'home/predict.html', {'data' : data})
+    else :
+        recentLocs = []
+        recentLocs = Recent_loc.objects.filter(user=user)  # Retrieve all Recent locations for the user
+        return render(request, 'home/predict.html', {'recentLocs' : recentLocs})
 
 
 def logout_view(request):
