@@ -46,7 +46,7 @@
         {% for recentLocation in recentLocs %}
         <form method="POST" class="relative">
             {% csrf_token %}
-            <input type="hidden" name="location" value="{{ recentLocation }}">
+            <input type="hidden" name="location" value="{{ recentLocation.recent_location }}">
             <button type="submit"
                 class="block bg-gradient-to-br from-cyan-100 to-blue-300 text-gray-800 text-center py-4 px-2 rounded-lg shadow-lg hover:scale-105 hover:shadow-2xl transition-transform duration-300 ease-in-out w-full">
                 <span class="font-semibold">{{ recentLocation.recent_location }}</span>

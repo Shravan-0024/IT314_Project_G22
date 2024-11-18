@@ -7,6 +7,7 @@ from .models import Fav_loc
 from .forms import NotifyForm,FeedbackForm
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.db.models import Count
 from django.utils.http import url_has_allowed_host_and_scheme
 import requests
 from datetime import datetime
@@ -208,8 +209,12 @@ def predict_view(request):
         Recent_loc.objects.create(user=user, recent_location=city)
         return render(request, 'home/predict.html', {'data' : data})
     else :
-        recentLocs = []
-        recentLocs = Recent_loc.objects.filter(user=user)  # Retrieve all Recent locations for the user
+        recentLocs = (
+            Recent_loc.objects.filter(user=user)
+            .values('recent_location')  # Group by recent_location
+            .annotate(search_count=Count('recent_location'))  # Count occurrences
+            .order_by('-search_count')[:3]  # Sort by count in descending order and get top 3
+        )
         return render(request, 'home/predict.html', {'recentLocs' : recentLocs})
 
 
