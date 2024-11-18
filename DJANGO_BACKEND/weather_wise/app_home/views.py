@@ -119,9 +119,8 @@ def dashboard_view(request):
                     "data": data
                 })
             else:
-                return render(request, 'home/dashboard.html', {
-                    #"error": f"Some error occurred for '{request.POST.get("location")}'. Currently, we are unable to serve you."
-                })
+                return render(request, 'home/dashboard.html', 
+                { "error": f"Some error occurred for '{request.POST.get('location')}'. Currently, we are unable to serve you."})
     else:
         favlocs_data = []
         favlocs = Fav_loc.objects.filter(user=user)  # Retrieve all favorite locations for the user
