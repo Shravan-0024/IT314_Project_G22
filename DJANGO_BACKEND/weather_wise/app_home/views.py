@@ -2,8 +2,7 @@ from django.shortcuts import render,redirect
 from app_home.forms import UserSignUpForm,UserProfileEditForm
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
-from .models import Notify, Recent_loc
-from .models import Fav_loc
+from .models import Notify, Recent_loc,Fav_loc
 from .forms import NotifyForm,FeedbackForm
 from django.contrib.auth.models import User
 from django.db.models import Q
@@ -12,61 +11,58 @@ from django.utils.http import url_has_allowed_host_and_scheme
 import requests
 from datetime import datetime
 
-API_KEY = '3fd909629968761c4f36f936ba57ef90'
+API_KEY_1 = '3fd909629968761c4f36f936ba57ef90'
+API_KEY_2 = "0d469164e7b1b6a7bfdecd4144e44001"
+
+def get_weather_data(city):
+    """ 
+    Fetch weather data for a given city and return sunrise and sunset times.
+    Parameters:
+        city (str): The city name.
+        api_key (str): The API key for OpenWeather API.
+    Returns:
+        dict: A dictionary containing the city name, sunrise, and sunset times in the specified format.
+    """
+    url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY_1}&units=metric'
+    response = requests.get(url)
+    
+    if response.status_code == 200:
+        data = response.json()
+        sunrise_timestamp = data['sys']['sunrise']
+        sunset_timestamp = data['sys']['sunset']
+        
+        data['sys']['sunrise'] = datetime.fromtimestamp(sunrise_timestamp).strftime('%Y-%m-%d %H:%M:%S')
+        data['sys']['sunset'] = datetime.fromtimestamp(sunset_timestamp).strftime('%Y-%m-%d %H:%M:%S')
+        
+        return {
+            'city': city,
+            'data': data,
+        }
+    else:
+        return {'error': f"Failed to get data for {city}"}
 
 def home_view(request):
     if request.method == "POST":
         city = request.POST["location"]
-        url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric'
+        weather_info = get_weather_data(city)
 
-        response = requests.get(url)
-        data = response.json()
-        # allowing user to access home page even if he is logged in - Consider it as feature
-        if response.status_code == 200:
-            print(data)
-            # Extract sunrise and sunset timestamps and convert them
-            sunrise_timestamp = data['sys']['sunrise']
-            sunset_timestamp = data['sys']['sunset']
-            sunrise = datetime.fromtimestamp(sunrise_timestamp).strftime('%Y-%m-%d %H:%M:%S')
-            sunset = datetime.fromtimestamp(sunset_timestamp).strftime('%Y-%m-%d %H:%M:%S')
-
-            # Add the formatted timestamps to the context
-            
-            return render(request,'home/home.html',{'sunrise': sunrise,
-                'sunset': sunset,"data":data})
+        if 'error' in weather_info:
+            return render(request, 'home/home.html', {"error": weather_info['error']})
         else:
-            return render(request,'home/home.html',{"error":f"Some Error Occured for '{city}' \nCurrently we are unable to serve you"})
+            return render(request, 'home/home.html', {'data': weather_info['data']})
         
     else:
         city1 = 'Delhi'
-        url = f'https://api.openweathermap.org/data/2.5/weather?q={city1}&appid={API_KEY}&units=metric'
-        response = requests.get(url)
-        data_Delhi = response.json()
-        sunrise_timestamp_d = data_Delhi['sys']['sunrise']
-        sunset_timestamp_d = data_Delhi['sys']['sunset']
-        sunrise_d = datetime.fromtimestamp(sunrise_timestamp_d).strftime('%Y-%m-%d %H:%M:%S')
-        sunset_d = datetime.fromtimestamp(sunset_timestamp_d).strftime('%Y-%m-%d %H:%M:%S')
+        weather_info1 = get_weather_data(city1)
         city2 = 'Mumbai'
-        url = f'https://api.openweathermap.org/data/2.5/weather?q={city2}&appid={API_KEY}&units=metric'
-        response = requests.get(url)
-        data_Mumbai = response.json()
-        sunrise_timestamp_m = data_Mumbai['sys']['sunrise']
-        sunset_timestamp_m = data_Mumbai['sys']['sunset']
-        sunrise_m = datetime.fromtimestamp(sunrise_timestamp_m).strftime('%Y-%m-%d %H:%M:%S')
-        sunset_m = datetime.fromtimestamp(sunset_timestamp_m).strftime('%Y-%m-%d %H:%M:%S')
+        weather_info2 = get_weather_data(city2)
         city3 = 'Hyderabad'
-        url = f'https://api.openweathermap.org/data/2.5/weather?q={city3}&appid={API_KEY}&units=metric'
-        response = requests.get(url)
-        data_Hyderabad = response.json()
-        sunrise_timestamp_h = data_Hyderabad['sys']['sunrise']
-        sunset_timestamp_h = data_Hyderabad['sys']['sunset']
-        sunrise_h = datetime.fromtimestamp(sunrise_timestamp_h).strftime('%Y-%m-%d %H:%M:%S')
-        sunset_h = datetime.fromtimestamp(sunset_timestamp_h).strftime('%Y-%m-%d %H:%M:%S')
-        if response.status_code == 200:
-            return render(request,'home/home.html', {'data_Delhi': data_Delhi,
-                'data_Mumbai': data_Mumbai,"data_Hyderabad":data_Hyderabad, 'sunrise_d': sunrise_d,
-                'sunset_d': sunset_d, 'sunrise_m': sunrise_m, 'sunset_m': sunset_m, 'sunrise_h': sunrise_h,
-                'sunset_h': sunset_h })
+        weather_info3 = get_weather_data(city3)
+        return render(request, 'home/home.html', {
+            'data_Delhi': weather_info1['data'],
+            'data_Mumbai': weather_info2['data'],
+            'data_Hyderabad': weather_info3['data'],
+        })
     
 def dashboard_view(request):
     user = request.user
@@ -74,19 +70,18 @@ def dashboard_view(request):
     if request.method == "POST":
         print(request.POST)
         if "fav_location_save" in request.POST:
-
+            city = request.POST.get("fav_location_save")
             #print(f"Save request for {request.POST.get("fav_location_save")}")
-            checkExist = Fav_loc.objects.filter(user=user, favourite_location=request.POST.get("fav_location_save")).first()
-
+            checkExist = Fav_loc.objects.filter(user=user, favourite_location=city).first()
+            # save only if already not saved
             if not checkExist:
                 Fav_loc.objects.create(user=user, favourite_location=request.POST.get("fav_location_save"))
             favlocs_data = []
             favlocs = Fav_loc.objects.filter(user=user)  # Retrieve all favorite locations for the user
             for loc in favlocs :
-                url = f'https://api.openweathermap.org/data/2.5/weather?q={loc.favourite_location}&appid={API_KEY}&units=metric'
-                response = requests.get(url)
-                data = response.json()
-                favlocs_data.append(data)
+                weather_info = get_weather_data(loc.favourite_location)
+                print(weather_info['data'])
+                favlocs_data.append(weather_info['data'])
             return render(request, 'home/dashboard.html', { 'fav_locs_data': favlocs_data })
         if "fav_location_delete" in request.POST:
             #print(f"Delete request for {request.POST.get("fav_location_delete")}")
@@ -94,42 +89,29 @@ def dashboard_view(request):
             Fav_loc.objects.filter(user=user, favourite_location=request.POST.get("fav_location_delete")).delete()
             favlocs_data = []
             favlocs = Fav_loc.objects.filter(user=user)  # Retrieve updated favorite locations for the user
-            for loc in favlocs:
-                url = f'https://api.openweathermap.org/data/2.5/weather?q={loc.favourite_location}&appid={API_KEY}&units=metric'
-                response = requests.get(url)
-                data = response.json()
-                favlocs_data.append(data)
-            
-            return render(request, 'home/dashboard.html', {'fav_locs_data': favlocs_data})
+            for loc in favlocs :
+                weather_info = get_weather_data(loc.favourite_location)
+                print(weather_info['data'])
+                favlocs_data.append(weather_info['data'])
+            return render(request, 'home/dashboard.html', { 'fav_locs_data': favlocs_data })
         if "location" in request.POST:
             #print(f"Search request for {request.POST.get("location")}")
-            url = f'https://api.openweathermap.org/data/2.5/weather?q={request.POST.get("location")}&appid={API_KEY}&units=metric'
-            response = requests.get(url)
-            data = response.json()
-            print(data)
-            if response.status_code == 200:
-                sunrise_timestamp = data['sys']['sunrise']
-                sunset_timestamp = data['sys']['sunset']
-                sunrise = datetime.fromtimestamp(sunrise_timestamp).strftime('%Y-%m-%d %H:%M:%S')
-                sunset = datetime.fromtimestamp(sunset_timestamp).strftime('%Y-%m-%d %H:%M:%S')
+            city = request.POST["location"]
+            weather_info = get_weather_data(city)
 
-                return render(request, 'home/dashboard.html', {
-                    'sunrise': sunrise,
-                    'sunset': sunset,
-                    "data": data
-                })
+            if 'error' in weather_info:
+                return render(request, 'home/home.html', {"error": weather_info['error']})
             else:
-                return render(request, 'home/dashboard.html', 
-                { "error": f"Some error occurred for '{request.POST.get('location')}'. Currently, we are unable to serve you."})
+                return render(request, 'home/dashboard.html', {
+                    'data': weather_info['data'],
+                })
     else:
         favlocs_data = []
         favlocs = Fav_loc.objects.filter(user=user)  # Retrieve all favorite locations for the user
         for loc in favlocs :
-            url = f'https://api.openweathermap.org/data/2.5/weather?q={loc.favourite_location}&appid={API_KEY}&units=metric'
-            response = requests.get(url)
-            data = response.json()
-            favlocs_data.append(data)
-
+                weather_info = get_weather_data(loc.favourite_location)
+                print(weather_info['data'])
+                favlocs_data.append(weather_info['data'])
         return render(request, 'home/dashboard.html', { 'fav_locs_data': favlocs_data })
 
 

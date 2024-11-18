@@ -165,10 +165,10 @@
         <!-- Sunrise & Sunset -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-gray-700 pt-4">
             <div>
-                <p class="text-xl"><strong>Sunrise:</strong> {{ sunrise }} AM</p>
+                <p class="text-xl"><strong>Sunrise:</strong> {{ data.sys.sunrise }} AM</p>
             </div>
             <div>
-                <p class="text-xl"><strong>Sunset:</strong> {{ sunset }} PM</p>
+                <p class="text-xl"><strong>Sunset:</strong> {{ data.sys.sunset }} PM</p>
             </div>
         </div>
     </div>
@@ -270,10 +270,10 @@
         <!-- Sunrise & Sunset -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-gray-700 pt-4">
             <div>
-                <p class="text-xl"><strong>Sunrise:</strong> {{ sunrise }} AM</p>
+                <p class="text-xl"><strong>Sunrise:</strong> {{ data.sys.sunrise }} AM</p>
             </div>
             <div>
-                <p class="text-xl"><strong>Sunset:</strong> {{ sunset }} PM</p>
+                <p class="text-xl"><strong>Sunset:</strong> {{ data.sys.sunset }} PM</p>
             </div>
         </div>
     </div>
@@ -283,8 +283,8 @@
 {% else %}
 
 <div class="container mx-auto text-center text-gray-900 dark:text-slate-100">
-    <p class="text-xl sm:text-xl font-semibold mb-4 text-red-700 bg-red-100 p-6 rounded-lg ">
-        <span class="block text-2xl font-bold text-red-700 mb-2">No Favorites Added Yet</span>
+    <p class="text-xl sm:text-xl font-semibold mb-4 text-red-700 p-6 rounded-lg ">
+        <span class="block text-2xl font-bold text-red-600 mb-2">No Favorites Added Yet</span>
         <span class="block text-lg text-gray-800 dark:text-slate-200">
             Start by searching for a location and mark it as a favorite to see it listed here. You'll be able to keep track of your favorite places and revisit them easily!
         </span>
