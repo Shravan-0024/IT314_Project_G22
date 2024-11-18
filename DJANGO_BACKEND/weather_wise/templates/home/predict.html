@@ -56,7 +56,7 @@
     </div>
     {% elif data %}
     <!-- Forecast Cards in Vertical Layout -->
-    <div id="forecast-container" class="space-y-8 mb-12">
+    {% comment %} <div id="forecast-container" class="space-y-8 mb-12">
         <!-- Static Forecast Cards -->
         <div
             class="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 rounded-xl shadow-xl p-8 transform transition-transform hover:scale-105 w-4/5 mx-auto">
@@ -187,7 +187,9 @@
                 <p class="text-sm text-gray-400">Wind Speed: 8 m/s</p>
             </div>
         </div>
-    </div>
+    </div> {% endcomment %}
+
+    data here
     {% else %}
     <!-- Display a message if no recent locations are available -->
     <p class="text-center text-gray-500 italic">No recent locations available.</p>

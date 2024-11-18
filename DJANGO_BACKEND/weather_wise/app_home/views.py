@@ -10,9 +10,13 @@ from django.db.models import Count
 from django.utils.http import url_has_allowed_host_and_scheme
 import requests
 from datetime import datetime
+import os
+import pickle
+from django.conf import settings
 
 API_KEY_1 = '3fd909629968761c4f36f936ba57ef90'
 API_KEY_2 = "0d469164e7b1b6a7bfdecd4144e44001"
+
 
 def get_weather_data(city):
     """ 
@@ -64,6 +68,7 @@ def home_view(request):
             'data_Hyderabad': weather_info3['data'],
         })
     
+@login_required    
 def dashboard_view(request):
     user = request.user
 
@@ -80,7 +85,7 @@ def dashboard_view(request):
             favlocs = Fav_loc.objects.filter(user=user)  # Retrieve all favorite locations for the user
             for loc in favlocs :
                 weather_info = get_weather_data(loc.favourite_location)
-                print(weather_info['data'])
+                # print(weather_info['data'])
                 favlocs_data.append(weather_info['data'])
             return render(request, 'home/dashboard.html', { 'fav_locs_data': favlocs_data })
         if "fav_location_delete" in request.POST:
@@ -91,7 +96,7 @@ def dashboard_view(request):
             favlocs = Fav_loc.objects.filter(user=user)  # Retrieve updated favorite locations for the user
             for loc in favlocs :
                 weather_info = get_weather_data(loc.favourite_location)
-                print(weather_info['data'])
+                # print(weather_info['data'])
                 favlocs_data.append(weather_info['data'])
             return render(request, 'home/dashboard.html', { 'fav_locs_data': favlocs_data })
         if "location" in request.POST:
@@ -110,11 +115,9 @@ def dashboard_view(request):
         favlocs = Fav_loc.objects.filter(user=user)  # Retrieve all favorite locations for the user
         for loc in favlocs :
                 weather_info = get_weather_data(loc.favourite_location)
-                print(weather_info['data'])
+                # print(weather_info['data'])
                 favlocs_data.append(weather_info['data'])
         return render(request, 'home/dashboard.html', { 'fav_locs_data': favlocs_data })
-
-
 
 def about_view(request):
     return render(request,'home/about.html')
@@ -155,8 +158,6 @@ def login_view(request):
 
     return render(request, 'registration/login.html', {'next': next_url})
 
-
-
 def signup_view(request):
 
     if request.user.is_authenticated:
@@ -179,26 +180,7 @@ def signup_view(request):
         form = UserSignUpForm()
         return render(request, 'registration/signup.html', {'form': form})
 
-    
-@login_required(login_url='/login?next=/predict')
-def predict_view(request):
-    user = request.user
-
-    if request.method == "POST":
-        data = 1
-        city = request.POST["location"]
-        Recent_loc.objects.create(user=user, recent_location=city)
-        return render(request, 'home/predict.html', {'data' : data})
-    else :
-        recentLocs = (
-            Recent_loc.objects.filter(user=user)
-            .values('recent_location')  # Group by recent_location
-            .annotate(search_count=Count('recent_location'))  # Count occurrences
-            .order_by('-search_count')[:3]  # Sort by count in descending order and get top 3
-        )
-        return render(request, 'home/predict.html', {'recentLocs' : recentLocs})
-
-
+@login_required
 def logout_view(request):
     logout(request)
     # Clear theme preference
@@ -268,6 +250,36 @@ def profile_edit_view(request):
         'profile_form': profile_form,
         'notify_form': notify_form
     })
+
+
+@login_required(login_url='/login?next=/predict')
+def predict_view(request):
+    user = request.user
+
+    if request.method == "POST":
+        city = request.POST["location"]
+        url = f"https://api.weatherstack.com/current?access_key={API_KEY_2}"
+        querystring = {"query":city}
+        response = requests.get(url, params=querystring)
+        data = response.json()
+        weather_info = {
+            'temperature': data['current']['temperature'],
+            'humidity': data['current']['humidity'],
+            'wind_speed': data['current']['wind_speed'],
+            'precipitation': data['current']['precip'],
+        }
+        print(weather_info)
+        Recent_loc.objects.create(user=user, recent_location=city)
+        return render(request, 'home/predict.html', {'data' : data})
+    else :
+        recentLocs = (
+            Recent_loc.objects.filter(user=user)
+            .values('recent_location')  # Group by recent_location
+            .annotate(search_count=Count('recent_location'))  # Count occurrences
+            .order_by('-search_count')[:3]  # Sort by count in descending order and get top 3
+        )
+        return render(request, 'home/predict.html', {'recentLocs' : recentLocs})
+
 
 @login_required
 def feedback_view(request):
