@@ -12,12 +12,13 @@ from django.utils.http import url_has_allowed_host_and_scheme
 import requests
 from datetime import datetime
 
-API_KEY = '3fd909629968761c4f36f936ba57ef90'
+API_KEY_1 = '3fd909629968761c4f36f936ba57ef90'
+API_KEY_2 = "0d469164e7b1b6a7bfdecd4144e44001"
 
 def home_view(request):
     if request.method == "POST":
         city = request.POST["location"]
-        url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric'
+        url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY_1}&units=metric'
 
         response = requests.get(url)
         data = response.json()
@@ -39,7 +40,7 @@ def home_view(request):
         
     else:
         city1 = 'Delhi'
-        url = f'https://api.openweathermap.org/data/2.5/weather?q={city1}&appid={API_KEY}&units=metric'
+        url = f'https://api.openweathermap.org/data/2.5/weather?q={city1}&appid={API_KEY_1}&units=metric'
         response = requests.get(url)
         data_Delhi = response.json()
         sunrise_timestamp_d = data_Delhi['sys']['sunrise']
@@ -47,7 +48,7 @@ def home_view(request):
         sunrise_d = datetime.fromtimestamp(sunrise_timestamp_d).strftime('%Y-%m-%d %H:%M:%S')
         sunset_d = datetime.fromtimestamp(sunset_timestamp_d).strftime('%Y-%m-%d %H:%M:%S')
         city2 = 'Mumbai'
-        url = f'https://api.openweathermap.org/data/2.5/weather?q={city2}&appid={API_KEY}&units=metric'
+        url = f'https://api.openweathermap.org/data/2.5/weather?q={city2}&appid={API_KEY_1}&units=metric'
         response = requests.get(url)
         data_Mumbai = response.json()
         sunrise_timestamp_m = data_Mumbai['sys']['sunrise']
@@ -55,7 +56,7 @@ def home_view(request):
         sunrise_m = datetime.fromtimestamp(sunrise_timestamp_m).strftime('%Y-%m-%d %H:%M:%S')
         sunset_m = datetime.fromtimestamp(sunset_timestamp_m).strftime('%Y-%m-%d %H:%M:%S')
         city3 = 'Hyderabad'
-        url = f'https://api.openweathermap.org/data/2.5/weather?q={city3}&appid={API_KEY}&units=metric'
+        url = f'https://api.openweathermap.org/data/2.5/weather?q={city3}&appid={API_KEY_1}&units=metric'
         response = requests.get(url)
         data_Hyderabad = response.json()
         sunrise_timestamp_h = data_Hyderabad['sys']['sunrise']
@@ -83,7 +84,7 @@ def dashboard_view(request):
             favlocs_data = []
             favlocs = Fav_loc.objects.filter(user=user)  # Retrieve all favorite locations for the user
             for loc in favlocs :
-                url = f'https://api.openweathermap.org/data/2.5/weather?q={loc.favourite_location}&appid={API_KEY}&units=metric'
+                url = f'https://api.openweathermap.org/data/2.5/weather?q={loc.favourite_location}&appid={API_KEY_1}&units=metric'
                 response = requests.get(url)
                 data = response.json()
                 favlocs_data.append(data)
@@ -95,7 +96,7 @@ def dashboard_view(request):
             favlocs_data = []
             favlocs = Fav_loc.objects.filter(user=user)  # Retrieve updated favorite locations for the user
             for loc in favlocs:
-                url = f'https://api.openweathermap.org/data/2.5/weather?q={loc.favourite_location}&appid={API_KEY}&units=metric'
+                url = f'https://api.openweathermap.org/data/2.5/weather?q={loc.favourite_location}&appid={API_KEY_1}&units=metric'
                 response = requests.get(url)
                 data = response.json()
                 favlocs_data.append(data)
@@ -103,7 +104,7 @@ def dashboard_view(request):
             return render(request, 'home/dashboard.html', {'fav_locs_data': favlocs_data})
         if "location" in request.POST:
             #print(f"Search request for {request.POST.get("location")}")
-            url = f'https://api.openweathermap.org/data/2.5/weather?q={request.POST.get("location")}&appid={API_KEY}&units=metric'
+            url = f'https://api.openweathermap.org/data/2.5/weather?q={request.POST.get("location")}&appid={API_KEY_1}&units=metric'
             response = requests.get(url)
             data = response.json()
             print(data)
@@ -125,7 +126,7 @@ def dashboard_view(request):
         favlocs_data = []
         favlocs = Fav_loc.objects.filter(user=user)  # Retrieve all favorite locations for the user
         for loc in favlocs :
-            url = f'https://api.openweathermap.org/data/2.5/weather?q={loc.favourite_location}&appid={API_KEY}&units=metric'
+            url = f'https://api.openweathermap.org/data/2.5/weather?q={loc.favourite_location}&appid={API_KEY_1}&units=metric'
             response = requests.get(url)
             data = response.json()
             favlocs_data.append(data)
@@ -203,10 +204,20 @@ def predict_view(request):
     user = request.user
 
     if request.method == "POST":
-        data = 1
+        url = f"https://api.weatherstack.com/current?access_key={API_KEY_2}"
         city = request.POST["location"]
+        querystring = {"query":city}
+        response = requests.get(url, params=querystring)
+        # print(response.json())
+        weather_data = response.json()
+        temperature = weather_data["current"]["temperature"]
+        wind_speed = weather_data["current"]["wind_speed"]
+        humidity = weather_data["current"]["humidity"]
+        precip = weather_data["current"]["precip"]
+
+        print(temperature,wind_speed,humidity,precip) 
         Recent_loc.objects.create(user=user, recent_location=city)
-        return render(request, 'home/predict.html', {'data' : data})
+        return render(request, 'home/predict.html', {'weather_data' : weather_data})
     else :
         recentLocs = (
             Recent_loc.objects.filter(user=user)
