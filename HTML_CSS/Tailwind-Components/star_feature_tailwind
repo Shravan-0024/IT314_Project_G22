@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Click Feature</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center h-screen bg-gray-100 m-0">
+    <div class="text-6xl">
+        <span id="star" class="text-gray-500 cursor-pointer transition-colors duration-300">★</span>
+    </div>
+    <script>
+        document.getElementById("star").addEventListener("click", function () {
+            this.classList.toggle("text-yellow-500");
+            this.classList.toggle("text-gray-500");
+        });
+    </script>
+</body>
+</html>
