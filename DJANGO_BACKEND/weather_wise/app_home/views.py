@@ -201,6 +201,9 @@ def predict_view(request):
 
 def logout_view(request):
     logout(request)
+    # Clear theme preference
+    if 'is_dark_theme' in request.session:
+        del request.session['is_dark_theme']
     return redirect('home_view')
 
 @login_required

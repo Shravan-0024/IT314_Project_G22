@@ -9,8 +9,10 @@
   {% tailwind_css %}
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
 </head>
 
@@ -21,17 +23,17 @@
     <div class="container mx-auto px-4 py-4 flex justify-between items-center">
       <!-- WeatherWise Logo Positioned to Left -->
       {% if user.is_authenticated %}
-        <a href="{% url "dashboard_view" %}"
-        class="text-blue-500 hover:scale-105 transition-transform duration-300 dark:text-yellow-400 text-2xl font-bold mb-2 md:mb-0 ">WeatherWise</a>
+      <a href="{% url 'dashboard_view' %}"
+        class="text-blue-500 hover:scale-105 hover:text-blue-600 transition-transform duration-300 dark:text-yellow-500 dark:hover:text-yellow-600 text-2xl font-bold mb-2 md:mb-0 ">WeatherWise</a>
       {% else %}
-        <a href="{% url 'home_view' %}"
-        class="text-blue-500 hover:scale-105 transition-transform duration-300 dark:text-yellow-400 text-2xl font-bold mb-2 md:mb-0 ">WeatherWise</a>
+      <a href="{% url 'home_view' %}"
+        class="text-blue-500 hover:scale-105 hover:text-blue-600 transition-transform duration-300 dark:text-yellow-500 dark:hover:text-yellow-600 text-2xl font-bold mb-2 md:mb-0 ">WeatherWise</a>
       {% endif %}
 
       <!-- Hamburger Menu for Mobile -->
       <div class="lg:hidden flex items-center">
         <a href="{% url 'change-theme' %}"
-          class="bg-gray-100 px-4 mx-4 py-2 rounded-xl hover:bg-gray-300 duration-300 dark:bg-slate-600 hover:scale-105 hover:shadow-xl transform transition-all ease-in-out">
+          class="bg-gray-100 px-4 mx-4 py-2 rounded-xl hover:bg-gray-300 dark:bg-slate-600 hover:scale-105 hover:shadow-xl transform transition-all duration-300 ease-in-out">
           {% if is_dark_theme %}
           <i class="fa-solid fa-sun text-black dark:text-white"></i>
           {% else %}
@@ -39,7 +41,7 @@
           {% endif %}
         </a>
         <button class="text-black dark:text-white focus:outline-none" id="navbar-toggle">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:scale-105 duration-300 ease-in-out" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
@@ -48,23 +50,25 @@
       <!-- Navbar Links (Desktop and mobile) -->
       <div class="hidden lg:flex items-center space-x-6">
         <a href="{% url 'about_view' %}"
-          class="text-gray-800 hover:text-gray-900 dark:hover:text-white dark:text-gray-200 text-lg">Who We Are</a>
+          class="text-gray-700 hover:text-gray-950 hover:scale-105 dark:hover:text-gray-300 dark:text-white text-lg duration-300 ease-in-out">Who We Are</a>
 
         <!-- Dark Mode Toggle -->
         <a href="{% url 'change-theme' %}"
           class="bg-gray-100 px-4 py-2 rounded-xl hover:bg-gray-300 duration-300 dark:bg-slate-600 hover:scale-105 hover:shadow-xl transform transition-all ease-in-out">
           {% if is_dark_theme %}
-          <i class="fa-solid fa-sun hover:scale-105 hover:shadow-xl transform transition-all duration-300 ease-in-out"></i>
+          <i
+            class="fa-solid fa-sun hover:scale-105 hover:shadow-xl transform transition-all duration-300 ease-in-out"></i>
           {% else %}
-          <i class="fa-solid fa-moon hover:scale-105 hover:shadow-xl transform transition-all duration-300 ease-in-out"></i>
+          <i
+            class="fa-solid fa-moon hover:scale-105 hover:shadow-xl transform transition-all duration-300 ease-in-out"></i>
           {% endif %}
         </a>
 
         {% if user.is_authenticated %}
         <a href="{% url 'logout_view' %}"
-          class="bg-red-600 px-4 py-2 rounded-lg text-white font-semibold hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-800 hover:bg-red-700 hover:shadow-xl transform transition-all duration-300 ease-in-out">LogOut</a>
+          class="bg-red-600 px-4 py-2 rounded-lg text-white font-semibold hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-800 hover:bg-red-700 dark:focus:ring-purple-800 dark:bg-purple-600 dark:hover:bg-purple-700 hover:shadow-xl transform transition-all duration-300 ease-in-out">LogOut</a>
         <a href="{% url 'profile_view' %}">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-black dark:text-gray-200" fill="none"
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-black dark:text-gray-200 hover:scale-125 duration-300 ease-in-out" fill="none"
             viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-4.41 0-8 2.69-8 6v2h16v-2c0-3.31-3.59-6-8-6z" />
@@ -81,16 +85,16 @@
   </nav>
 
   <!-- Mobile Dropdown (Initially hidden) -->
-  <div class="lg:hidden hidden bg-slate-300 dark:bg-slate-900 shadow-md text-center" id="navbar-menu">
+  <div class="lg:hidden hidden bg-slate-300 dark:bg-slate-900 shadow-md text-center hover:scale-105 ease-in-out duration-300" id="navbar-menu">
     <a href="{% url 'about_view' %}"
-      class="block text-gray-800 hover:text-gray-900 dark:hover:text-white dark:text-gray-200 text-lg my-2">Who We
+      class="block text-gray-700 hover:text-gray-950 hover:scale-105 dark:hover:text-gray-300 dark:text-white duration-300 ease-in-out text-lg my-2">Who We
       Are</a>
     {% if user.is_authenticated %}
     <a href="{% url 'logout_view' %}"
-      class="block bg-red-600 px-4 py-2 rounded-lg text-white font-semibold focus:outline-none focus:ring-4 focus:ring-red-800 hover:bg-red-700 hover:shadow-xl transform transition-all duration-300 ease-in-out my-2">LogOut</a>
+      class="block bg-red-600 hover:scale-105 px-4 py-2 rounded-lg text-white font-semibold focus:outline-none focus:ring-4 focus:ring-red-800 hover:bg-red-700 dark:focus:ring-purple-800 dark:bg-purple-600 dark:hover:bg-purple-700 hover:shadow-xl transform transition-all duration-300 ease-in-out my-2">LogOut</a>
     <button class="w-full justify-center align-middle ">
       <a href="{% url 'profile_view' %}" class="block py-2 text-black dark:text-gray-200 text-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-black dark:text-gray-200 mx-auto" fill="none"
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-black dark:text-gray-200 mx-auto hover:scale-125 ease-in-out duration-300" fill="none"
           viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-4.41 0-8 2.69-8 6v2h16v-2c0-3.31-3.59-6-8-6z" />
@@ -100,9 +104,9 @@
 
     {% else %}
     <a href="{% url 'login_view' %}"
-      class="block bg-green-600 px-4 py-2 rounded-lg text-white font-semibold focus:outline-none focus:ring-4 focus:ring-green-800 hover:bg-green-700 hover:shadow-xl transform transition-all duration-300 ease-in-out my-2">Login</a>
+      class="block bg-green-600 px-4 py-2 rounded-lg text-white font-semibold focus:outline-none focus:ring-4 focus:ring-green-800 hover:bg-green-700 hover:shadow-xl hover:scale-105 transform transition-all duration-300 ease-in-out my-2">Login</a>
     <a href="{% url 'signup_view' %}"
-      class="block bg-green-600 px-4 py-2 rounded-lg text-white font-semibold  focus:outline-none focus:ring-4 focus:ring-green-800 hover:bg-green-700 hover:shadow-xl transform transition-all duration-300 ease-in-out my-2">SignUp</a>
+      class="block bg-green-600 px-4 py-2 rounded-lg text-white font-semibold hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-800 hover:bg-green-700 hover:shadow-xl transform transition-all duration-300 ease-in-out my-2">SignUp</a>
     {% endif %}
   </div>
 
@@ -116,7 +120,7 @@
     <p class="text-gray-800 hover:text-gray-900 dark:hover:text-white dark:text-gray-200 text-lg mb-4">Our Work</p>
 
     <button
-      class="bg-blue-500 hover:bg-blue-400 px-4 py-2 rounded-lg text-white font-semibold shadow-lg hover:shadow-xl transform transition-all duration-300 ease-in-out hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 mt-2 dark:bg-yellow-500 dark:hover:bg-yellow-400 dark:focus:ring-yellow-300">
+      class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg text-white font-semibold shadow-lg hover:shadow-xl transform transition-all duration-300 ease-in-out hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 mt-2 dark:bg-yellow-500 dark:hover:bg-yellow-600 dark:focus:ring-yellow-300">
       <a href="https://github.com/Shravan-0024/IT314_Project_G22" target="_blank" class="block">Github</a>
     </button>
 
@@ -144,17 +148,25 @@
         });
       }
 
-      // Check and set the theme initially
+      // Set system preference as a cookie
+      function setSystemPreferenceCookie(isDarkTheme) {
+        document.cookie = `system_dark_theme=${isDarkTheme}; path=/;`;
+      }
+
+      // Initial theme setup
       if (!sessionStorage.getItem('themeSet')) {
-        updateTheme(prefersDarkMediaQuery.matches);
+        const systemPrefersDark = prefersDarkMediaQuery.matches;
+        setSystemPreferenceCookie(systemPrefersDark);
+        updateTheme(systemPrefersDark);
       }
 
       // Listen for system theme changes
       prefersDarkMediaQuery.addEventListener('change', (event) => {
-        updateTheme(event.matches); // event.matches will be true for dark mode
+        const systemPrefersDark = event.matches;
+        setSystemPreferenceCookie(systemPrefersDark);
+        updateTheme(systemPrefersDark);
       });
     });
-
   </script>
 
 

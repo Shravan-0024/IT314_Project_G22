@@ -17,7 +17,7 @@ class UserSignUpForm(UserCreationForm):
         super(UserSignUpForm, self).__init__(*args, **kwargs)
         # Add Bootstrap class to all fields
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['class'] = 'w-full px-4 py-2 border border-gray-700 rounded-md text-white bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500'
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
