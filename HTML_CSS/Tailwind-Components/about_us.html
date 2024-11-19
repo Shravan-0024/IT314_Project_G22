@@ -6,54 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .fade-in-up {
-            animation: fadeInUp 1s ease-out;
-        
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.05);
-            }
-        }
-
-        .pulse-on-hover:hover {
-            animation: pulse 0.5s infinite;
-        }
-    </style>
 </head>
 
 <body class="bg-slate-200 text-gray-800">
-    <!-- Hero Section -->
-    <header class="py-16 text-center fade-in-up">
+    <!-- header Section -->
+    <header class="py-16 text-center">
         <h1 class="text-5xl font-bold mb-6 text-blue-600">About Us</h1>
         <p class="text-xl max-w-3xl mx-auto">Welcome to WeatherWise, where data meets weather. We specialize in
             providing accurate, data-driven weather forecasts to help you stay prepared for any weather condition,
             anywhere in the world.</p>
     </header>
 
-    <main class="container mx-auto px-4 py-8 fade-in-up">
+    <main class="container mx-auto px-4 py-8 ">
         <!-- Project Description -->
         <section class="flex justify-start px-8 lg:px-32 items-center mb-16">
-            <div class="bg-white rounded-xl shadow-lg p-12 max-w-4xl w-full pulse-on-hover">
+            <div class="bg-white rounded-xl shadow-lg p-12 max-w-4xl w-full">
                 <h2 class="text-4xl font-bold mb-8 px-10 text-indigo-600">How we Predict Weather !!</h2>
                 <p class="leading-relaxed text-xl">
                     <b>Data Collection:</b> Gather data on temperature, humidity, wind speed, air pressure, and
@@ -62,10 +30,6 @@
                 <p class="leading-relaxed text-xl">
                     <b>Historical Data:</b> Use past weather data to identify patterns and relationships in weather
                     conditions.
-                </p>
-                <p class="leading-relaxed text-xl">
-                    <b>Model Training:</b> Train models using historical data, allowing them to learn how weather
-                    variables influence future conditions.
                 </p>
                 <p class="leading-relaxed text-xl">
                     <b>Current Data:</b> Feed real-time weather data into the trained model to predict future
@@ -83,7 +47,7 @@
         </section>
 
         <section class="flex justify-end px-8 lg:px-32 items-center mb-16">
-            <div class="bg-white rounded-xl shadow-lg p-12 max-w-4xl w-full pulse-on-hover">
+            <div class="bg-white rounded-xl shadow-lg p-12 max-w-4xl w-full ">
                 <h2 class="text-4xl font-bold mb-8 px-10 text-green-600">What we Predict !!</h2>
                 <p class="leading-relaxed text-xl">
                     <b>Temperature:</b> We predict temperatures, giving you an accurate temperature throughout a day.
@@ -107,7 +71,7 @@
         </section>
 
         <section class="flex justify-start px-8 lg:px-32 items-center mb-16">
-            <div class="bg-white rounded-xl shadow-lg p-12 max-w-4xl w-full pulse-on-hover">
+            <div class="bg-white rounded-xl shadow-lg p-12 max-w-4xl w-full">
                 <h2 class="text-4xl font-bold mb-8 px-10 text-red-600">Why Choose Us??</h2>
                 <p class="leading-relaxed text-xl">
                     <b>Accurate and Reliable:</b> Our machine learning models are trained on large datasets, offering
@@ -150,20 +114,20 @@
         <section class="mb-16">
             <h2 class="text-3xl font-bold mb-8 px-10 text-blue-600">Developers Team</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-10">
-                <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="bg-white rounded-lg shadow-lg p-6  hover:bg-purple-100">
                     <h3 class="text-xl font-semibold mb-4">Shravan Kakadiya</h3>
                     <h3 class="text-xl font-semibold mb-4">Madhav Jivani</h3>
                     <h3 class="text-xl font-semibold mb-4">Sarvil</h3>
                 </div>
-                <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="bg-white rounded-lg shadow-lg p-6  hover:bg-purple-100">
                     <h3 class="text-xl font-semibold mb-4">Vraj Patel</h3>
                     <h3 class="text-xl font-semibold mb-4">Karnik Rathva</h3>
                 </div>
-                <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="bg-white rounded-lg shadow-lg p-6  hover:bg-purple-100">
                     <h3 class="text-xl font-semibold mb-4">Shrestha</h3>
                     <h3 class="text-xl font-semibold mb-4">Nisarg Modi</h3>
                 </div>
-                <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="bg-white rounded-lg shadow-lg p-6  hover:bg-purple-100">
                     <h3 class="text-xl font-semibold mb-4">Krushang</h3>
                     <h3 class="text-xl font-semibold mb-4">Sumit</h3>
                     <h3 class="text-xl font-semibold mb-4">Bhavya shah</h3>
