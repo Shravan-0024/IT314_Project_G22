@@ -122,7 +122,7 @@ def test_dashboard_search_invalid_location(client, django_user_model):
     # Simulate an invalid location search
     url = reverse('dashboard_view')
     response = client.post(url, {'location': 'InvalidCity'})  # An invalid city name
-  
+    print(response.context)
     assert response.status_code == 200
     assert 'error' in response.context  
     assert "Some error occurred for 'InvalidCity'" in response.context['error']  # Checking the error message content
