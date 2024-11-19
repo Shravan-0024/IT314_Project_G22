@@ -282,3 +282,22 @@ def feedback_view(request):
         form = FeedbackForm()
     
     return render(request, 'home/feedback.html', {'form': form})
+
+from django.http import JsonResponse
+from .utils import send_notification_email
+
+def send_weather_alert(request):
+    if request.method == 'POST':
+        # Example data
+        subject = "Weather Alert: Rain Expected Tomorrow"
+        message = "Dear user, there is a forecast for rain tomorrow in your selected location. Stay safe!"
+        recipient_list = ['jayswalkrishil@gmail.com']  # Replace with actual user emails
+
+        email_sent = send_notification_email(subject, message, recipient_list)
+
+        if email_sent:
+            return JsonResponse({'status': 'success', 'message': 'Email sent successfully!'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Failed to send email.'})
+
+    return render(request, 'home/email_service.html')

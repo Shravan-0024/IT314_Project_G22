@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block title %}WeatherWise | Login{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+  <h2 class="text-2xl font-bold text-center my-4 text-gray-800 dark:text-gray-200">
+    Login to WeatherWise
+  </h2>
+  <form action="{% url 'send_weather_alert' %}" method="POST">
+    {% csrf_token %}
+    <button
+      type="submit"
+      class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 dark:bg-yellow-500 dark:hover:bg-yellow-600">
+      Send Weather Alert
+    </button>
+  </form>
+  
+</div>
+{% endblock %}
