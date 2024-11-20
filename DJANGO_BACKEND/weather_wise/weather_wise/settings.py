@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
+# necessary library/installation to integrate current database models with MySQL 
+import pymysql
+pymysql.version_info = (1, 4, 6, 'final', 0)
+pymysql.install_as_MySQLdb()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -77,12 +82,33 @@ WSGI_APPLICATION = 'weather_wise.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# Database Configuration for Local host
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+# Updated DATABASES configuration to use MySQL Workbench
+# (Currently commented as this is to be used on hosting site)
+
+"""
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',   
+        'NAME': 'weatherDemo1$weatherDB',   
+        'USER': 'weatherDemo1',   
+        'PASSWORD': 'Shravan@0024',   
+        'HOST': 'weatherDemo1.mysql.pythonanywhere-services.com',   
+        'PORT': '3306',   
+        'OPTIONS': {   
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"   #initialization command for strict SQL mode
+        }  
+    }
+}
+
+"""
 
 # Gmail SMTP Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
