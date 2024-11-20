@@ -284,19 +284,18 @@ def predict_view(request):
 
         try:
             predictions = pipeline.predict(input_data)
-            formatted_predictions = format_prediction_output(predictions)
-            print("-"*100)
-            print(predictions)
-            print("-"*100)
+            # formatted_predictions = format_prediction_output(predictions)
+            # print("-"*100)
+            # print(formatted_predictions)
+            # print("-"*100)
         except Exception as e:
-            formatted_predictions = f"Error during prediction: {str(e)}"
+            # formatted_predictions = f"Error during prediction: {str(e)}"
             print(f"Error during prediction: {str(e)}")
         # Save recent location
         Recent_loc.objects.create(user=user, recent_location=city)
 
         return render(request, 'home/predict.html', {
-            'data': data,
-            'predictions': formatted_predictions
+            'predictions': predictions
         })
 
     else:
