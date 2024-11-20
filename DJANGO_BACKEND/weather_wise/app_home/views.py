@@ -12,10 +12,14 @@ import requests
 from datetime import datetime
 import os
 import pickle
+from .pipeline import format_prediction_output  # relative import if within the same app
+from .pipeline import WeatherPipeline
 from django.conf import settings
 
-API_KEY_1 = '3fd909629968761c4f36f936ba57ef90'
-API_KEY_2 = "0d469164e7b1b6a7bfdecd4144e44001"
+API_KEY_1 = settings.WEATHER_API_KEY_1
+API_KEY_2 = settings.WEATHER_API_KEY_2
+
+
 
 
 def get_weather_data(city):
@@ -251,7 +255,6 @@ def profile_edit_view(request):
         'notify_form': notify_form
     })
 
-
 @login_required(login_url='/login?next=/predict')
 def predict_view(request):
     user = request.user
@@ -259,27 +262,52 @@ def predict_view(request):
     if request.method == "POST":
         city = request.POST["location"]
         url = f"https://api.weatherstack.com/current?access_key={API_KEY_2}"
-        querystring = {"query":city}
+        querystring = {"query": city}
         response = requests.get(url, params=querystring)
         data = response.json()
+
+        # Extract weather features
         weather_info = {
-            'temperature': data['current']['temperature'],
-            'humidity': data['current']['humidity'],
-            'wind_speed': data['current']['wind_speed'],
-            'precipitation': data['current']['precip'],
+            'temperature': float(data['current']['temperature']),
+            'humidity': float(data['current']['humidity']),
+            'wind_speed': float(data['current']['wind_speed']),
+            'precipitation': float(data['current']['precip']),
         }
         print(weather_info)
+        
+        # Load the prediction pipeline
+        pipeline = WeatherPipeline()
+
+        # Use the extracted data for prediction
+        input_data = [weather_info['temperature'], weather_info['humidity'],
+                      weather_info['wind_speed'], weather_info['precipitation']]
+
+        try:
+            predictions = pipeline.predict(input_data)
+            formatted_predictions = format_prediction_output(predictions)
+            print("-"*100)
+            print(predictions)
+            print("-"*100)
+        except Exception as e:
+            formatted_predictions = f"Error during prediction: {str(e)}"
+            print(f"Error during prediction: {str(e)}")
+        # Save recent location
         Recent_loc.objects.create(user=user, recent_location=city)
-        return render(request, 'home/predict.html', {'data' : data})
-    else :
+
+        return render(request, 'home/predict.html', {
+            'data': data,
+            'predictions': formatted_predictions
+        })
+
+    else:
+        # Fetch top 3 recent locations for the user
         recentLocs = (
             Recent_loc.objects.filter(user=user)
-            .values('recent_location')  # Group by recent_location
-            .annotate(search_count=Count('recent_location'))  # Count occurrences
-            .order_by('-search_count')[:3]  # Sort by count in descending order and get top 3
+            .values('recent_location')
+            .annotate(search_count=Count('recent_location'))
+            .order_by('-search_count')[:3]
         )
-        return render(request, 'home/predict.html', {'recentLocs' : recentLocs})
-
+        return render(request, 'home/predict.html', {'recentLocs': recentLocs})
 
 @login_required
 def feedback_view(request):

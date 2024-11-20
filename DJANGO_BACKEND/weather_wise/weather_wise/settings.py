@@ -165,6 +165,10 @@ INTERNAL_IPS = ['127.0.0.1']
 
 # use your npm path @backend team
 # @shravan 
-NPM_BIN_PATH = "/opt/homebrew/bin/npm"
+# NPM_BIN_PATH = "/opt/homebrew/bin/npm"
 # @madhav
-# NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
+NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
+
+# In settings.py
+WEATHER_API_KEY_1 = '3fd909629968761c4f36f936ba57ef90'
+WEATHER_API_KEY_2 = '0d469164e7b1b6a7bfdecd4144e44001'
