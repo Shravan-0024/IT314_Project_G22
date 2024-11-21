@@ -1,6 +1,7 @@
 import numpy as np
 import pickle
 import os
+from datetime import datetime, timedelta
 from django.conf import settings
 
 
@@ -9,10 +10,10 @@ class WeatherScaler:
     def __init__(self):
         # Initialize feature ranges
         self.feature_ranges = {
-            'temperature': (30, 100),  # Temperature range in Fahrenheit
-            'humidity': (0, 100),      # Humidity percentage
-            'wind_speed': (0, 50),     # Wind speed in mph
-            'precipitation': (0, 20)   # Precipitation in inches
+            'temperature': (19, 110),#still in Fahrenheit for model compatibility
+            'humidity': (20, 90),
+            'wind_speed': (0, 50),
+            'precipitation': (0, 20)
         }
 
     def transform(self, data):
@@ -25,6 +26,7 @@ class WeatherScaler:
             scaled_value = max(0, min(1, scaled_value))  # Ensure scaled values are between 0 and 1
             scaled_data.append(scaled_value)
         return np.array(scaled_data)
+    
 
     def inverse_transform(self, scaled_data):
         """
@@ -37,7 +39,10 @@ class WeatherScaler:
                 unscaled_value = max(0, unscaled_value)
             unscaled_data.append(unscaled_value)
         return np.array(unscaled_data)
+    
 
+def fahrenheit_to_celsius(fahrenheit):
+    return (fahrenheit - 32) * 5/9
 
 class WeatherPipeline:
     def __init__(self, sequence_length=1):
@@ -49,13 +54,12 @@ class WeatherPipeline:
         model_path = os.path.join(settings.BASE_DIR, 'final4_weather_prediction_model.pkl')
         if not os.path.exists(model_path):
             raise FileNotFoundError(f"Model file not found at {model_path}")
-
         # Load the model
         with open(model_path, 'rb') as f:
             self.model = pickle.load(f)
-
         # Initialize the scaler
         self.scaler = WeatherScaler()
+
 
     def prepare_input(self, input_data):
         """
@@ -71,45 +75,48 @@ class WeatherPipeline:
         model_input = scaled_data.reshape(1, self.sequence_length, self.num_features)
         return model_input
 
+    
     def predict(self, input_data):
         """
         Generate predictions using the trained model.
         """
         # Prepare the input data
         model_input = self.prepare_input(input_data)
-
         # Get predictions from the model
         scaled_predictions = self.model.predict(model_input)
-
         # Reshape predictions for multiple output days
         scaled_predictions = scaled_predictions.reshape(self.output_days, self.num_features)
-
         # Convert predictions back to the original scale
         original_predictions = np.array([
             self.scaler.inverse_transform(day_pred)
             for day_pred in scaled_predictions
         ])
-
         # Prepare predictions in a structured format
         predictions = []
         feature_names = ['temperature', 'humidity', 'wind_speed', 'precipitation']
-
+        start_date = datetime.now() + timedelta(days=1)
         for day in range(self.output_days):
+            current_date = start_date + timedelta(days=day)
+            original_values = {}
+            for i, name in enumerate(feature_names):
+                value = float(original_predictions[day][i])
+                if name == 'temperature':
+                    value = fahrenheit_to_celsius(value)
+                original_values[name] = round(value, 2)
+            
             day_pred = {
-                'day': day + 1,
+                'date': current_date.strftime('%Y-%m-%d'),
+                'day': current_date.strftime('%A'),
                 'scaled_values': {
                     name: float(scaled_predictions[day][i])
                     for i, name in enumerate(feature_names)
                 },
-                'original_values': {
-                    name: float(original_predictions[day][i])
-                    for i, name in enumerate(feature_names)
-                }
+                'original_values': original_values
             }
             predictions.append(day_pred)
-
         return predictions
-
+        
+        
 
 def format_prediction_output(predictions):
     """
@@ -132,5 +139,3 @@ if __name__ == "__main__":
     # Example input: [temperature, humidity, wind_speed, precipitation]
     current_weather = [75.0, 45.0, 10.0, 0.0]
     predictions = pipeline.predict(current_weather)
-
-    # Print formatted predictions

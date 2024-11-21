@@ -284,6 +284,11 @@ def predict_view(request):
 
         try:
             predictions = pipeline.predict(input_data)
+            print()
+            print("-"*200)
+            print(predictions)
+            print("-"*200)
+            print()
             # formatted_predictions = format_prediction_output(predictions)
             # print("-"*100)
             # print(formatted_predictions)
@@ -295,6 +300,7 @@ def predict_view(request):
         Recent_loc.objects.create(user=user, recent_location=city)
 
         return render(request, 'home/predict.html', {
+            'city': city.upper(),
             'predictions': predictions
         })
 

@@ -56,143 +56,155 @@
     </div>
     {% elif predictions %}
     <!-- Forecast Cards in Vertical Layout -->
+     <div class="mt-12">
+            <h3 class="text-xl md:text-2xl font-semibold text-center mb-12">{{city}}</h3>
+        </div>
     <div id="forecast-container" class="space-y-8 mb-12">
-        <div
+      <div
             class="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 rounded-xl shadow-xl p-8 transform transition-transform hover:scale-105 w-4/5 mx-auto">
             <div class="text-center mb-6">
                 <p class="text-3xl font-bold text-blue-600 dark:text-yellow-500">{{predictions.0.day}}</p>
-                <p class="text-sm text-gray-400 mt-1">2024-11-20</p>
+                <p class="text-sm text-gray-400 mt-1">{{predictions.0.date}}</p>
             </div>
-            <div class="flex flex-col items-center mb-6">
-                <img src="/static/images/sun.png" alt="Sunny icon" class="w-20 h-20 mb-4">
-                <p class="text-xl font-medium">Sunny</p>
-                <p class="text-sm text-gray-400">Clear skies</p>
-            </div>
+              
             <div class="flex justify-between border-t border-gray-700 pt-4">
                 <div>
                     <p class="text-2xl font-semibold">{{predictions.0.original_values.temperature}}°C</p>
+                    <p class="text-sm text-gray-400">Temparature</p>
                 </div>
                 <div>
                     <p class="text-2xl font-semibold">{{predictions.0.original_values.humidity}}%</p>
                     <p class="text-sm text-gray-400">Humidity</p>
                 </div>
             </div>
-            <div class="mt-6">
-                <p class="text-sm text-gray-400">Wind Speed: {{predictions.0.original_values.wind_speed}}</p>
-            </div>
-
-            <div class="mt-6">
-                <p class="text-sm text-gray-400">Precipitation: {{predictions.0.original_values.precipitation}}</p>
+            <div class="flex justify-between pt-4">
+                <div>
+                    <p class="text-2xl font-semibold">{{predictions.0.original_values.wind_speed}} kmph</p>
+                    <p class="text-sm text-gray-400">Wind speed</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-semibold">{{predictions.0.original_values.precipitation}} mm</p>
+                    <p class="text-sm text-gray-400">Precipitation</p>
+                </div>
             </div>
         </div>
-        
+
         <div
             class="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 rounded-xl shadow-xl p-8 transform transition-transform hover:scale-105 w-4/5 mx-auto">
             <div class="text-center mb-6">
                 <p class="text-3xl font-bold text-blue-600 dark:text-yellow-500">{{predictions.1.day}}</p>
-                <p class="text-sm text-gray-400 mt-1">2024-11-20</p>
+                <p class="text-sm text-gray-400 mt-1">{{predictions.1.date}}</p>
             </div>
-            <div class="flex flex-col items-center mb-6">
-                <img src="/static/images/sun.png" alt="Sunny icon" class="w-20 h-20 mb-4">
-                <p class="text-xl font-medium">Sunny</p>
-                <p class="text-sm text-gray-400">Clear skies</p>
-            </div>
+              
             <div class="flex justify-between border-t border-gray-700 pt-4">
                 <div>
                     <p class="text-2xl font-semibold">{{predictions.1.original_values.temperature}}°C</p>
+                    <p class="text-sm text-gray-400">Temparature</p>
                 </div>
                 <div>
                     <p class="text-2xl font-semibold">{{predictions.1.original_values.humidity}}%</p>
                     <p class="text-sm text-gray-400">Humidity</p>
                 </div>
             </div>
-            <div class="mt-6">
-                <p class="text-sm text-gray-400">Wind Speed: {{predictions.1.original_values.wind_speed}}</p>
+            <div class="flex justify-between pt-4">
+                <div>
+                    <p class="text-2xl font-semibold">{{predictions.1.original_values.wind_speed}} kmph</p>
+                    <p class="text-sm text-gray-400">Wind speed</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-semibold">{{predictions.1.original_values.precipitation}} mm</p>
+                    <p class="text-sm text-gray-400">Precipitation</p>
+                </div>
             </div>
+        </div>
 
-            <div class="mt-6">
-                <p class="text-sm text-gray-400">Precipitation: {{predictions.1.original_values.precipitation}}</p>
-            </div>
-        </div><div
+
+        <div
             class="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 rounded-xl shadow-xl p-8 transform transition-transform hover:scale-105 w-4/5 mx-auto">
             <div class="text-center mb-6">
                 <p class="text-3xl font-bold text-blue-600 dark:text-yellow-500">{{predictions.2.day}}</p>
-                <p class="text-sm text-gray-400 mt-1">2024-11-20</p>
+                <p class="text-sm text-gray-400 mt-1">{{predictions.2.date}}</p>
             </div>
-            <div class="flex flex-col items-center mb-6">
-                <img src="/static/images/sun.png" alt="Sunny icon" class="w-20 h-20 mb-4">
-                <p class="text-xl font-medium">Sunny</p>
-                <p class="text-sm text-gray-400">Clear skies</p>
-            </div>
+              
             <div class="flex justify-between border-t border-gray-700 pt-4">
                 <div>
                     <p class="text-2xl font-semibold">{{predictions.2.original_values.temperature}}°C</p>
+                    <p class="text-sm text-gray-400">Temparature</p>
                 </div>
                 <div>
                     <p class="text-2xl font-semibold">{{predictions.2.original_values.humidity}}%</p>
                     <p class="text-sm text-gray-400">Humidity</p>
                 </div>
             </div>
-            <div class="mt-6">
-                <p class="text-sm text-gray-400">Wind Speed: {{predictions.2.original_values.wind_speed}}</p>
+            <div class="flex justify-between pt-4">
+                <div>
+                    <p class="text-2xl font-semibold">{{predictions.2.original_values.wind_speed}} kmph</p>
+                    <p class="text-sm text-gray-400">Wind speed</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-semibold">{{predictions.2.original_values.precipitation}} mm</p>
+                    <p class="text-sm text-gray-400">Precipitation</p>
+                </div>
             </div>
+        </div>
 
-            <div class="mt-6">
-                <p class="text-sm text-gray-400">Precipitation: {{predictions.2.original_values.precipitation}}</p>
-            </div>
-        </div><div
+
+        <div
             class="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 rounded-xl shadow-xl p-8 transform transition-transform hover:scale-105 w-4/5 mx-auto">
             <div class="text-center mb-6">
                 <p class="text-3xl font-bold text-blue-600 dark:text-yellow-500">{{predictions.3.day}}</p>
-                <p class="text-sm text-gray-400 mt-1">2024-11-20</p>
+                <p class="text-sm text-gray-400 mt-1">{{predictions.3.date}}</p>
             </div>
-            <div class="flex flex-col items-center mb-6">
-                <img src="/static/images/sun.png" alt="Sunny icon" class="w-20 h-20 mb-4">
-                <p class="text-xl font-medium">Sunny</p>
-                <p class="text-sm text-gray-400">Clear skies</p>
-            </div>
+              
             <div class="flex justify-between border-t border-gray-700 pt-4">
                 <div>
                     <p class="text-2xl font-semibold">{{predictions.3.original_values.temperature}}°C</p>
+                    <p class="text-sm text-gray-400">Temparature</p>
                 </div>
                 <div>
                     <p class="text-2xl font-semibold">{{predictions.3.original_values.humidity}}%</p>
                     <p class="text-sm text-gray-400">Humidity</p>
                 </div>
             </div>
-            <div class="mt-6">
-                <p class="text-sm text-gray-400">Wind Speed: {{predictions.3.original_values.wind_speed}}</p>
+            <div class="flex justify-between pt-4">
+                <div>
+                    <p class="text-2xl font-semibold">{{predictions.3.original_values.wind_speed}} kmph</p>
+                    <p class="text-sm text-gray-400">Wind speed</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-semibold">{{predictions.3.original_values.precipitation}} mm</p>
+                    <p class="text-sm text-gray-400">Precipitation</p>
+                </div>
             </div>
+        </div>
 
-            <div class="mt-6">
-                <p class="text-sm text-gray-400">Precipitation: {{predictions.3.original_values.precipitation}}</p>
-            </div>
-        </div><div
+
+        <div
             class="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 rounded-xl shadow-xl p-8 transform transition-transform hover:scale-105 w-4/5 mx-auto">
             <div class="text-center mb-6">
                 <p class="text-3xl font-bold text-blue-600 dark:text-yellow-500">{{predictions.4.day}}</p>
-                <p class="text-sm text-gray-400 mt-1">2024-11-20</p>
+                <p class="text-sm text-gray-400 mt-1">{{predictions.4.date}}</p>
             </div>
-            <div class="flex flex-col items-center mb-6">
-                <img src="/static/images/sun.png" alt="Sunny icon" class="w-20 h-20 mb-4">
-                <p class="text-xl font-medium">Sunny</p>
-                <p class="text-sm text-gray-400">Clear skies</p>
-            </div>
+              
             <div class="flex justify-between border-t border-gray-700 pt-4">
                 <div>
                     <p class="text-2xl font-semibold">{{predictions.4.original_values.temperature}}°C</p>
+                    <p class="text-sm text-gray-400">Temparature</p>
                 </div>
                 <div>
                     <p class="text-2xl font-semibold">{{predictions.4.original_values.humidity}}%</p>
                     <p class="text-sm text-gray-400">Humidity</p>
                 </div>
             </div>
-            <div class="mt-6">
-                <p class="text-sm text-gray-400">Wind Speed: {{predictions.4.original_values.wind_speed}}</p>
-            </div>
-
-            <div class="mt-6">
-                <p class="text-sm text-gray-400">Precipitation: {{predictions.4.original_values.precipitation}}</p>
+            <div class="flex justify-between pt-4">
+                <div>
+                    <p class="text-2xl font-semibold">{{predictions.4.original_values.wind_speed}} kmph</p>
+                    <p class="text-sm text-gray-400">Wind speed</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-semibold">{{predictions.4.original_values.precipitation}} mm</p>
+                    <p class="text-sm text-gray-400">Precipitation</p>
+                </div>
             </div>
         </div>
     </div>
