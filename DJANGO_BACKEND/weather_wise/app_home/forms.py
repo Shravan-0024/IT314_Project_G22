@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from .models import Notify,Feedback
+import requests
+from django.conf import settings
 
 class UserSignUpForm(UserCreationForm):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'w-full px-4 py-2 border border-gray-700 rounded-md text-white bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500'}))
@@ -29,7 +31,21 @@ class UserSignUpForm(UserCreationForm):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
             raise ValidationError("This email address is already registered. Please log in instead.")
+        try:
+            email_key = settings.KICKBOX_API_KEY
+            url = f"https://api.kickbox.com/v2/verify?email={email}&apikey={email_key}"
+            response = requests.get(url)
+            response.raise_for_status()
+            data = response.json()
+
+            if data.get('result') not in ['deliverable', 'risky']:
+                print("Invalid email")
+                raise ValidationError("The provided email address is not valid or deliverable.")
+        except requests.exceptions.RequestException as e:
+            raise ValidationError(f"An error occurred while validating the email: {e}")
+
         return email
+
 
 
 
