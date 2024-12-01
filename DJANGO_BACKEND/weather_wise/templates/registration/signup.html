@@ -1,4 +1,5 @@
-{% extends "layout.html" %} {% block title %}WeatherWise | SignUp{% endblock %}
+{% extends "layout.html" %}
+{% block title %}WeatherWise | SignUp{% endblock %}
 {% block content %}
 <div class="container mx-auto px-4 py-8 max-w-lg">
   <h2 class="text-2xl font-bold text-center mb-6">Signup with WeatherWise</h2>
@@ -40,33 +41,29 @@
   {% endif %}
 
   <!-- Signup Form -->
-  <form method="post" class="space-y-6">
+  <form method="post" class="mx-auto max-w-md mt-8 bg-slate-100 dark:bg-slate-800 p-6 rounded-lg shadow-lg">
     {% csrf_token %}
 
     <!-- Username -->
     <div class="mb-4">
-      <label for="id_username" class="block text-lg font-semibold mb-2"
-        >Username:</label
-      >
+      <label for="id_username" class="block text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200">Username:</label>
       <input
         type="text"
         id="id_username"
         name="username"
-        class="w-full px-4 py-2 border dark:border-gray-700 border-gray-300 rounded-md bg-slate-100 text-gray-800 dark:text-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 bg-white dark:text-gray-200 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-yellow-400"
         required
       />
     </div>
 
     <!-- Email -->
     <div class="mb-4">
-      <label for="id_email" class="block text-lg font-semibold mb-2"
-        >Email:</label
-      >
+      <label for="id_email" class="block text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200">Email:</label>
       <input
         type="email"
         id="id_email"
         name="email"
-        class="w-full px-4 py-2 border dark:border-gray-700 border-gray-300 rounded-md bg-slate-100 text-gray-800 dark:text-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 bg-white dark:text-gray-200 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-yellow-400"
         required
       />
     </div>
@@ -74,61 +71,65 @@
     <!-- First Name and Last Name (Grid Layout) -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div class="mb-4">
-        <label for="id_first_name" class="block text-lg font-semibold mb-2"
-          >First Name:</label
-        >
+        <label for="id_first_name" class="block text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200">First Name:</label>
         <input
           type="text"
           id="id_first_name"
           name="first_name"
-          class="w-full px-4 py-2 border dark:border-gray-700 border-gray-300 rounded-md bg-slate-100 text-gray-800 dark:text-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 bg-white dark:text-gray-200 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-yellow-400"
         />
       </div>
       <div class="mb-4">
-        <label for="id_last_name" class="block text-lg font-semibold mb-2"
-          >Last Name:</label
-        >
+        <label for="id_last_name" class="block text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200">Last Name:</label>
         <input
           type="text"
           id="id_last_name"
           name="last_name"
-          class="w-full px-4 py-2 border dark:border-gray-700 border-gray-300 rounded-md bg-slate-100 text-gray-800 dark:text-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 bg-white dark:text-gray-200 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-yellow-400"
         />
       </div>
     </div>
 
     <!-- Password -->
-    <div class="mb-4">
-      <label for="id_password1" class="block text-lg font-semibold mb-2"
-        >Password:</label
-      >
-      <input
-        type="password"
-        id="id_password1"
-        name="password1"
-        class="w-full px-4 py-2 border dark:border-gray-700 border-gray-300 rounded-md bg-slate-100 text-gray-800 dark:text-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        required
-      />
+    <div class="mb-4 relative">
+      <label for="id_password1" class="block text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200">Password:</label>
+      <div class="relative">
+        <input
+          type="password"
+          id="id_password1"
+          name="password1"
+          class="w-full px-4 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 bg-white dark:text-gray-200 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-yellow-400"
+          required
+        />
+        <!-- Eye Icon for Password -->
+        <div class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-200 cursor-pointer">
+          <i class="fas fa-eye-slash toggle-password" data-target="#id_password1"></i>
+        </div>
+      </div>
     </div>
 
     <!-- Confirm Password -->
-    <div class="mb-4">
-      <label for="id_password2" class="block text-lg font-semibold mb-2"
-        >Confirm Password:</label
-      >
-      <input
-        type="password"
-        id="id_password2"
-        name="password2"
-        class="w-full px-4 py-2 border dark:border-gray-700 border-gray-300 rounded-md bg-slate-100 text-gray-800 dark:text-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        required
-      />
+    <div class="mb-4 relative">
+      <label for="id_password2" class="block text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200">Confirm Password:</label>
+      <div class="relative">
+        <input
+          type="password"
+          id="id_password2"
+          name="password2"
+          class="w-full px-4 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 bg-white dark:text-gray-200 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-yellow-400"
+          required
+        />
+        <!-- Eye Icon for Confirm Password -->
+        <div class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-200 cursor-pointer">
+          <i class="fas fa-eye-slash toggle-password" data-target="#id_password2"></i>
+        </div>
+      </div>
     </div>
 
     <!-- Register Button -->
     <button
       type="submit"
-      class="w-full bg-blue-500 text-white py-2 hover:scale-105 rounded-md font-semibold hover:bg-blue-600 duration-300 ease-in-out dark:bg-yellow-500 dark:hover:bg-yellow-600 transition-colors"
+      class="w-full bg-blue-500 text-white py-2 rounded-md hover:scale-105 font-semibold hover:bg-blue-600 dark:bg-yellow-500 dark:hover:bg-yellow-600 transition-colors ease-in-out"
     >
       <strong>Register</strong>
     </button>
@@ -137,9 +138,28 @@
   <!-- Link to Login -->
   <p class="mt-6 text-center">
     Already have an account?
-    <a href="{% url 'login_view' %}" class="text-blue-500 hover:underline"
-      >Login</a
-    >
+    <a href="{% url 'login_view' %}" class="text-blue-500 hover:underline dark:text-yellow-400">Login</a>
   </p>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        
+        // Toggle password visibility on eye icon click
+        $(".toggle-password").click(function() {
+            const targetId = $(this).data("target");
+            const input = $(targetId);
+
+            // Toggle input type and icon
+            if (input.attr("type") === "password") {
+                input.attr("type", "text");
+                $(this).removeClass("fa-eye-slash").addClass("fa-eye");
+            } else {
+                input.attr("type", "password");
+                $(this).removeClass("fa-eye").addClass("fa-eye-slash");
+            }
+        });
+    });
+</script>
 {% endblock %}
