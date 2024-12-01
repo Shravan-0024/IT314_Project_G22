@@ -233,27 +233,22 @@ def profile_edit_view(request):
 
             return redirect('profile_view')  # Redirect after successful update
         else:
-            # print(profile_form.errors, notify_form.errors)
             # Pass errors back to the template
             return render(request, 'registration/profile_edit.html', {
                 'profile_form': profile_form,
                 'notify_form': notify_form,
-                'errors': profile_form.errors | notify_form.errors
+                'errors': profile_form.errors | notify_form.errors  # Combine errors from both forms
             })
 
     else:
-        # Initialize forms with existing user data and Notify data if available
         profile_form = UserProfileEditForm(instance=user)
-        initial_data = {
-            'preferred_location': notify.preferred_location if notify else '',
-            'get_notifications': bool(notify)
-        }
-        notify_form = NotifyForm(initial=initial_data)
+        notify_form = NotifyForm(instance=notify)
 
-    return render(request, 'registration/profile_edit.html', {
-        'profile_form': profile_form,
-        'notify_form': notify_form
-    })
+        return render(request, 'registration/profile_edit.html', {
+            'profile_form': profile_form,
+            'notify_form': notify_form,
+            'errors': {}
+        })
 
 @login_required(login_url='/login?next=/predict')
 def predict_view(request):

@@ -39,7 +39,7 @@ class UserSignUpForm(UserCreationForm):
             data = response.json()
 
             if data.get('result') not in ['deliverable', 'risky']:
-                print("Invalid email")
+                # print("Invalid email")
                 raise ValidationError("The provided email address is not valid or deliverable.")
         except requests.exceptions.RequestException as e:
             raise ValidationError(f"An error occurred while validating the email: {e}")
@@ -67,6 +67,18 @@ class UserProfileEditForm(forms.ModelForm):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exclude(pk=self.instance.pk).exists():
             raise ValidationError("This email address is already registered with another account.")
+        try:
+            email_key = settings.KICKBOX_API_KEY
+            url = f"https://api.kickbox.com/v2/verify?email={email}&apikey={email_key}"
+            response = requests.get(url)
+            response.raise_for_status()
+            data = response.json()
+
+            if data.get('result') not in ['deliverable', 'risky']:
+                # print("Invalid email")
+                raise ValidationError("The provided email address is not valid or deliverable.")
+        except requests.exceptions.RequestException as e:
+            raise ValidationError(f"An error occurred while validating the email: {e}")
         return email
 
 class NotifyForm(forms.ModelForm):
