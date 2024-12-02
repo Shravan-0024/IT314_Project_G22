@@ -1,8 +1,8 @@
-# WeatheWise
+# WeatherWise
 Welcome to WeatherWise, a platform aimed at providing accurate and reliable weather forecasts for users. Our goal is to make weather information easy to access, helping users to stay informed and aware of up-to-date weather conditions.
 
 ## Table of Contents
-1. [About the Project](#about-our-project)  
+1. [About our Project](#about-our-project)  
 2. [Features](#features)  
 3. [Technologies Used](#technologies-used)   
 4. [Usage](#usage)  
@@ -51,7 +51,7 @@ Welcome to WeatherWise, a platform aimed at providing accurate and reliable weat
 ### Prerequisites
 
 1. Django framework installed on your system  
-2. MysSQL running locally
+2. MySQL running locally
 3. Git installed
 4. Python 3.10 installed 
 
@@ -92,11 +92,11 @@ Welcome to WeatherWise, a platform aimed at providing accurate and reliable weat
 - [Machine Learning-Guide](https://nessie.ilab.sztaki.hu/~kornai/2020/AdvancedMachineLearning/Ng_MachineLearningYearning.pdf)
 
 ### Contributors:
-- [@Rathwa Karnik - 202201266](https://github.com/Karnik-Rathva)
+- [@Rathva Karnik - 202201266](https://github.com/Karnik-Rathva)
 - [@Sharvil Oza - 202201277](https://github.com/so-19)
 - [@Jivani Madhav - 202201285](https://github.com/madhavJivani)
 - [@Sumit Vishwakarma - 202201320](https://github.com/Sumit-320)
-- [@Shrestha Thakkar- 202201323](https://github.com/SHRESTHAkkar)
+- [@Shrestha Thakkar - 202201323](https://github.com/SHRESTHAkkar)
 - [@Kakadiya ShravanKumar - 202201333](https://github.com/Shravan-0024)
 - [@Modi Nisharg - 202201346](https://github.com/Nisharg-Modi)
 - [@Kanakad KrushangKumar - 202201350](https://github.com/KrushangKanakad)
