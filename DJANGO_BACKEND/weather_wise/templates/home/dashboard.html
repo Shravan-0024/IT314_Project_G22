@@ -31,22 +31,23 @@
 
         <!-- Include Dashboard -->
         <div class="mt-12">
+            <div class="my-8">
             <!-- Search form -->
             <form method="POST" class="mt-4 mb-4 text-center w-full max-w-lg mx-auto rounded-xl">
                 {% csrf_token %}
                 <div
-                    class="flex items-center rounded-full bg-slate-200 dark:bg-slate-700 text-black dark:text-gray-50 font-roboto">
+                    class="flex bg-white text-black dark:text-gray-50 font-roboto rounded-full shadow-md border-none focus:outline-none focus:ring-0">
                     <!-- Input Field -->
-                    <div class="flex-grow flex relative">
-                        <input type="text" name="location" placeholder="Search for a location"
-                            class="flex-grow p-4 rounded-full text-black text-lg focus:outline-none" />
-                    </div>
+                    <input type="text" name="location" placeholder="Enter location"
+                    class="flex-grow p-4 text-lg rounded-full bg-transparent border-none focus:outline-none focus:ring-0 text-black"
+                    aria-label="Enter location" />
 
-                    <!-- Search Button -->
+
+                    <!-- Submit Button -->
                     <button type="submit"
-                        class="bg-blue-500 hover:bg-blue-600 p-4 text-white font-semibold rounded-full transition-all duration-300 ease-in-out dark:bg-yellow-500 dark:hover:bg-yellow-600"
+                        class="bg-blue-500 hover:bg-blue-400 p-4 text-white font-semibold shadow-lg transition-all duration-300 ease-in-out rounded-full dark:bg-yellow-500 dark:hover:bg-yellow-600"
                         aria-label="Search">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M21 21l-4.35-4.35m1.55-4.65a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -54,6 +55,7 @@
                     </button>
                 </div>
             </form>
+        </div>
         </div>
         {% if error %}
         <div class="text-red-500 text-xl mt-2">{{ error }}</div>
@@ -85,12 +87,13 @@
                     <!-- Favorite Button -->
                     <button type="submit" id="delete_loc"
                         class="absolute top-[5px] right-[10px] p-2 rounded-full focus:outline-none"
-                        aria-label="Toggle Favorite" onclick="toggleFavorite(this)">
+                        aria-label="Toggle Favorite" onclick="toggleFavorite(this)" title="hvuvuyv">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-500" fill="currentColor"
                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path id="star-icon"
                                 d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                         </svg>
+                        <abbr title="bjkbkvker">kenklrnbnrl</abbr>
                     </button>
                 </form>
 

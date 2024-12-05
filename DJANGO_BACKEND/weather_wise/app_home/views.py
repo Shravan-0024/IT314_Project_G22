@@ -366,7 +366,7 @@ def send_weather_alert(request):
         # Example data
         subject = "Weather Alert: Rain Expected Tomorrow"
         message = "Dear user, there is a forecast for rain tomorrow in your selected location. Stay safe!"
-        recipient_list = ['202203040@daiict.ac.in']  # Replace with actual user emails
+        recipient_list = ['weatherwiseg22@gmail.com']  # Replace with actual user emails
 
         email_sent = send_notification_email(subject, message, recipient_list)
 
