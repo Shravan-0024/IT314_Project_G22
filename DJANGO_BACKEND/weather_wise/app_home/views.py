@@ -169,20 +169,50 @@ def signup_view(request):
         return redirect('signup_view')
 
     if request.method == "POST":
+
         form = UserSignUpForm(request.POST)
-        if form.is_valid():
+        notify_form = NotifyForm(request.POST)
+
+        if form.is_valid() and notify_form.is_valid():
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password1'])
             user.save()
+
+            # Try to get the Notify object for the user, if it exists
+            try:
+                notify = Notify.objects.get(user=user)
+            except Notify.DoesNotExist:
+                notify = None
+
+            # Handle the notify form logic based on the conditions
+            get_notifications = request.POST.get('get_notifications', False)
+            preferred_location = notify_form.cleaned_data['preferred_location']
+            # Convert 'on' to True, otherwise False
+            get_notifications = True if get_notifications == 'on' else False
+
+            # Apply update conditions
+            if get_notifications and preferred_location:
+                if notify is None:
+                    notify = Notify(user=user, preferred_location=preferred_location, get_notifications=get_notifications)
+                else:
+                    notify.preferred_location = preferred_location
+                notify.save()
+            
             login(request, user)
             return redirect('dashboard_view')
         else:
-            # Collect all form errors
-            errors = form.errors
-            return render(request, 'registration/signup.html', {'form': form, 'errors': errors})
+            return render(request, 'registration/signup.html', {
+                'form': form,
+                'notify_form': notify_form,
+                'errors': form.errors | notify_form.errors  # Combine errors from both forms
+            })
     else:
         form = UserSignUpForm()
-        return render(request, 'registration/signup.html', {'form': form})
+        notify_form = NotifyForm()
+        return render(request, 'registration/signup.html', {
+                'form': form,
+                'notify_form': notify_form 
+            })
 
 @login_required
 def logout_view(request):
@@ -219,15 +249,18 @@ def profile_edit_view(request):
             get_notifications = request.POST.get('get_notifications', False)
             preferred_location = notify_form.cleaned_data['preferred_location']
 
+            # Convert 'on' to True, otherwise False
+            get_notifications = True if get_notifications == 'on' else False
+
             # Apply update conditions
-            if get_notifications == 'on' and preferred_location:
+            if get_notifications and preferred_location:
                 if notify is None:
-                    notify = Notify(user=user, preferred_location=preferred_location)
+                    notify = Notify(user=user, preferred_location=preferred_location, get_notifications=get_notifications)
                 else:
                     notify.preferred_location = preferred_location
                 notify.save()
 
-            elif get_notifications != 'on' and not preferred_location:
+            elif not get_notifications:
                 if notify:
                     notify.delete()
 
@@ -237,6 +270,7 @@ def profile_edit_view(request):
             return render(request, 'registration/profile_edit.html', {
                 'profile_form': profile_form,
                 'notify_form': notify_form,
+                'notify': notify,
                 'errors': profile_form.errors | notify_form.errors  # Combine errors from both forms
             })
 
@@ -247,6 +281,7 @@ def profile_edit_view(request):
         return render(request, 'registration/profile_edit.html', {
             'profile_form': profile_form,
             'notify_form': notify_form,
+            'notify': notify,
             'errors': {}
         })
 

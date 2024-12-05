@@ -81,7 +81,7 @@ class UserProfileEditForm(forms.ModelForm):
         return email
 
 class NotifyForm(forms.ModelForm):
-    get_notifications = forms.BooleanField(required=False, label="Receive Notifications")
+    get_notifications = forms.BooleanField(required=False, label="Receive Weather Alerts!")
     preferred_location = forms.CharField(max_length=100, required=False, label="Preferred Location")
 
     class Meta:
@@ -94,8 +94,6 @@ class NotifyForm(forms.ModelForm):
         preferred_location = cleaned_data.get('preferred_location')
 
         # Validation logic
-        if not get_notifications and preferred_location:
-            raise ValidationError("You need to enable notifications to have a preferred location.")
         if get_notifications and not preferred_location:
             raise ValidationError("Enter a valid location if you want notifications.")
 
