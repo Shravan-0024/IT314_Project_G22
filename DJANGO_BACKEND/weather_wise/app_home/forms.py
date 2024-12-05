@@ -6,10 +6,74 @@ from .models import Notify,Feedback
 import requests
 from django.conf import settings
 
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
+import requests
+from django.conf import settings
+
+
 class UserSignUpForm(UserCreationForm):
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-yellow-400'}))
-    first_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class': 'w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-yellow-400'}))
-    last_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class': 'w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-yellow-400'}))
+    username = forms.CharField(
+        min_length=3,
+        max_length=30,
+        widget=forms.TextInput(attrs={'class': 'w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-yellow-400'}),
+        error_messages={
+            'min_length': 'The username must be at least 3 characters long.',
+            'max_length': 'The username cannot exceed 30 characters.',
+        }
+    )
+
+    email = forms.EmailField(
+        min_length=5,
+        max_length=254,
+        widget=forms.EmailInput(attrs={'class': 'w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-yellow-400'}),
+        error_messages={
+            'min_length': 'The email must be at least 5 characters long.',
+            'max_length': 'The email cannot exceed 254 characters.',
+        }
+    )
+
+    first_name = forms.CharField(
+        min_length=2,
+        max_length=50,
+        widget=forms.TextInput(attrs={'class': 'w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-yellow-400'}),
+        error_messages={
+            'min_length': 'The first name must be at least 2 characters long.',
+            'max_length': 'The first name cannot exceed 50 characters.',
+        }
+    )
+
+    last_name = forms.CharField(
+        min_length=2,
+        max_length=50,
+        widget=forms.TextInput(attrs={'class': 'w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-yellow-400'}),
+        error_messages={
+            'min_length': 'The last name must be at least 2 characters long.',
+            'max_length': 'The last name cannot exceed 50 characters.',
+        }
+    )
+
+    password1 = forms.CharField(
+        min_length=8,
+        max_length=128,
+        widget=forms.PasswordInput(attrs={'class': 'w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-yellow-400'}),
+        error_messages={
+            'min_length': 'The password must be at least 8 characters long.',
+            'max_length': 'The password cannot exceed 128 characters.',
+        }
+    )
+
+    password2 = forms.CharField(
+        min_length=8,
+        max_length=128,
+        widget=forms.PasswordInput(attrs={'class': 'w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-yellow-400'}),
+        error_messages={
+            'min_length': 'The confirmation password must be at least 8 characters long.',
+            'max_length': 'The confirmation password cannot exceed 128 characters.',
+        }
+    )
 
     class Meta:
         model = User
@@ -38,7 +102,6 @@ class UserSignUpForm(UserCreationForm):
             data = response.json()
 
             if data.get('result') not in ['deliverable', 'risky']:
-                # print("Invalid email")
                 raise ValidationError("The provided email address is not valid or deliverable.")
         except requests.exceptions.RequestException as e:
             raise ValidationError(f"An error occurred while validating the email: {e}")
@@ -49,9 +112,32 @@ class UserSignUpForm(UserCreationForm):
 
 
 class UserProfileEditForm(forms.ModelForm):
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
-    first_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    last_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(
+    min_length=5,
+    max_length=254,    
+    widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    error_messages={
+        'min_length': 'The email must be at least 5 characters long.',
+        'max_length': 'The email cannot exceed 254 characters.',
+    }
+
+    first_name = forms.CharField(
+    min_length=2,
+    max_length=50, 
+    widget=forms.TextInput(attrs={'class': 'form-control'}))
+    error_messages={
+        'min_length': 'The first name must be at least 2 characters long.',
+        'max_length': 'The first name cannot exceed 50 characters.',
+    }
+
+    last_name = forms.CharField(
+    min_length=2,
+    max_length=50, 
+    widget=forms.TextInput(attrs={'class': 'form-control'}))
+    error_messages={
+        'min_length': 'The last name must be at least 2 characters long.',
+        'max_length': 'The last name cannot exceed 50 characters.',
+    }
 
     class Meta:
         model = User
@@ -61,6 +147,8 @@ class UserProfileEditForm(forms.ModelForm):
         super(UserProfileEditForm, self).__init__(*args, **kwargs)
         # Make username read-only since it's generally not editable
         self.fields['username'].widget.attrs['readonly'] = True
+        self.fields['username'].min_length = 3
+        self.fields['username'].max_length = 30
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -82,7 +170,14 @@ class UserProfileEditForm(forms.ModelForm):
 
 class NotifyForm(forms.ModelForm):
     get_notifications = forms.BooleanField(required=False, label="Receive Weather Alerts!")
-    preferred_location = forms.CharField(max_length=100, required=False, label="Preferred Location")
+    preferred_location = forms.CharField(
+    min_length=1,
+    max_length=100,
+    required=False, label="Preferred Location")
+    error_messages={
+        'min_length': 'The location must be at least 1 character long.',
+        'max_length': 'The location cannot exceed 50 characters.',
+    }
 
     class Meta:
         model = Notify
