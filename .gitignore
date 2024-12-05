@@ -10,8 +10,6 @@ DJANGO_BACKEND/venv/
 __pycache__/
 
 # Django-specific
-db.sqlite3
-db.sqlite3-journal
 media/
 staticfiles/
 

@@ -90,6 +90,22 @@
       </div>
     </div>
 
+    <!-- Notify Form -->
+    <div class="mb-3 flex justify-between items-center">
+      <label class="font-semibold text-lg w-2/3" for="get_notifications">Receive Weather Alerts!</label>
+      <input type="checkbox" id="get_notifications" name="get_notifications"
+        class="form-checkbox dark:border-gray-600 border-gray-300" 
+        {% if notify_form.get_notifications.value %}checked{% endif %}>
+    </div>
+
+    <!-- Preferred Location (Initially Hidden) -->
+    <div id="preferred_location_wrapper" class="mb-3 flex justify-between items-center" style="display: none;">
+      <label for="preferred_location" class="font-semibold text-lg w-1/3">Preferred Location</label>
+      <input type="text" id="preferred_location" name="preferred_location"
+        value="{{ notify_form.preferred_location.value }}"
+        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 bg-white dark:text-gray-200 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-yellow-400">
+    </div>
+
     <!-- Password -->
     <div class="mb-4 relative">
       <label for="id_password1" class="block text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200">Password:</label>
@@ -144,22 +160,37 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function() {
-        
-        // Toggle password visibility on eye icon click
-        $(".toggle-password").click(function() {
-            const targetId = $(this).data("target");
-            const input = $(targetId);
+  $(document).ready(function() {
+      // Initialize visibility based on checkbox state
+      togglePreferredLocation();
 
-            // Toggle input type and icon
-            if (input.attr("type") === "password") {
-                input.attr("type", "text");
-                $(this).removeClass("fa-eye-slash").addClass("fa-eye");
-            } else {
-                input.attr("type", "password");
-                $(this).removeClass("fa-eye").addClass("fa-eye-slash");
-            }
-        });
-    });
+      // Add event listener for checkbox change
+      $('#get_notifications').on('change', function() {
+          togglePreferredLocation();
+      });
+
+      function togglePreferredLocation() {
+          if ($('#get_notifications').is(':checked')) {
+              $('#preferred_location_wrapper').show();
+          } else {
+              $('#preferred_location_wrapper').hide();
+          }
+      }
+
+      // Toggle password visibility on eye icon click
+      $(".toggle-password").click(function() {
+          const targetId = $(this).data("target");
+          const input = $(targetId);
+
+          // Toggle input type and icon
+          if (input.attr("type") === "password") {
+              input.attr("type", "text");
+              $(this).removeClass("fa-eye-slash").addClass("fa-eye");
+          } else {
+              input.attr("type", "password");
+              $(this).removeClass("fa-eye").addClass("fa-eye-slash");
+          }
+      });
+  });
 </script>
 {% endblock %}
