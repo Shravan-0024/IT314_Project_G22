@@ -17,10 +17,10 @@ from .pipeline import WeatherPipeline
 from django.conf import settings
 from django.http import JsonResponse
 from .utils import send_notification_email
+import random
 
 API_KEY_1 = settings.WEATHER_API_KEY_1
 API_KEY_2 = settings.WEATHER_API_KEY_2
-
 
 
 
@@ -164,14 +164,13 @@ def login_view(request):
 
     return render(request, 'registration/login.html', {'next': next_url})
 
-def signup_view(request):
 
+def signup_view(request):
     if request.user.is_authenticated:
         logout(request)
         return redirect('signup_view')
 
     if request.method == "POST":
-
         form = UserSignUpForm(request.POST)
         notify_form = NotifyForm(request.POST)
 
@@ -179,42 +178,52 @@ def signup_view(request):
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password1'])
             user.save()
-
-            # Try to get the Notify object for the user, if it exists
+            # Handle Notify object logic
             try:
                 notify = Notify.objects.get(user=user)
             except Notify.DoesNotExist:
                 notify = None
 
-            # Handle the notify form logic based on the conditions
             get_notifications = request.POST.get('get_notifications', False)
             preferred_location = notify_form.cleaned_data['preferred_location']
-            # Convert 'on' to True, otherwise False
             get_notifications = True if get_notifications == 'on' else False
 
-            # Apply update conditions
             if get_notifications and preferred_location:
                 if notify is None:
                     notify = Notify(user=user, preferred_location=preferred_location, get_notifications=get_notifications)
                 else:
                     notify.preferred_location = preferred_location
                 notify.save()
-            
-            login(request, user)
-            return redirect('dashboard_view')
+
+            otp_ = random.randint(1000, 9999)
+            subject = "WeatherWise Account Verification"
+            message = f"Dear user, your One Time Verification password is: {otp_}"
+            recipient_list = ['202201333@daiict.ac.in']  # Replace with actual user emails
+            email_sent = send_notification_email(subject, message, recipient_list)
+
+            # Store user ID and OTP in session for OTP verification
+            request.session['user_id'] = user.id
+            request.session['otp'] = otp_
+
+            if email_sent:
+                return redirect('otp_verify')
+            else:
+                return JsonResponse({'status': 'error', 'message': 'Failed to send email.'})
+
         else:
             return render(request, 'registration/signup.html', {
                 'form': form,
                 'notify_form': notify_form,
-                'errors': form.errors | notify_form.errors  # Combine errors from both forms
+                'errors': form.errors | notify_form.errors
             })
     else:
         form = UserSignUpForm()
         notify_form = NotifyForm()
         return render(request, 'registration/signup.html', {
-                'form': form,
-                'notify_form': notify_form 
-            })
+            'form': form,
+            'notify_form': notify_form
+        })
+
 
 @login_required
 def logout_view(request):
@@ -360,12 +369,14 @@ def feedback_view(request):
     
     return render(request, 'home/feedback.html', {'form': form})
 
+
 def send_weather_alert(request):
     if request.method == 'POST':
+        otp = random.randint(1000, 9999)
         # Example data
-        subject = "Weather Alert: Rain Expected Tomorrow"
-        message = "Dear user, there is a forecast for rain tomorrow in your selected location. Stay safe!"
-        recipient_list = ['weatherwiseg22@gmail.com']  # Replace with actual user emails
+        subject = "WeatherWise Account Verification"
+        message = f"Dear user, your One Time Verification password is: {otp}"
+        recipient_list = ['202201333@daiict.ac.in']  # Replace with actual user emails
 
         email_sent = send_notification_email(subject, message, recipient_list)
 
@@ -375,3 +386,61 @@ def send_weather_alert(request):
             return JsonResponse({'status': 'error', 'message': 'Failed to send email.'})
 
     return render(request, 'home/email_service.html')
+
+def otp_verify(request):
+    if request.method == 'POST':
+        otp_ = request.session.get('otp')  # Get generated OTP
+        otp = request.POST.get('otp')  # Get user-entered OTP
+        user_id = request.session.get('user_id')  # Get user ID from session
+
+        if not otp_ or not user_id:
+            return redirect('signup_view')  # Redirect if session data is missing
+
+        if 'otp_attempts' not in request.session:
+            request.session['otp_attempts'] = 0
+
+        # Retrieve attempt count from session
+        otp_attempts = request.session['otp_attempts']
+
+        if str(otp_) == str(otp):
+            # OTP is correct, log in the user
+            try:
+                user = User.objects.get(id=user_id)
+                login(request, user)
+
+                # Clear session data after successful verification
+                for key in ['user_id', 'otp', 'otp_attempts']:
+                    if key in request.session:
+                        del request.session[key]
+
+                return redirect('dashboard_view')
+            except User.DoesNotExist:
+                return redirect('signup_view')  # Handle case where user doesn't exist
+        else:
+            # Increment and save the number of attempts
+            otp_attempts += 1
+            request.session['otp_attempts'] = otp_attempts
+
+            # Check if attempts exceed limit
+            if otp_attempts >= 3:
+                # Delete the user from the database
+                try:
+                    user = User.objects.get(id=user_id)
+                    user.delete()
+                except User.DoesNotExist:
+                    pass  # User might already be deleted
+                
+                # Clear session data
+                for key in ['user_id', 'otp', 'otp_attempts']:
+                    if key in request.session:
+                        del request.session[key]
+
+                return render(request, 'registration/signup.html', {
+                    'error': 'Too many incorrect attempts. Please sign up again.'
+                })
+
+            return render(request, 'home/otp_verify.html', {
+                'error': f'Invalid OTP. {3 - otp_attempts} attempts remaining.'
+            })
+
+    return render(request, 'home/otp_verify.html')
