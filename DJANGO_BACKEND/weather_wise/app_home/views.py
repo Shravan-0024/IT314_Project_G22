@@ -15,6 +15,8 @@ import pickle
 from .pipeline import format_prediction_output  # relative import if within the same app
 from .pipeline import WeatherPipeline
 from django.conf import settings
+from django.http import JsonResponse
+from .utils import send_notification_email
 
 API_KEY_1 = settings.WEATHER_API_KEY_1
 API_KEY_2 = settings.WEATHER_API_KEY_2
@@ -357,9 +359,6 @@ def feedback_view(request):
         form = FeedbackForm()
     
     return render(request, 'home/feedback.html', {'form': form})
-
-from django.http import JsonResponse
-from .utils import send_notification_email
 
 def send_weather_alert(request):
     if request.method == 'POST':

@@ -1,0 +1,12 @@
+// sample jinja template
+
+{% for forecast in forecast_data %}
+    <div class="forecast-item">
+        <h2>{{ forecast.day }} ({{ forecast.date }})</h2>
+        <img src="{{ forecast.icon }}" alt="Weather Icon">
+        <p>High Temp: {{ forecast.high_temp }}</p>
+        <p>Low Temp: {{ forecast.low_temp }}</p>
+        <p>Condition: {{ forecast.condition }}</p>
+        <p>Precipitation: {{ forecast.precipitation }}</p>
+    </div>
+{% endfor %}
