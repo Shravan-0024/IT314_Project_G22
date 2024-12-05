@@ -198,7 +198,7 @@ def signup_view(request):
             otp_ = random.randint(1000, 9999)
             subject = "WeatherWise Account Verification"
             message = f"Dear user, your One Time Verification password is: {otp_}"
-            recipient_list = ['202201333@daiict.ac.in']  # Replace with actual user emails
+            recipient_list = [user.email]  # Replace with actual user emails
             email_sent = send_notification_email(subject, message, recipient_list)
 
             # Store user ID and OTP in session for OTP verification
