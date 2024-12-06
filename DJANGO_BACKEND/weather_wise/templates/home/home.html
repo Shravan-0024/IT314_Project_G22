@@ -31,39 +31,51 @@
     <!-- Include Dashboard -->
     <div class="mt-12">
       <div class="my-8">
-            <!-- Search form -->
-            <form method="POST" class="mt-4 mb-4 text-center w-full max-w-lg mx-auto rounded-xl">
-                {% csrf_token %}
-                <div
-                    class="flex bg-white text-black dark:text-gray-50 font-roboto rounded-full shadow-md border-none focus:outline-none focus:ring-0">
-                    <!-- Input Field -->
-                    <input type="text" name="location" placeholder="Enter location"
-                    class="flex-grow p-4 text-lg rounded-full bg-transparent border-none focus:outline-none focus:ring-0 text-black"
-                    aria-label="Enter location" />
+        <!-- Search form -->
+        <form method="POST" class="mt-4 mb-4 text-center w-full max-w-lg mx-auto rounded-xl">
+          {% csrf_token %}
+          <div
+            class="flex bg-white text-black dark:text-gray-50 font-roboto rounded-full shadow-md border-none focus:outline-none focus:ring-0">
+            <!-- Input Field -->
+            <input type="text" name="location" placeholder="Enter location"
+              class="flex-grow p-4 text-lg rounded-full bg-transparent border-none focus:outline-none focus:ring-0 text-black"
+              aria-label="Enter location" required/>
 
 
-                    <!-- Submit Button -->
-                    <button type="submit"
-                        class="bg-blue-500 hover:bg-blue-400 p-4 text-white font-semibold shadow-lg transition-all duration-300 ease-in-out rounded-full dark:bg-yellow-500 dark:hover:bg-yellow-600"
-                        aria-label="Search">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M21 21l-4.35-4.35m1.55-4.65a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                    </button>
-                </div>
-            </form>
-        </div>
+            <!-- Submit Button -->
+            <button type="submit"
+              class="bg-blue-500 hover:bg-blue-400 p-4 text-white font-semibold shadow-lg transition-all duration-300 ease-in-out rounded-full dark:bg-yellow-500 dark:hover:bg-yellow-600"
+              aria-label="Search">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M21 21l-4.35-4.35m1.55-4.65a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-    {% if error %}  
-    <div class="text-red-500 text-xl mt-2">{{ error }}</div>
+    <!-- Display error message if present -->
+    {% if error %}
+    <div
+      class="bg-red-500 dark:bg-red-700 text-white text-center p-4 rounded-md mb-4 relative max-w-md mx-auto flex justify-between items-center">
+      <p class="flex-grow text-left"><strong>{{ error }}</strong></p>
+      <button type="button" class="ml-4 text-white font-bold bg-transparent border-none focus:outline-none"
+        onclick="this.parentElement.remove()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+          stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
     {% endif %}
     {% if data %}
     <!-- Container for the Weather Information -->
     <div class="container mx-auto p-8 font-roboto mb-4">
       <!-- Weather Card -->
-      <div class="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 p-8 rounded-xl shadow-2xl space-y-8 max-w-4xl mx-auto transform transition-transform hover:scale-105">
+      <div
+        class="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 p-8 rounded-xl shadow-2xl space-y-8 max-w-4xl mx-auto transform transition-transform hover:scale-105">
         <!-- Location and Coordinates -->
         <div class="flex flex-col sm:flex-row justify-between items-center border-b border-gray-700 pb-4">
           <div>
@@ -74,7 +86,8 @@
 
         <!-- Weather Condition -->
         <div class="flex flex-col sm:flex-row items-center space-x-8 py-6">
-          <img src="http://openweathermap.org/img/wn/{{ data.weather.0.icon }}@4x.png" alt="Weather Icon" class="w-32 h-32">
+          <img src="http://openweathermap.org/img/wn/{{ data.weather.0.icon }}@4x.png" alt="Weather Icon"
+            class="w-32 h-32">
           <div class="text-center sm:text-left">
             <p class="text-3xl font-semibold">Weather: {{ data.weather.0.main }}</p>
             <p class="text-lg text-gray-400">Condition: {{ data.weather.0.description }}</p>
@@ -129,7 +142,8 @@
     <div class="container mx-auto p-8 font-roboto">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <!-- Weather Card for Delhi -->
-        <div class="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 rounded-xl shadow-xl p-8 transform transition-transform hover:scale-105">
+        <div
+          class="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 rounded-xl shadow-xl p-8 transform transition-transform hover:scale-105">
           <!-- Location -->
           <div class="text-center mb-6">
             <p class="text-3xl font-bold">{{ data_Delhi.name }}, {{ data_Delhi.sys.country }}</p>
@@ -138,7 +152,8 @@
 
           <!-- Weather Icon and Condition -->
           <div class="flex flex-col items-center mb-6">
-            <img src="http://openweathermap.org/img/wn/{{ data_Delhi.weather.0.icon }}@2x.png" alt="Weather Icon" class="w-20 h-20 mb-4">
+            <img src="http://openweathermap.org/img/wn/{{ data_Delhi.weather.0.icon }}@2x.png" alt="Weather Icon"
+              class="w-20 h-20 mb-4">
             <p class="text-xl font-medium">{{ data_Delhi.weather.0.main }}</p>
             <p class="text-sm text-gray-400">{{ data_Delhi.weather.0.description }}</p>
           </div>
@@ -162,7 +177,8 @@
         </div>
 
         <!-- Weather Card for Mumbai -->
-        <div class="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 rounded-xl shadow-xl p-8 transform transition-transform hover:scale-105">
+        <div
+          class="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 rounded-xl shadow-xl p-8 transform transition-transform hover:scale-105">
           <!-- Location -->
           <div class="text-center mb-6">
             <p class="text-3xl font-bold">{{ data_Mumbai.name }}, {{ data_Mumbai.sys.country }}</p>
@@ -171,7 +187,8 @@
 
           <!-- Weather Icon and Condition -->
           <div class="flex flex-col items-center mb-6">
-            <img src="http://openweathermap.org/img/wn/{{ data_Mumbai.weather.0.icon }}@2x.png" alt="Weather Icon" class="w-20 h-20 mb-4">
+            <img src="http://openweathermap.org/img/wn/{{ data_Mumbai.weather.0.icon }}@2x.png" alt="Weather Icon"
+              class="w-20 h-20 mb-4">
             <p class="text-xl font-medium">{{ data_Mumbai.weather.0.main }}</p>
             <p class="text-sm text-gray-400">{{ data_Mumbai.weather.0.description }}</p>
           </div>
@@ -195,16 +212,19 @@
         </div>
 
         <!-- Weather Card for Hyderabad -->
-        <div class="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 rounded-xl shadow-xl p-8 transform transition-transform hover:scale-105">
+        <div
+          class="bg-gradient-to-br from-gray-800 to-gray-900 text-gray-100 rounded-xl shadow-xl p-8 transform transition-transform hover:scale-105">
           <!-- Location -->
           <div class="text-center mb-6">
             <p class="text-3xl font-bold">{{ data_Hyderabad.name }}, {{ data_Hyderabad.sys.country }}</p>
-            <p class="text-sm text-gray-400 mt-1">Lat: {{ data_Hyderabad.coord.lat }}, Lon: {{ data_Hyderabad.coord.lon }}</p>
+            <p class="text-sm text-gray-400 mt-1">Lat: {{ data_Hyderabad.coord.lat }}, Lon: {{ data_Hyderabad.coord.lon
+              }}</p>
           </div>
 
           <!-- Weather Icon and Condition -->
           <div class="flex flex-col items-center mb-6">
-            <img src="http://openweathermap.org/img/wn/{{ data_Hyderabad.weather.0.icon }}@2x.png" alt="Weather Icon" class="w-20 h-20 mb-4">
+            <img src="http://openweathermap.org/img/wn/{{ data_Hyderabad.weather.0.icon }}@2x.png" alt="Weather Icon"
+              class="w-20 h-20 mb-4">
             <p class="text-xl font-medium">{{ data_Hyderabad.weather.0.main }}</p>
             <p class="text-sm text-gray-400">{{ data_Hyderabad.weather.0.description }}</p>
           </div>
@@ -234,7 +254,7 @@
 
 
 
-    </div>
   </div>
+</div>
 
-  {% endblock %}
+{% endblock %}

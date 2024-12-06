@@ -53,17 +53,37 @@ def get_weather_data(city):
         return {'error': f"Failed to get data for {city}"}
 
 def home_view(request):
-    if request.method == "POST":
-        city = request.POST["location"]
-        if(len(city) > 0):
-            weather_info = get_weather_data(city)
+    
+    # Redirect to dashboard if user is authenticated
+    if request.user.is_authenticated:
+        return redirect('dashboard_view')
+    else:
+        if request.method == "POST":
+            city = request.POST["location"]
+            if(len(city) > 0):
+                weather_info = get_weather_data(city)
 
-            if 'error' in weather_info:
-                return render(request, 'home/home.html', {"error": weather_info['error']})
+                if 'error' in weather_info:
+                    return render(request, 'home/home.html', {"error": weather_info['error']})
+                else:
+                    return render(request, 'home/home.html', {'data': weather_info['data']})
             else:
-                return render(request, 'home/home.html', {'data': weather_info['data']})
+                error_message = "City name cannot be empty. Please enter a valid city."
+                city1 = 'Delhi'
+                weather_info1 = get_weather_data(city1)
+                city2 = 'Mumbai'
+                weather_info2 = get_weather_data(city2)
+                city3 = 'Hyderabad'
+                weather_info3 = get_weather_data(city3)
+                return render(request, 'home/home.html', {
+                    'data_Delhi': weather_info1['data'],
+                    'data_Mumbai': weather_info2['data'],
+                    'data_Hyderabad': weather_info3['data'],
+                    'error': error_message
+                })
+
+            
         else:
-            error_message = "City name cannot be empty. Please enter a valid city."
             city1 = 'Delhi'
             weather_info1 = get_weather_data(city1)
             city2 = 'Mumbai'
@@ -74,22 +94,7 @@ def home_view(request):
                 'data_Delhi': weather_info1['data'],
                 'data_Mumbai': weather_info2['data'],
                 'data_Hyderabad': weather_info3['data'],
-                'error': error_message
             })
-
-        
-    else:
-        city1 = 'Delhi'
-        weather_info1 = get_weather_data(city1)
-        city2 = 'Mumbai'
-        weather_info2 = get_weather_data(city2)
-        city3 = 'Hyderabad'
-        weather_info3 = get_weather_data(city3)
-        return render(request, 'home/home.html', {
-            'data_Delhi': weather_info1['data'],
-            'data_Mumbai': weather_info2['data'],
-            'data_Hyderabad': weather_info3['data'],
-        })
     
 @login_required    
 def dashboard_view(request):
