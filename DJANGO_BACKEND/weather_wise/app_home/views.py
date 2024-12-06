@@ -46,11 +46,11 @@ def get_weather_data(city):
         data['sys']['sunset'] = datetime.fromtimestamp(sunset_timestamp).strftime('%Y-%m-%d %H:%M:%S')
         
         return {
-            'city': city,
+            'city': city.upper(),
             'data': data,
         }
     else:
-        return {'error': f"Failed to get data for {city}"}
+        return {'error': f"Failed to get data for {city.upper()}"}
 
 def home_view(request):
     
@@ -336,15 +336,14 @@ def predict_view(request):
     YOUR_ACCESS_KEY = '6d01b78a047e5aa7f1b705ad7cdbfde7'
     user = request.user
     if request.method == "POST":
-        city = request.POST["location"]
-        
-        # Check if city length is zero
-        if len(city) == 0:
+        city = request.POST.get("location", "").strip()
+
+        # Check if the city name is empty
+        if not city:
             error_message = "City name cannot be empty. Please enter a valid city."
-            predictions = None
             return render(request, 'home/predict.html', {
                 'city': city.upper(),
-                'predictions': predictions,
+                'predictions': None,
                 'error': error_message
             })
 
@@ -354,13 +353,24 @@ def predict_view(request):
 
         if response.status_code == 200:
             data = response.json()
-            # Extract weather features
+
+            # Check if the API response contains an error
+            if 'error' in data:
+                error_message = f"Failed to get data for {city}. Please try again later."
+                return render(request, 'home/predict.html', {
+                    'city': city.upper(),
+                    'predictions': None,
+                    'error': error_message
+                })
+
+            # Extract weather features if no error exists
             weather_info = {
                 'temperature': float(data['current']['temperature']),
                 'humidity': float(data['current']['humidity']),
                 'wind_speed': float(data['current']['wind_speed']),
                 'precipitation': float(data['current']['precip']),
             }
+
             # Use the extracted data for prediction
             input_data = [weather_info['temperature'], weather_info['humidity'],
                           weather_info['wind_speed'], weather_info['precipitation']]
@@ -376,10 +386,11 @@ def predict_view(request):
                 logger.debug("Pipeline initialized successfully.")
                 logger.debug(f"Input data: {input_data}")
                 logger.debug(f"Predictions: {predictions}")
+                error_message = ''
             except Exception as e:
                 logger.debug(f"Error during prediction: {str(e)}", exc_info=True)
-
-            error_message = ''
+                error_message = "An error occurred during prediction. Please try again later."
+                predictions = None
         else:
             # Handle API error response
             predictions = None
