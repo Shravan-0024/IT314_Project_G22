@@ -83,17 +83,17 @@ WSGI_APPLICATION = 'weather_wise.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 # Database Configuration for Local host
-"""
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-"""
+
 # Updated DATABASES configuration to use MySQL Workbench
 # (Currently commented as this is to be used on hosting site)
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -107,7 +107,7 @@ DATABASES = {
         }
     }
 }
-
+"""
 
 # Gmail SMTP Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -176,29 +176,3 @@ INTERNAL_IPS = ['127.0.0.1']
 WEATHER_API_KEY_1 = '3fd909629968761c4f36f936ba57ef90'
 KICKBOX_API_KEY = "live_7ecf5146fab8220e1c4c84ac031bd155b0a5317944bf1ad0214528c8ca2c3a5f"
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': '/home/weatherwise/IT314_Project_G22/DJANGO_BACKEND/weather_wise/weather_wise/weather_pipeline_debug.log',
-        },
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-        'custom_logger': {
-            'handlers': ['file', 'console'],
-            'level': 'DEBUG',
-        },
-    },
-}

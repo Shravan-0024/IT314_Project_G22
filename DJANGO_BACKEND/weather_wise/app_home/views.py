@@ -306,36 +306,42 @@ def predict_view(request):
         url = "http://api.weatherstack.com/current"
         querystring = {"access_key": YOUR_ACCESS_KEY, "query": city}
         response = requests.get(url, params=querystring)
-        data = response.json()
-        # Extract weather features
-        weather_info = {
-            'temperature': float(data['current']['temperature']),
-            'humidity': float(data['current']['humidity']),
-            'wind_speed': float(data['current']['wind_speed']),
-            'precipitation': float(data['current']['precip']),
-        }
-        #print(weather_info)
-        # Use the extracted data for prediction
-        input_data = [weather_info['temperature'], weather_info['humidity'],
-                      weather_info['wind_speed'], weather_info['precipitation']]
-        predictions = None  # Initialize predictions to handle errors
-        try:
-            # Load the prediction pipeline
-            pipeline = WeatherPipeline()
-            predictions = pipeline.predict(input_data)
-            logger.debug("Pipeline initialized successfully.")
-            logger.debug(f"Input data: {input_data}")
-            logger.debug(f"Predictions: {predictions}")
-        except Exception as e:
-            # formatted_predictions = f"Error during prediction: {str(e)}"
-            #print(f"Error during prediction: {str(e)}")
-            # Log the error
-            logger.error(f"Error during prediction: {str(e)}", exc_info=True)
-        # Save recent location
-        Recent_loc.objects.create(user=user, recent_location=city)
+
+        if response.status_code == 200 and len(city) > 0:
+            data = response.json()
+            # Extract weather features
+            weather_info = {
+                'temperature': float(data['current']['temperature']),
+                'humidity': float(data['current']['humidity']),
+                'wind_speed': float(data['current']['wind_speed']),
+                'precipitation': float(data['current']['precip']),
+            }
+            # Use the extracted data for prediction
+            input_data = [weather_info['temperature'], weather_info['humidity'],
+                          weather_info['wind_speed'], weather_info['precipitation']]
+            
+            # Save recent location
+            Recent_loc.objects.create(user=user, recent_location=city)
+
+            predictions = None  # Initialize predictions to handle errors
+            try:
+                # Load the prediction pipeline
+                pipeline = WeatherPipeline()
+                predictions = pipeline.predict(input_data)
+                logger.debug("Pipeline initialized successfully.")
+                logger.debug(f"Input data: {input_data}")
+                logger.debug(f"Predictions: {predictions}")
+            except Exception as e:
+                logger.debug(f"Error during prediction: {str(e)}", exc_info=True)
+        else:
+            predictions = None
+            error_message = f"Failed to get data for {city}. Please try again later."
+        
+        # Render the template with predictions or error message
         return render(request, 'home/predict.html', {
             'city': city.upper(),
-            'predictions': predictions
+            'predictions': predictions,
+            'error': error_message
         })
     else:
         # Fetch top 3 recent locations for the user
@@ -346,7 +352,7 @@ def predict_view(request):
             .order_by('-search_count')[:3]
         )
         return render(request, 'home/predict.html', {'recentLocs': recentLocs})
-    
+
 @login_required
 def feedback_view(request):
     if request.method == 'POST':

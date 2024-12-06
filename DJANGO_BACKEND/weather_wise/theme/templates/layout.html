@@ -144,17 +144,21 @@
               </a>
               {% endif %}
             </li>
+            {% if request.path != '/about/' %}
             <li>
               <a href="{% url "about_view" %}" class="text-gray-800 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-400 transition">
                 About
               </a>
             </li>
+            {% endif %}
           </ul>
           <!-- Feedback Button -->
           <div class="mt-4">
+            {% if user.is_authenticated and request.path != '/feedback/' %}
             <a href="{% url 'feedback_view' %}" class="bg-yellow-500 px-4 py-2 rounded-lg text-white font-semibold hover:scale-105 focus:outline-none focus:ring-4 focus:ring-yellow-300 hover:bg-yellow-400 hover:shadow-xl transform transition-all duration-300 ease-in-out z-40">
               Drop a feedback
             </a>
+            {% endif %}
           </div>
         </div>
 
