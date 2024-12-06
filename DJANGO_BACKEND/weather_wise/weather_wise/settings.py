@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-(0^x3_3i(1$@z_ahsv33m7h7b4z6g-l1nu-o#4@355fen2^rw!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -83,32 +83,31 @@ WSGI_APPLICATION = 'weather_wise.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 # Database Configuration for Local host
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+"""
 # Updated DATABASES configuration to use MySQL Workbench
 # (Currently commented as this is to be used on hosting site)
 
-"""
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',   
-        'NAME': 'weatherDemo1$weatherDB',   
-        'USER': 'weatherDemo1',   
-        'PASSWORD': 'Shravan@0024',   
-        'HOST': 'weatherDemo1.mysql.pythonanywhere-services.com',   
-        'PORT': '3306',   
-        'OPTIONS': {   
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'weatherwise$weatherDB',
+        'USER': 'weatherwise',
+        'PASSWORD': 'Shravan@2004',
+        'HOST': 'weatherwise.mysql.pythonanywhere-services.com',
+        'PORT': '3306',
+        'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"   #initialization command for strict SQL mode
-        }  
+        }
     }
 }
 
-"""
 
 # Gmail SMTP Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -152,9 +151,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+# Static files settings
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
-#STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STATICFILES_DIRS = [BASE_DIR / 'static']  # Where additional static files (like global ones) are stored during development
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # Where collectstatic gathers all static files for production
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -165,11 +168,37 @@ INTERNAL_IPS = ['127.0.0.1']
 
 # use your npm path @backend team
 # @shravan 
-NPM_BIN_PATH = "/opt/homebrew/bin/npm"
+# NPM_BIN_PATH = "/opt/homebrew/bin/npm"
 # @madhav
 # NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 
 # In settings.py
 WEATHER_API_KEY_1 = '3fd909629968761c4f36f936ba57ef90'
-WEATHER_API_KEY_2 = '0d469164e7b1b6a7bfdecd4144e44001'
 KICKBOX_API_KEY = "live_7ecf5146fab8220e1c4c84ac031bd155b0a5317944bf1ad0214528c8ca2c3a5f"
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/home/weatherwise/IT314_Project_G22/DJANGO_BACKEND/weather_wise/weather_wise/weather_pipeline_debug.log',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'custom_logger': {
+            'handlers': ['file', 'console'],
+            'level': 'DEBUG',
+        },
+    },
+}
