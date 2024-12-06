@@ -98,7 +98,7 @@ class UserSignUpForm(UserCreationForm):
             if data.get('result') not in ['deliverable', 'risky']:
                 raise ValidationError("The provided email address is not valid or deliverable.")
         except requests.exceptions.RequestException as e:
-            raise ValidationError(f"An error occurred while validating the email\nPlease try later...{e}")
+            raise ValidationError(f"An error occurred while validating the email\nPlease try later...")
 
         return email
 
@@ -155,7 +155,7 @@ class UserProfileEditForm(forms.ModelForm):
                 # print("Invalid email")
                 raise ValidationError("The provided email address is not valid or deliverable.")
         except requests.exceptions.RequestException as e:
-            raise ValidationError(f"An error occurred while validating the email: {e}")
+            raise ValidationError(f"An error occurred while validating the email\nPlease try later...")
         return email
 
 class NotifyForm(forms.ModelForm):
