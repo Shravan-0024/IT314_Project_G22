@@ -118,83 +118,76 @@
 
   <!-- Footer -->
   <div class="container font-roboto">
-    <footer class="bg-slate-300 dark:bg-gray-900 mt-16 py-8">
-      <div class="container mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <!-- About Section -->
-          <div class="text-center md:text-left">
-            <h3 class="font-bold text-lg mb-4 text-gray-800 dark:text-gray-50">About Us</h3>
-            <p class="text-gray-600 dark:text-gray-300">
-              WeatherWise specializes in data-driven weather predictions. Stay ahead of weather changes with our reliable forecasts.
-            </p>
-          </div>
+  <footer class="bg-slate-300 dark:bg-gray-900 mt-16 py-8">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- About Section -->
+        <div class="text-center md:text-left">
+          <h3 class="font-bold text-lg mb-4 text-gray-800 dark:text-gray-50">About Us</h3>
+          <p class="text-gray-600 dark:text-gray-300">
+            WeatherWise specializes in data-driven weather predictions. Stay ahead of weather changes with our reliable forecasts.
+          </p>
+        </div>
 
-          <!-- Navigation Links -->
-          <div class="text-center">
-            <h3 class="font-bold text-lg mb-4 text-gray-800 dark:text-gray-50">Quick Links</h3>
-            <ul class="space-y-2">
-              <li>
-                {% if user.is_authenticated %}
-                <a href="{% url "dashboard_view" %}" class="text-gray-800 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-400 transition">
-                  Home
-                </a>
-                {% else %}
-                <a href="{% url "home_view" %}" class="text-gray-800 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-400 transition">
-                  Home
-                </a>
-                
-                {% endif %}
-                
-              </li>
-              <li>
-                <a href="{% url "about_view" %}" class="text-gray-800 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-400 transition">
-                  About
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Social Links -->
-          <div class="text-center md:text-right">
-            <h3 class="font-bold text-lg mb-4 text-gray-800 dark:text-gray-50">Follow Us</h3>
-            <div class="flex justify-center md:justify-end space-x-4">
-              <a href="#" class="text-gray-800 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-400 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M24 4.56c-.89.39-1.84.65-2.83.77a4.92 4.92 0 0 0 2.16-2.71 9.86 9.86 0 0 1-3.13 1.2A4.92 4.92 0 0 0 16.68 3c-2.72 0-4.92 2.2-4.92 4.92 0 .39.04.77.12 1.14C7.69 8.84 4.07 6.93 1.64 4.07a4.92 4.92 0 0 0-.66 2.47c0 1.7.87 3.19 2.2 4.07a4.88 4.88 0 0 1-2.23-.62v.06c0 2.38 1.7 4.36 3.95 4.81a4.89 4.89 0 0 1-2.22.08c.62 1.94 2.42 3.35 4.55 3.39A9.87 9.87 0 0 1 0 20.29a13.94 13.94 0 0 0 7.56 2.21c9.07 0 14.03-7.52 14.03-14.03 0-.21 0-.42-.02-.63a10 10 0 0 0 2.46-2.54z" />
-                </svg>
+        <!-- Feedback Section -->
+        <div class="text-center">
+          <h3 class="font-bold text-lg mb-4 text-gray-800 dark:text-gray-50">Quick Links</h3>
+          <ul class="space-y-2">
+            <li>
+              {% if user.is_authenticated %}
+              <a href="{% url "dashboard_view" %}" class="text-gray-800 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-400 transition">
+                Home
               </a>
-              <a href="#" class="text-gray-800 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-400 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2.04c-5.5 0-9.96 4.46-9.96 9.96 0 4.39 3.62 8.17 8.36 9.78v-6.91H7.94v-2.87h2.46v-2.18c0-2.43 1.47-3.77 3.67-3.77 1.06 0 2.16.19 2.16.19v2.36H15.1c-1.28 0-1.67.8-1.67 1.61v1.79h2.84l-.45 2.87h-2.39v6.91c4.74-1.61 8.36-5.39 8.36-9.78 0-5.5-4.46-9.96-9.96-9.96z" />
-                </svg>
+              {% else %}
+              <a href="{% url "home_view" %}" class="text-gray-800 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-400 transition">
+                Home
               </a>
-            </div>
+              {% endif %}
+            </li>
+            <li>
+              <a href="{% url "about_view" %}" class="text-gray-800 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-400 transition">
+                About
+              </a>
+            </li>
+          </ul>
+          <!-- Feedback Button -->
+          <div class="mt-4">
+            <a href="{% url 'feedback_view' %}" class="bg-yellow-500 px-4 py-2 rounded-lg text-white font-semibold hover:scale-105 focus:outline-none focus:ring-4 focus:ring-yellow-300 hover:bg-yellow-400 hover:shadow-xl transform transition-all duration-300 ease-in-out z-40">
+              Drop a feedback
+            </a>
           </div>
         </div>
 
-        <!-- GitHub Section -->
-        <div class="text-center mt-8">
-        <!-- Feedback Button -->
-        <a href="{% url 'feedback_view' %}"
-          class="bg-yellow-600 px-4 py-2 mb-4 rounded-lg text-white font-semibold hover:scale-105 focus:outline-none focus:ring-4 focus:ring-yellow-800 hover:bg-yellow-700 hover:shadow-xl transform transition-all duration-300 ease-in-out">Drop a feedback</a>
+        <!-- Contact Us Section -->
+        <div class="text-center md:text-right">
+          <h3 class="font-bold text-lg mb-4 text-gray-800 dark:text-gray-50">Contact Us</h3>
+          <div class="flex justify-center md:justify-end space-x-2 mb-4">
+            <a href="mailto:weatherwiseg22@gmail.com" class="flex items-center text-gray-800 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-400 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 12.713L1.8 6.044A2.4 2.4 0 0 1 3.6 4.8h16.8a2.4 2.4 0 0 1 1.8 1.244L12 12.713zM12 15l-11-6.4V18a2.4 2.4 0 0 0 2.4 2.4h16.8A2.4 2.4 0 0 0 23 18v-9.4L12 15z" />
+              </svg>
+              weatherwiseg22@gmail.com
+            </a>
+          </div>
+          <!-- GitHub Section -->
+          <a href="https://github.com/Shravan-0024/IT314_Project_G22" target="_blank" rel="noopener noreferrer"
+            class="flex items-center justify-center md:justify-end space-x-2 text-gray-800 dark:text-gray-50 hover:text-gray-600 dark:hover:text-gray-400 transition mx-2">
+            <span class="font-medium">Visit our GitHub</span>
+            <img src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" 
+                alt="GitHub Logo" 
+                class="h-8 w-8 rounded-full dark:bg-gray-50 bg-gray-900 ml-2">
+          </a>
+        </div>
+      </div>
 
-        <!-- GitHub Section -->
-        <a href="https://github.com/Shravan-0024/IT314_Project_G22" target="_blank" rel="noopener noreferrer"
-          class="flex items-center justify-center space-x-2 text-gray-800 dark:text-gray-50 hover:text-gray-600 dark:hover:text-gray-400 transition mx-2">
-          <span class="font-medium">Visit our GitHub</span>
-          <img src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" 
-              alt="GitHub Logo" 
-              class="h-8 w-8 rounded-full dark:bg-gray-50 bg-gray-900 ml-2">  
-        </a>
-
-        <!-- Copyright Text -->
+      <!-- Copyright Text -->
+      <div class="text-center mt-8">
         <p class="mt-4 text-gray-800 dark:text-gray-50">© 2024 WeatherWise. All rights reserved.</p>
       </div>
+    </div>
+  </footer>
+</div>
 
-
-      </div>
-    </footer>
-  </div>
 
 
   <script>
