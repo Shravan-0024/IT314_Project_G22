@@ -106,14 +106,6 @@ class UserSignUpForm(UserCreationForm):
 
 
 class UserProfileEditForm(forms.ModelForm):
-    email = forms.EmailField(
-    min_length=5,
-    max_length=254,    
-    widget=forms.EmailInput(attrs={'class': 'form-control'}))
-    error_messages={
-        'min_length': 'The email must be at least 5 characters long.',
-        'max_length': 'The email cannot exceed 254 characters.',
-    }
 
     first_name = forms.CharField(
     min_length=2,
@@ -143,6 +135,10 @@ class UserProfileEditForm(forms.ModelForm):
         self.fields['username'].widget.attrs['readonly'] = True
         self.fields['username'].min_length = 3
         self.fields['username'].max_length = 30
+        # Make email read-only since it's generally not editable
+        self.fields['email'].widget.attrs['readonly'] = True
+        self.fields['email'].min_length = 5
+        self.fields['email'].max_length = 254
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
