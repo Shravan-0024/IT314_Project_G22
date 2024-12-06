@@ -55,12 +55,28 @@ def get_weather_data(city):
 def home_view(request):
     if request.method == "POST":
         city = request.POST["location"]
-        weather_info = get_weather_data(city)
+        if(len(city) > 0):
+            weather_info = get_weather_data(city)
 
-        if 'error' in weather_info:
-            return render(request, 'home/home.html', {"error": weather_info['error']})
+            if 'error' in weather_info:
+                return render(request, 'home/home.html', {"error": weather_info['error']})
+            else:
+                return render(request, 'home/home.html', {'data': weather_info['data']})
         else:
-            return render(request, 'home/home.html', {'data': weather_info['data']})
+            error_message = "City name cannot be empty. Please enter a valid city."
+            city1 = 'Delhi'
+            weather_info1 = get_weather_data(city1)
+            city2 = 'Mumbai'
+            weather_info2 = get_weather_data(city2)
+            city3 = 'Hyderabad'
+            weather_info3 = get_weather_data(city3)
+            return render(request, 'home/home.html', {
+                'data_Delhi': weather_info1['data'],
+                'data_Mumbai': weather_info2['data'],
+                'data_Hyderabad': weather_info3['data'],
+                'error': error_message
+            })
+
         
     else:
         city1 = 'Delhi'
@@ -109,14 +125,27 @@ def dashboard_view(request):
         if "location" in request.POST:
             #print(f"Search request for {request.POST.get("location")}")
             city = request.POST["location"]
-            weather_info = get_weather_data(city)
+            if(len(city) > 0):
+                weather_info = get_weather_data(city)
 
-            if 'error' in weather_info:
-                return render(request, 'home/home.html', {"error": weather_info['error']})
+                if 'error' in weather_info:
+                    return render(request, 'home/dashboard.html', {"error": weather_info['error']})
+                else:
+                    return render(request, 'home/dashboard.html', {
+                        'data': weather_info['data'],
+                    })
             else:
-                return render(request, 'home/dashboard.html', {
-                    'data': weather_info['data'],
-                })
+                favlocs_data = []
+                favlocs = Fav_loc.objects.filter(user=user)  # Retrieve all favorite locations for the user
+                for loc in favlocs :
+                        weather_info = get_weather_data(loc.favourite_location)
+                        # print(weather_info['data'])
+                        favlocs_data.append(weather_info['data'])
+                error_message = "City name cannot be empty. Please enter a valid city."
+                return render(request, 'home/dashboard.html', { 
+                    'fav_locs_data': favlocs_data, 
+                    'error': error_message 
+                    })
     else:
         favlocs_data = []
         favlocs = Fav_loc.objects.filter(user=user)  # Retrieve all favorite locations for the user
@@ -303,11 +332,22 @@ def predict_view(request):
     user = request.user
     if request.method == "POST":
         city = request.POST["location"]
+        
+        # Check if city length is zero
+        if len(city) == 0:
+            error_message = "City name cannot be empty. Please enter a valid city."
+            predictions = None
+            return render(request, 'home/predict.html', {
+                'city': city.upper(),
+                'predictions': predictions,
+                'error': error_message
+            })
+
         url = "http://api.weatherstack.com/current"
         querystring = {"access_key": YOUR_ACCESS_KEY, "query": city}
         response = requests.get(url, params=querystring)
 
-        if response.status_code == 200 and len(city) > 0:
+        if response.status_code == 200:
             data = response.json()
             # Extract weather features
             weather_info = {
@@ -319,7 +359,7 @@ def predict_view(request):
             # Use the extracted data for prediction
             input_data = [weather_info['temperature'], weather_info['humidity'],
                           weather_info['wind_speed'], weather_info['precipitation']]
-            
+
             # Save recent location
             Recent_loc.objects.create(user=user, recent_location=city)
 
@@ -333,10 +373,13 @@ def predict_view(request):
                 logger.debug(f"Predictions: {predictions}")
             except Exception as e:
                 logger.debug(f"Error during prediction: {str(e)}", exc_info=True)
+
+            error_message = ''
         else:
+            # Handle API error response
             predictions = None
             error_message = f"Failed to get data for {city}. Please try again later."
-        
+
         # Render the template with predictions or error message
         return render(request, 'home/predict.html', {
             'city': city.upper(),
