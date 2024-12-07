@@ -176,4 +176,10 @@ INTERNAL_IPS = ['127.0.0.1']
 WEATHER_API_KEY_1 = '3fd909629968761c4f36f936ba57ef90'
 KICKBOX_API_KEY = "live_7ecf5146fab8220e1c4c84ac031bd155b0a5317944bf1ad0214528c8ca2c3a5f"
 
-
+# Threshold values
+THRESHOLDS = {
+    "temperature": {"min": -10, "max": 45},  # in Degrees Celsius
+    "humidity": {"min": 10, "max": 90},      # in Percentage
+    "wind_speed": {"max": 100},              # in km/h
+    "precipitation": {"max": 50},            # in mm
+}
