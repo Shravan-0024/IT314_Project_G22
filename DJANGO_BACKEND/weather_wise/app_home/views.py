@@ -9,7 +9,7 @@ from django.db.models import Q
 from django.db.models import Count
 from django.utils.http import url_has_allowed_host_and_scheme
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 import pickle
 from .pipeline import format_prediction_output  # relative import if within the same app
@@ -236,9 +236,10 @@ def signup_view(request):
             recipient_list = [user.email]  # Replace with actual user emails
             email_sent = send_notification_email(subject, message, recipient_list)
 
-            # Store user ID and OTP in session for OTP verification
+            # Store user ID ,OTP and OTP generated time in session for OTP verification
             request.session['user_id'] = user.id
             request.session['otp'] = otp_
+            request.session['otp_generated_time'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
             if email_sent:
                 return redirect('otp_verify')
@@ -383,12 +384,8 @@ def predict_view(request):
                 # Load the prediction pipeline
                 pipeline = WeatherPipeline()
                 predictions = pipeline.predict(input_data)
-                logger.debug("Pipeline initialized successfully.")
-                logger.debug(f"Input data: {input_data}")
-                logger.debug(f"Predictions: {predictions}")
                 error_message = ''
             except Exception as e:
-                logger.debug(f"Error during prediction: {str(e)}", exc_info=True)
                 error_message = "An error occurred during prediction. Please try again later."
                 predictions = None
         else:
@@ -445,9 +442,47 @@ def send_weather_alert(request):
     return render(request, 'home/email_service.html')
 
 def otp_verify(request):
+    # Check if there's a user session but OTP verification is incomplete, do 5 min 
+    user_id = request.session.get('user_id')
+    otp = request.session.get('otp')
+    otp_generated_time = request.session.get('otp_generated_time')
+
+    if user_id and (not otp or not otp_generated_time):
+        try:
+            # Delete the user if they exist
+            user = User.objects.get(id=user_id)
+            user.delete()
+        except User.DoesNotExist:
+            # If the user doesn't exist, just clear the session
+            for key in ['user_id', 'otp', 'otp_generated_time']:
+                if key in request.session:
+                    del request.session[key]
+
+        return redirect('signup_view')  # Redirect to signup page
+
+    # Check if the OTP has expired
+    otp_expiry_time = datetime.strptime(otp_generated_time, "%Y-%m-%d %H:%M:%S") + timedelta(minutes=3)
+    if datetime.now() > otp_expiry_time:
+        try:
+            # Delete the user if OTP has expired
+            user = User.objects.get(id=user_id)
+            user.delete()
+        except User.DoesNotExist:
+            pass
+
+        # Clear session data
+        for key in ['user_id', 'otp', 'otp_generated_time']:
+            if key in request.session:
+                del request.session[key]
+
+        return render(request, 'registration/signup.html', {
+            'error': 'OTP has expired. Please sign up again.'
+        })
+
     if request.method == 'POST':
         otp_ = request.session.get('otp')  # Get generated OTP
         otp = request.POST.get('otp')  # Get user-entered OTP
+        otp_generated_time = request.session.get('otp_generated_time')
         user_id = request.session.get('user_id')  # Get user ID from session
 
         if not otp_ or not user_id:
@@ -466,7 +501,7 @@ def otp_verify(request):
                 login(request, user)
 
                 # Clear session data after successful verification
-                for key in ['user_id', 'otp', 'otp_attempts']:
+                for key in ['user_id', 'otp', 'otp_attempts', 'otp_generated_time']:
                     if key in request.session:
                         del request.session[key]
 
@@ -488,7 +523,7 @@ def otp_verify(request):
                     pass  # User might already be deleted
                 
                 # Clear session data
-                for key in ['user_id', 'otp', 'otp_attempts']:
+                for key in ['user_id', 'otp', 'otp_attempts', 'otp_generated_time']:
                     if key in request.session:
                         del request.session[key]
 
