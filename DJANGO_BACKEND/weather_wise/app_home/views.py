@@ -10,9 +10,6 @@ from django.db.models import Count
 from django.utils.http import url_has_allowed_host_and_scheme
 import requests
 from datetime import datetime, timedelta
-import os
-import pickle
-from .pipeline import format_prediction_output  # relative import if within the same app
 from .pipeline import WeatherPipeline
 from django.conf import settings
 from django.http import JsonResponse
@@ -23,17 +20,7 @@ import logging
 API_KEY_1 = settings.WEATHER_API_KEY_1
 
 
-logger = logging.getLogger('custom_logger')
-
 def get_weather_data(city):
-    """ 
-    Fetch weather data for a given city and return sunrise and sunset times.
-    Parameters:
-        city (str): The city name.
-        api_key (str): The API key for OpenWeather API.
-    Returns:
-        dict: A dictionary containing the city name, sunrise, and sunset times in the specified format.
-    """
     url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY_1}&units=metric'
     response = requests.get(url)
     
@@ -101,7 +88,7 @@ def dashboard_view(request):
     user = request.user
 
     if request.method == "POST":
-        print(request.POST)
+        # print(request.POST)
         if "fav_location_save" in request.POST:
             city = request.POST.get("fav_location_save")
             #print(f"Save request for {request.POST.get("fav_location_save")}")
@@ -113,11 +100,9 @@ def dashboard_view(request):
             favlocs = Fav_loc.objects.filter(user=user)  # Retrieve all favorite locations for the user
             for loc in favlocs :
                 weather_info = get_weather_data(loc.favourite_location)
-                # print(weather_info['data'])
                 favlocs_data.append(weather_info['data'])
             return render(request, 'home/dashboard.html', { 'fav_locs_data': favlocs_data })
         if "fav_location_delete" in request.POST:
-            #print(f"Delete request for {request.POST.get("fav_location_delete")}")
             # Delete the favorite location from the database
             Fav_loc.objects.filter(user=user, favourite_location=request.POST.get("fav_location_delete")).delete()
             favlocs_data = []
@@ -170,7 +155,7 @@ def login_view(request):
         return redirect('login_view')
 
     # Get the 'next' parameter from the URL if it exists
-    next_url = request.GET.get('next', 'dashboard_view')  # Default to 'home_view' if 'next' is not provided
+    next_url = request.GET.get('next', 'dashboard_view')  # Default to 'dashboard_view' if 'next' is not provided
 
     if request.method == "POST":
         username_or_email = request.POST.get('username_or_email')

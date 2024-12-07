@@ -6,6 +6,7 @@ from .models import Notify,Feedback
 import requests
 from django.conf import settings
 import requests
+import re
 
 
 class UserSignUpForm(UserCreationForm):
@@ -84,6 +85,18 @@ class UserSignUpForm(UserCreationForm):
             raise ValidationError("This username is already taken. Please choose another one.")
         return username
 
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get('first_name')
+        if not first_name.isalpha():
+            raise ValidationError("First name should only contain letters (a-z, A-Z).")
+        return first_name
+
+    def clean_last_name(self):
+        last_name = self.cleaned_data.get('last_name')
+        if not last_name.isalpha():
+            raise ValidationError("Last name should only contain letters (a-z, A-Z).")
+        return last_name
+
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
@@ -101,9 +114,64 @@ class UserSignUpForm(UserCreationForm):
             raise ValidationError(f"An error occurred while validating the email\nPlease try later...")
 
         return email
+    
+    def clean_password1(self):
+        password1 = self.cleaned_data.get('password1')
+        errors = []
 
+        # Validate password length
+        if len(password1) < 8:
+            errors.append("Password must be at least 8 characters long.")
 
+        # Check for at least one uppercase letter
+        if not re.search(r'[A-Z]', password1):
+            errors.append("Password must contain at least one uppercase letter.")
 
+        # Check for at least one lowercase letter
+        if not re.search(r'[a-z]', password1):
+            errors.append("Password must contain at least one lowercase letter.")
+
+        # Check for at least one digit
+        if not re.search(r'[0-9]', password1):
+            errors.append("Password must contain at least one digit.")
+
+        # Check for at least one special character
+        if not re.search(r'[@$!%*?&]', password1):
+            errors.append("Password must contain at least one special character (@, $, !, %, *, ?, &).")
+
+        # Raise a single ValidationError with all issues
+        if errors:
+            raise ValidationError(errors)
+
+        return password1
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+
+        # Ensure both password fields are filled
+        if not password1:
+            self.add_error('password1', "This field is required.")
+        if not password2:
+            self.add_error('password2', "This field is required.")
+
+        # Ensure passwords match
+        if password1 and password2 and password1 != password2:
+            self.add_error('password2', "The two password fields must match.")
+
+        return cleaned_data
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+
+        # Ensure passwords match
+        if password1 and password2 and password1 != password2:
+            raise ValidationError("The two password fields must match.")
+
+        return cleaned_data
 
 class UserProfileEditForm(forms.ModelForm):
 
@@ -136,7 +204,7 @@ class UserProfileEditForm(forms.ModelForm):
         self.fields['username'].min_length = 3
         self.fields['username'].max_length = 30
         # Make email read-only since it's generally not editable
-        self.fields['email'].widget.attrs['readonly'] = True
+        self.flds['email'].widget.attrs['readonly'] = True
         self.fields['email'].min_length = 5
         self.fields['email'].max_length = 254
 
@@ -157,6 +225,18 @@ class UserProfileEditForm(forms.ModelForm):
         except requests.exceptions.RequestException as e:
             raise ValidationError(f"An error occurred while validating the email\nPlease try later...")
         return email
+    
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get('first_name')
+        if not first_name.isalpha():
+            raise ValidationError("First name should only contain letters (a-z, A-Z).")
+        return first_name
+
+    def clean_last_name(self):
+        last_name = self.cleaned_data.get('last_name')
+        if not last_name.isalpha():
+            raise ValidationError("Last name should only contain letters (a-z, A-Z).")
+        return last_name
 
 class NotifyForm(forms.ModelForm):
     get_notifications = forms.BooleanField(required=False, label="Receive Weather Alerts!")
